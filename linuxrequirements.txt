@@ -1,0 +1,17 @@
+pymysql
+setuptools
+wget
+termcolor
+loguru
+colorama
+numpy
+xlrd
+xlwt
+uuid
+cython
+requests
+urllib3
+playsound
+fake_useragent
+prettytable
+tqdm

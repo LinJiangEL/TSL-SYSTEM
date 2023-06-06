@@ -1,0 +1,4 @@
+.ssh/
+.idea/
+__pycache__/
+*~

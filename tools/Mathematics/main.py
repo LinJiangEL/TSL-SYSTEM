@@ -58,7 +58,15 @@ def run():
             finally:
                 print('')
     elif _ok and method == 'advanced':
-        pass
+        from tools.Mathematics.cal_advanced import Advanced
+        advanced = Advanced()
+
+        while True:
+            cmd = input('>> ')
+            if cmd == '@exit':
+                print()
+                break
+            maincmd = cmd.split(' ')[0]
     else:
         print(f"NameError:method '{method}' is not defined.")
         _ok = "False"

@@ -4,7 +4,7 @@ import uuid
 from setuptools.errors import PlatformError
 
 SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loading.py', 'selfcheck.py', 'system.py', 'config.py', 'services.py',
-                      'upgrade.py', 'sysmgr.py', 'motd', 'terminal.py', 'linuxrequirements.txt', 'win32requirements.txt', 'loading.py', 'motd', 'License',
+                      'upgrade.py', 'sysmgr.py', 'motd', 'terminal.py', 'linuxrequirements.txt', 'win32requirements.txt', 'loading.py', 'motd', 'LICENSE',
                       'motd.jpg', 'README.md', 'VERSION']
 SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, 'TSL-SYSTEM'))
 SYSTEM_DIR = os.path.dirname(os.path.abspath(__file__))

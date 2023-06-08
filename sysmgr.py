@@ -127,6 +127,7 @@ class UserManager:
 
         if key == 'username':
             self.userinfos[index] = f"{value}@{self.userinfos[index].split('@')[1]}"
+            self.users[index] = value
             self.rewrite(self.userinfos)
             logger.info(f"'{self.PwdUser}' changed the user's name successfully. "
                         f"[USERINFO:('{target}' -> '{value}')]"

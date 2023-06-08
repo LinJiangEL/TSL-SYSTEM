@@ -1,4 +1,9 @@
 .ssh/
 .idea/
 __pycache__/
-*~
+Temp/*.gz
+Temp/*.zip
+Temp/logs/*.log
+Temp/*.bat
+Temp/*.sh
+Temp/test*

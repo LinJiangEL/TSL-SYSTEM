@@ -92,6 +92,8 @@ with open(os.path.join(SYSTEM_DIR, 'Database/login.db'), 'r') as login_file:
             elif username_mode.split('@')[1] == 'user':
                 simple_users.append(username_mode.split('@')[0])
             else:
+                logger.critical("OSError:Login Database cannot be normally read.")
+                logger.error("System shutdown with Exceptions.")
                 raise OSError('login.db cannot be normally read!')
 
             mode_info['root'] = admin_users
@@ -117,11 +119,11 @@ while True:
 
         if encrypt(passwd, 3, SYSTEM_ID[:6]) == login_infos.get(
                 f"{username}@{'root' if username in admin_users else 'user'}").strip():
-            logger.info("Successfully log in the system. [USERINFO:{user}]", user=username)
+            logger.info("Successfully log in the system. [USERINFO:('{user}')]", user=username)
             print('Successfully log in the system!\n')
             break
         else:
-            logger.error("Wrong password to user. [USERINFO:{user}]", user=username)
+            logger.error("Wrong password to user. [USERINFO:('{user}')]", user=username)
             print(f"The password to '{username}' is wrong!\n")
             while True:
                 del passwd, passwd_processor
@@ -133,7 +135,7 @@ while True:
 
                 if encrypt(passwd, 3, SYSTEM_ID[:6]) == login_infos.get(
                         f"{username}@{'root' if username in admin_users else 'user'}").strip():
-                    logger.info("Successfully log in the system. [USERINFO:{user}]", user=username)
+                    logger.info("Successfully log in the system. [USERINFO:('{user}')]", user=username)
                     print('Successfully login the system!\n')
                     break
                 else:

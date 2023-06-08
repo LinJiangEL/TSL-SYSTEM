@@ -8,6 +8,9 @@ SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loadin
                       'motd.jpg', 'README.md', 'VERSION']
 SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, 'TSL-SYSTEM'))
 SYSTEM_DIR = os.path.dirname(os.path.abspath(__file__))
+SYSTEM_LOGPATH = os.path.join(SYSTEM_DIR, "Temp/logs")
+SYSTEM_LOGFORMAT = "{time:YYYY-MM-DD HH:mm:ss} [{level}] {message}"
+SYSTEM_LOGSTDOUT = False
 Tools_DIR = SYSTEM_DIR + '/tools/'
 SYSTEM_DIGMAX = 8
 SuperUser = ['root']

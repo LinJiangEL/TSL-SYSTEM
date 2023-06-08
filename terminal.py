@@ -7,7 +7,7 @@ from setuptools.errors import PlatformError
 from loguru import logger
 from bin.helpformat import Help
 from config import SYSTEM_DIR, SYSTEM_LOGPATH, SYSTEM_LOGFORMAT, SYSTEM_LOGSTDOUT, \
-    SuperUser, SYSTEM_FILES, SYSTEM_PRINTER
+    SuperUser, SYSTEM_FILES, SYSTEM_PRINTER, stdIO
 from sysmgr import TempManager, UserManager
 
 if not SYSTEM_LOGSTDOUT:

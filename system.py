@@ -147,5 +147,4 @@ while True:
 
 logger.info("System Terminal start running.")
 terminal(USERNAME=username, MODE='$' if username in mode_info['user'] else '#', Bin_DIR=Bin_DIR)
-logger.info("System Terminal hostdown.")
 logger.info("System shutdown normally.")

@@ -105,12 +105,22 @@ class UserManager:
         if mode == 'all':
             for userRow in self.userinfos:
                 self.UserTable.add_row(userRow.split(':')[0].split('@'))
+            logger.info(f"'{self.PwdUser}' called the Login Database and got all users' info successfully. "
+                        f"[GETINFO:('All Users', 'All Users Mode')]"
+                        )
         elif mode in ['root', 'user']:
             userRows = list(filter(lambda info: mode == info.split('@')[1],
                                    [userinfo.split(':')[0] for userinfo in self.userinfos]))
             for userRow in userRows:
                 self.UserTable.add_row(userRow.split('@'))
+            logger.info(f"'{self.PwdUser}' called the Login Database and got all the {mode} users' info successfully. "
+                        f"[GETINFO:('All {mode} Users', '{mode}')]"
+                        )
         else:
+            logger.info(f"'{self.PwdUser}' called the Login Database and tried to get the users' info,"
+                        f"but this operation was blocked because the specified mode is not defined. "
+                        f"[GETINFO:(None, None)]"
+                        )
             print(f"ValueError:mode '{mode}' is not defined in ModeTuple.\n")
             return 256
 

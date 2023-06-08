@@ -2,15 +2,26 @@ import os
 import sys
 import uuid
 from setuptools.errors import PlatformError
+from loguru import logger
 
-SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loading.py', 'selfcheck.py', 'system.py', 'config.py', 'services.py',
-                      'upgrade.py', 'sysmgr.py', 'motd', 'terminal.py', 'linuxrequirements.txt', 'win32requirements.txt', 'loading.py', 'motd', 'LICENSE',
-                      'motd.jpg', 'README.md', 'VERSION']
+SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loading.py', 'selfcheck.py', 'system.py',
+                'config.py', 'services.py',
+                'upgrade.py', 'sysmgr.py', 'motd', 'terminal.py', 'linuxrequirements.txt', 'win32requirements.txt',
+                'loading.py', 'motd', 'LICENSE',
+                'motd.jpg', 'README.md', 'VERSION']
 SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, 'TSL-SYSTEM'))
 SYSTEM_DIR = os.path.dirname(os.path.abspath(__file__))
 SYSTEM_LOGPATH = os.path.join(SYSTEM_DIR, "Temp/logs")
 SYSTEM_LOGFORMAT = "{time:YYYY-MM-DD HH:mm:ss} [{level}] {message}"
-SYSTEM_LOGSTDOUT = False
+SYSTEM_STDOUT_LOGFORMAT = "<blue>{time:YYYY-MM-DD HH:mm:ss}</blue> <level>[{level}]</level> <level>{message}</level>"
+SYSTEM_LOGSTDOUT = True
+logger.remove()
+stdIO = logger.add(sys.stdout,
+                   colorize=True,
+                   format=SYSTEM_STDOUT_LOGFORMAT,
+                   level="DEBUG",
+                   enqueue=False
+                   )
 Tools_DIR = SYSTEM_DIR + '/tools/'
 SYSTEM_DIGMAX = 8
 SuperUser = ['root']

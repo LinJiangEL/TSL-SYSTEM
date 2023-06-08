@@ -66,7 +66,7 @@ def run():
             if cmd == '@exit':
                 print()
                 break
-            maincmd = cmd.split(' ')[0]
+            maincmd = ...
     else:
         print(f"NameError:method '{method}' is not defined.")
         _ok = "False"

@@ -6,7 +6,7 @@ from ast import literal_eval
 from setuptools.errors import PlatformError
 
 from bin.helpformat import Help
-from config import SYSTEM_DIR, SuperUser, SYSTEM_FILES
+from config import SYSTEM_DIR, SuperUser, SYSTEM_FILES, SYSTEM_PRINTER
 from sysmgr import *
 
 if sys.platform == 'win32':
@@ -161,6 +161,11 @@ def terminal(USERNAME, MODE, Bin_DIR):
             tempmgr.PwdUserTmpFile.close()
             print('done.\n')
             sys.exit(0)
+        elif cmd_tmp[0] == 'clear' and len(cmd_tmp) == 1:
+            os.system(cmd_tmp[0])
+            print('')
+            os.system(f'{SYSTEM_PRINTER} motd')
+            print('')
         elif cmd_tmp[0] in ['trunc', 'internal', 'user'] and len(cmd_tmp) == 1:
             print(f"CommandUsageError:incorrectly {cmd_tmp[0]} usage, please input 'help' to get its help-page.\n")
             continue

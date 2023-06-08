@@ -86,7 +86,10 @@ class UserManager:
 
 
     def set(self, key, target=None, value=None):
-        index = self.users.index(target) if target in self.users else exec(f"print('UserNotExistsError:user {target} is not exists in database.\n');continue;")
+        index = self.users.index(target) if target in self.users else None
+        if index is None:
+            print(f"UserNotExistsError:user '{target}' is not exists in database.\n")
+            return 256
         infotmp = self.userinfos[index].split(':')
         
         if key == 'username':

@@ -6,4 +6,4 @@ Temp/*.zip
 Temp/logs/*.log
 Temp/*.bat
 Temp/*.sh
-Temp/test*
+Temp/*.txt

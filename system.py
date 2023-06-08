@@ -27,7 +27,7 @@ system_logger = logger.add(os.path.join(SYSTEM_LOGPATH, "log-{time:YYYY-MM}.log"
                            )
 
 logger.info("System start running.")
-logger.info("GetSystemPlatform() returned: {SysVersion}.", SysVersion=platform.platform)
+logger.info("GetSystemPlatform() returned: {SysVersion}.", SysVersion=platform.platform())
 
 logger.info("System selfcheck start running.")
 runrequire_modules = open(requirements_file, 'r')

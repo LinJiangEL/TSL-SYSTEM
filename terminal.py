@@ -97,33 +97,41 @@ def terminal(USERNAME, MODE, Bin_DIR):
             logger.info(f"{USERNAME} create an current system image. [IMAGEINFO:'{filename}']")
             tempmgr.PwdUserTmpFile = open(os.path.join(SYSTEM_DIR, 'Temp/PwdUser'), 'r+')
         elif cmd_tmp[0] == 'restore':
-            print('\nAvailable system images:')
-            for imagefile in [fileimg for fileimg in
-                              os.listdir(os.path.join(SYSTEM_DIR, 'backup/TSL-SYSTEM-BACKUP-FILES')) if
-                              fileimg.endswith('.tar.gz')]:
-                print(imagefile)
-            print('')
-            image = input('Please choose one image to recover this system: ')
-            imagepath = os.path.join(SYSTEM_DIR, 'backup/TSL-SYSTEM-BACKUP-FILES/%s' % image)
-            if os.path.exists(imagepath):
-                if is_root:
-                    tempmgr.PwdUserTmpFile.close()
-                    usermgr.databasefile.close()
-                    os.system(f'tar -xzvf "{imagepath}" -m -p')
-                    print('\nSuccessfully restore system from the image.\n')
-                    logger.info(f"Successfully restore system from the image. [USERINFO:('{USERNAME}')]")
-                    tempmgr.PwdUserTmpFile = open(os.path.join(SYSTEM_DIR, 'Temp/PwdUser'), 'r+')
-                    usermgr.databasefile = open(os.path.join(SYSTEM_DIR, 'Database/login.db'), 'r')
-                else:
-                    print('sh: restore: Permission denied.\n')
-                    logger.error(f"{USERNAME} failed to execute 'restore' because {USERNAME} is a SimpleUser. "
-                                 f"[CMDINFO:{cmd_tmp}]"
-                                 )
+            if [fileimg for fileimg in os.listdir(os.path.join(SYSTEM_DIR, 'backup/TSL-SYSTEM-BACKUP-FILES')) if fileimg.endswith('.tar.gz')] is []:
+                print("Empty images in BACKUP_DIR.")
+                logger.warning(f"'{USERNAME}' tried to list backup images and chose one to execute 'restore', "
+                               "but this operation was blocked because there were no previous backup images. "
+                               f"[USERINFO:('{USERNAME}')]"
+                               )
             else:
-                print('FileNotFoundError:cannot find such image from BACKUP_DIR.\n')
-                logger.error("Cannot restore system from the image, image was not found in BACKUP_DIR. "
-                             f"[USERINFO:('{USERNAME}')]"
-                             )
+                print('\nAvailable system images:')
+                for imagefile in [fileimg for fileimg in
+                                  os.listdir(os.path.join(SYSTEM_DIR, 'backup/TSL-SYSTEM-BACKUP-FILES')) if
+                                  fileimg.endswith('.tar.gz')]:
+                    print(imagefile)
+                print('')
+
+                image = input('Please choose one image to recover this system: ')
+                imagepath = os.path.join(SYSTEM_DIR, 'backup/TSL-SYSTEM-BACKUP-FILES/%s' % image)
+                if os.path.exists(imagepath):
+                    if is_root:
+                        tempmgr.PwdUserTmpFile.close()
+                        usermgr.databasefile.close()
+                        os.system(f'tar -xzvf "{imagepath}" -m -p')
+                        print('\nSuccessfully restore system from the image.\n')
+                        logger.info(f"Successfully restore system from the image. [USERINFO:('{USERNAME}')]")
+                        tempmgr.PwdUserTmpFile = open(os.path.join(SYSTEM_DIR, 'Temp/PwdUser'), 'r+')
+                        usermgr.databasefile = open(os.path.join(SYSTEM_DIR, 'Database/login.db'), 'r')
+                    else:
+                        print('sh: restore: Permission denied.\n')
+                        logger.error(f"{USERNAME} failed to execute 'restore' because {USERNAME} is a SimpleUser. "
+                                     f"[CMDINFO:{cmd_tmp}]"
+                                     )
+                else:
+                    print('FileNotFoundError:cannot find such image from BACKUP_DIR.\n')
+                    logger.error("Cannot restore system from the image, image was not found in BACKUP_DIR. "
+                                 f"[USERINFO:('{USERNAME}')]"
+                                 )
         elif cmd_tmp[0] == 'user' and len(cmd_tmp) >= 2:
             if cmd_tmp[1] not in ['add', 'remove', 'info', 'set', 'list']:
                 print(f"AttitudeError:assignment '{cmd_tmp[1]}' is not defined in UserManager.\n")

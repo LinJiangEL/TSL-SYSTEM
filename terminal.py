@@ -65,11 +65,13 @@ def terminal(USERNAME, MODE, Bin_DIR):
         elif cmd_tmp[0] == 'trunc' and len(cmd_tmp) >= 2:
             if is_root:
                 os.system(f'{" ".join(cmd_tmp[1:])}')
-                logger.info(f"{USERNAME} succeed in executing 'trunc' as a SuperUser. [CMDINFO:{cmd_tmp}]")
+                logger.info(f"{USERNAME} succeed in executing 'trunc' as a SuperUser. "
+                            f"[CMDINFO:('trunc', '{cmd_tmp[1:]}')]"
+                            )
             else:
                 print('sh: trunc: Permission denied.\n')
                 logger.info(f"{USERNAME} failed to execute 'trunc' because {USERNAME} is a SimpleUser. "
-                            f"[CMDINFO:{cmd_tmp}]"
+                            f"[CMDINFO:('trunc', '{cmd_tmp[1:]}')]"
                             )
         elif cmd_tmp[0] == 'internal' and len(cmd_tmp) >= 2:
             argvs = cmd_tmp[2:]

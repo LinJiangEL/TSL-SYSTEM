@@ -7,7 +7,7 @@ import time
 import hashlib
 import getpass
 import platform
-# from termcolor import colored
+from termcolor import colored
 # colored('This is some strings.', color='red') # color:['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
 from loguru import logger
 from setuptools.errors import PlatformError
@@ -120,11 +120,11 @@ while True:
         if encrypt(passwd, 3, SYSTEM_ID[:6]) == login_infos.get(
                 f"{username}@{'root' if username in admin_users else 'user'}").strip():
             logger.info("Successfully log in the system. [USERINFO:('{user}')]", user=username)
-            print('Successfully log in the system!\n')
+            print(colored('Successfully log in the system!\n', color="green"))
             break
         else:
             logger.error("Wrong password to user. [USERINFO:('{user}')]", user=username)
-            print(f"The password to '{username}' is wrong!\n")
+            print(colored(f"The password to '{username}' is wrong!\n", color="red"))
             while True:
                 del passwd, passwd_processor
                 passwd_processor = hashlib.md5()
@@ -136,14 +136,15 @@ while True:
                 if encrypt(passwd, 3, SYSTEM_ID[:6]) == login_infos.get(
                         f"{username}@{'root' if username in admin_users else 'user'}").strip():
                     logger.info("Successfully log in the system. [USERINFO:('{user}')]", user=username)
-                    print('Successfully login the system!\n')
+                    print(colored('Successfully login the system!\n', color="green"))
                     break
                 else:
-                    print(f"The password to '{username}' is wrong!\n")
+                    logger.error("Wrong password to user. [USERINFO:('{user}')]", user=username)
+                    print(colored(f"The password to '{username}' is wrong!\n", color="red"))
             break
     else:
         logger.error("UserNotExistedError:no such user named '{user}' was found in login database.", user=username)
-        print(f"UserNotExistedError:no such user named '{username}' was found in login database.\n")
+        print(colored(f"UserNotExistedError:no such user named '{username}' was found in login database.\n", color="red"))
 
 logger.info("System Terminal start running.")
 terminal(USERNAME=username, MODE='$' if username in mode_info['user'] else '#', Bin_DIR=Bin_DIR)

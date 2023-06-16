@@ -9,6 +9,7 @@ import getpass
 import platform
 from termcolor import colored
 # colored('This is some strings.', color='red') # color:['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
+# magenta: 淡紫, cyan: 淡蓝
 from loguru import logger
 from setuptools.errors import PlatformError
 from loading import load

@@ -7,7 +7,7 @@ from setuptools.errors import PlatformError
 from loguru import logger
 from bin.helpformat import Help
 from config import SYSTEM_DIR, SYSTEM_LOGPATH, SYSTEM_LOGFORMAT, SYSTEM_LOGSTDOUT, \
-    SuperUser, SYSTEM_FILES, SYSTEM_PRINTER, stdIO
+    SuperUser, SYSTEM_FILES, SYSTEM_PRINTER
 from sysmgr import TempManager, UserManager
 
 if not SYSTEM_LOGSTDOUT:
@@ -97,7 +97,8 @@ def terminal(USERNAME, MODE, Bin_DIR):
             logger.info(f"{USERNAME} create an current system image. [IMAGEINFO:'{filename}']")
             tempmgr.PwdUserTmpFile = open(os.path.join(SYSTEM_DIR, 'Temp/PwdUser'), 'r+')
         elif cmd_tmp[0] == 'restore':
-            if [fileimg for fileimg in os.listdir(os.path.join(SYSTEM_DIR, 'backup/TSL-SYSTEM-BACKUP-FILES')) if fileimg.endswith('.tar.gz')] is []:
+            if [fileimg for fileimg in os.listdir(os.path.join(SYSTEM_DIR, 'backup/TSL-SYSTEM-BACKUP-FILES'))
+                    if fileimg.endswith('.tar.gz')] is []:
                 print("Empty images in BACKUP_DIR.")
                 logger.warning(f"'{USERNAME}' tried to list backup images and chose one to execute 'restore', "
                                "but this operation was blocked because there were no previous backup images. "
@@ -185,9 +186,12 @@ def terminal(USERNAME, MODE, Bin_DIR):
                         continue
             elif cmd_tmp[1] == 'list' and len(cmd_tmp) <= 4:
                 if len(cmd_tmp) != 2:
-                    mode = cmd_tmp[cmd_tmp.index('--mode') + 1] if '--mode' in cmd_tmp and cmd_tmp[-1] != '--mode' else \
+                    mode = cmd_tmp[cmd_tmp.index('--mode') + 1] if '--mode' in cmd_tmp \
+                        and cmd_tmp[-1] != '--mode' else \
                         cmd_tmp[2] if len(cmd_tmp) == 3 else \
-                        exec("print('SyntaxError:invaild UserManager.list called format.\n');continue;")
+                        exec("print('SyntaxError:invaild UserManager.list called format.\n')")
+                    if mode is None:
+                        continue
                     usermgr.list(mode)
                 else:
                     print("ParameterWarning:unclarified parameter mode, default set 'all' to it.\n")
@@ -198,8 +202,10 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 key = cmd_tmp[2]
                 target = cmd_tmp[3]
                 value = cmd_tmp[-1] if len(cmd_tmp) == 5 else \
-                    exec("print('OperationInterupt:cannot get the new value.\n');continue;") \
+                    exec("print('OperationInterupt:cannot get the new value.\n')") \
                     if key != 'password' else None
+                if value is None:
+                    continue
                 usermgr.set(key, target, value)
             else:
                 if cmd_tmp[1] not in ['add', 'remove', 'list', 'info', 'set']:

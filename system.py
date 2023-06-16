@@ -145,7 +145,9 @@ while True:
             break
     else:
         logger.error("UserNotExistedError:no such user named '{user}' was found in login database.", user=username)
-        print(colored(f"UserNotExistedError:no such user named '{username}' was found in login database.\n", color="red"))
+        print(colored(f"UserNotExistedError:no such user named '{username}' was found in login database.\n",
+                      color="red"
+                      ))
 
 logger.info("System Terminal start running.")
 terminal(USERNAME=username, MODE='$' if username in mode_info['user'] else '#', Bin_DIR=Bin_DIR)

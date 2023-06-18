@@ -1,4 +1,3 @@
-import math
 from cal_basic import Basic
 from config import SYSTEM_DIGMAX
 
@@ -16,7 +15,17 @@ class Advanced:
         return resulttext
 
     @staticmethod
-    def ReturnError(errors):
+    def ReturnError(self, errors):
         print('error')
         return errors
 
+    @staticmethod
+    def Solve_equation(expressions: list):
+        if expressions.count(',') != 1:
+            print("ValueError:Solve_equation() takes 1 positional expression but "
+                  f"{expressions.coubol90nt(',')+1 if '' not in expressions else ...}"
+                  " were given."
+                  )
+            return 256
+        expression1 = expressions[0]
+        expression2 = expressions[1]

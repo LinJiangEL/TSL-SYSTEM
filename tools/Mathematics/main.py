@@ -1,3 +1,4 @@
+import re
 import string
 
 
@@ -66,7 +67,14 @@ def run():
             if cmd == '@exit':
                 print()
                 break
-            maincmd = ...
+            maincmd = cmd.split('(')[0]
+            expressions = '('.join([e.strip() for e in cmd.split('(')[1:]])[:-1].split(',')
+            try:
+                advanced
+            except:
+                pass
+
+
     else:
         print(f"NameError:method '{method}' is not defined.")
         _ok = "False"

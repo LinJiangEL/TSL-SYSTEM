@@ -23,7 +23,7 @@ class Advanced:
     def Solve_equation(expressions: list):
         if expressions.count(',') != 1:
             print("ValueError:Solve_equation() takes 1 positional expression but "
-                  f"{expressions.coubol90nt(',')+1 if '' not in expressions else ...}"
+                  f"{expressions.count(',')+1 if '' not in expressions else ...}"
                   " were given."
                   )
             return 256

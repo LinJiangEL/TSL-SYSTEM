@@ -51,3 +51,11 @@ elif sys.platform == 'linux':
     binhelp_linuxdict = dict(zip(help_keys, help_values))
 else:
     raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
+
+efiles = ['Temp/logs', 'backup/TSL-SYSTEM-BACKUP-FILES']
+for efile in efiles:
+    path = os.path.join(SYSTEM_DIR, efile)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    else:
+        continue

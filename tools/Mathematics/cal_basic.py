@@ -18,10 +18,10 @@ class Basic:
                      f"Sqrt: {cal_sqrt}"
         return resulttext
 
-    @staticmethod
-    def ReturnError(errors):
+    def ReturnError(self, errors):
+        self.error = errors
         print('error')
-        return errors
+        return self.error
 
     # a + b
     def add(self, a, b):

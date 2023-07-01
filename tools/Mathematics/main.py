@@ -70,10 +70,12 @@ def run():
             maincmd = cmd.split('(')[0]
             expressions = '('.join([e.strip() for e in cmd.split('(')[1:]])[:-1].split(',')
             try:
-                advanced
-            except:
-                pass
-
+                resultdata = {}
+                exec(f"result = advanced.{maincmd}({expressions})", globals(), resultdata)
+                result = resultdata["result"]
+                print(result)
+            except NameError:
+                print("error")
 
     else:
         print(f"NameError:method '{method}' is not defined.")

@@ -1,5 +1,5 @@
 import os
 
-target = os.popen('whoami').read().strip().split('\\')[-1]
+target = os.getlogin()
 
-os.system('msg /server:localhost {target}')
+os.system(f'msg /server:localhost "{target}"')

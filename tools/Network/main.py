@@ -1,8 +1,9 @@
 import os
 import sys
 import time
+from config import SYSTEM_PRINTER
 
-available_tools = []
+available_tools = ["SendMessage"]
 
 
 def load(name):
@@ -38,8 +39,8 @@ def run():
             print('Stopping Network Tool ...')
             time.sleep(3)
             if sys.platform == 'win32':
-                os.system('cls && echo. && cat motd && echo.')
+                os.system(f'cls && echo. && {SYSTEM_PRINTER} motd && echo.')
             elif sys.platform == 'linux':
-                os.system('clear && echo && cat motd && echo')
+                os.system(f'clear && echo && {SYSTEM_PRINTER} motd && echo')
             break
         load(module_choice)

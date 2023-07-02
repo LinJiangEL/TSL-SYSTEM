@@ -20,7 +20,7 @@ class Basic:
 
     def ReturnError(self, errors):
         self.error = errors
-        print('error')
+        print(errors)
         return self.error
 
     # a + b
@@ -61,30 +61,42 @@ class Basic:
 
     # [y]√x
     def sqrt(self, x, y=2, list_1=None, list_2=None):
-        if list_1 is None:
-            list_1 = []
-        if list_2 is None:
-            list_2 = ()
+        if '.' in x:
+            if str(x).count('.') > 1:
+                self.ReturnError("Invaild digtal num, many '.' was found.")
+            else:
+                x = Fraction(x * pow(10, len(str(x).split('.')[1].strip())), 10)
+                x_l = str(x).split('/')
+                numerator = x_l[0]
+                denominator = x_l[1]
+                n1 = self.sqrt(numerator, y)
+                n2 = self.sqrt(denominator, y)
 
-        digit_result = math.pow(x, 1 / y)
+        else:
+            if list_1 is None:
+                list_1 = []
+            if list_2 is None:
+                list_2 = ()
 
-        while True:
-            n = 1000
-            while n != 0:
-                b = x / pow(n, y)
-                list_1.append(b)
-                for i in list_1:
-                    list_2 = ('{:g}'.format(i))
-                if Decimal(list_2) == Decimal(list_2).to_integral():
-                    if int(list_2) == 1:
-                        return self.resultformat(cal_result=digit_result, cal_sqrt=n)
+            digit_result = math.pow(x, 1 / y)
+
+            while True:
+                n = 1000
+                while n != 0:
+                    b = x / pow(n, y)
+                    list_1.append(b)
+                    for i in list_1:
+                        list_2 = ('{:g}'.format(i))
+                    if Decimal(list_2) == Decimal(list_2).to_integral():
+                        if int(list_2) == 1:
+                            return self.resultformat(cal_result=digit_result, cal_sqrt=n)
+                        else:
+                            return self.resultformat(
+                                cal_result=digit_result,
+                                cal_sqrt=str(y) + '_' + str(n) + chr(8730) + list_2 if n > 1 and y > 2
+                                else str(y) + '_' + chr(8730) + list_2 if n <= 1 and y > 2
+                                else str(n) + chr(8730) + list_2 if n > 1 and y == 2
+                                else x if y == 1 else chr(8730) + list_2)
                     else:
-                        return self.resultformat(
-                            cal_result=digit_result,
-                            cal_sqrt=str(y) + '_' + str(n) + chr(8730) + list_2 if n > 1 and y > 2
-                            else str(y) + '_' + chr(8730) + list_2 if n <= 1 and y > 2
-                            else str(n) + chr(8730) + list_2 if n > 1 and y == 2
-                            else x if y == 1 else chr(8730) + list_2)
-                else:
-                    n = n - 1
-                    del list_1[0]
+                        n = n - 1
+                        del list_1[0]

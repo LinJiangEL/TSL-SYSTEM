@@ -8,11 +8,13 @@ def run():
     print('-' * 37)
 
     method = input('Please input a method which you want to use [basic/advanced]: ')
+    if method.strip() == '':
+        print()
+        return 0
     try:
         exec(f"from tools.Mathematics.cal_{method.lower()} import {method[0].upper() + method[1:].lower()}")
         _ok = "True"
     except ModuleNotFoundError:
-        print(f"NameError:method '{method}' is not defined.")
         _ok = "False"
 
     if _ok and method == 'basic':
@@ -45,15 +47,21 @@ def run():
                     argvs = numab[0] + ',' + numab[1] if maincmd in basic.two and len(num_argvs.split(',')) == 2 \
                         else numab[0] if maincmd in basic.one and ',' not in num_argvs \
                         else nums if maincmd in basic.needlist \
-                        else exec('error')
+                        else None
                     exectext = maincmd + f'({argvs})' if 'NoneType' not in str(type(argvs)) \
                         else f"ReturnError('{error}')"
                     try:
                         result_dict = {}
                         exec(f"from tools.Mathematics.cal_basic import Basic;"
                              f"basic = Basic();"
-                             f"result = basic.{exectext};", globals(), result_dict)
-                        print(result_dict["result"])
+                             f"result = basic.{exectext};",
+                             globals(),
+                             result_dict
+                             )
+                        if "Error" not in result_dict["result"]:
+                            print(result_dict["result"][0])
+                        else:
+                            print(result_dict["result"])
                     except SyntaxError:
                         print(f"SyntaxError:symbol '{maincmd}' was incorrectly used in called.\n")
             finally:
@@ -76,7 +84,5 @@ def run():
                 print(result)
             except NameError:
                 print("error")
-
     else:
         print(f"NameError:method '{method}' is not defined.")
-        _ok = "False"

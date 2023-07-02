@@ -16,11 +16,11 @@ class Basic:
                      f"Digits ({self.digmax}): {round(cal_result, self.digmax)}\n" + \
                      f"Fraction: {cal_fraction}\n" + \
                      f"Sqrt: {cal_sqrt}"
-        return resulttext
+        resultlist = [resulttext, cal_result, cal_fraction, cal_sqrt]
+        return resultlist
 
     def ReturnError(self, errors):
         self.error = errors
-        print(errors)
         return self.error
 
     # a + b
@@ -37,7 +37,20 @@ class Basic:
 
     # a / b
     def div(self, a, b):
-        return self.resultformat(cal_result=a / b, cal_fraction=Fraction(a, b))
+        if b == 0:
+            return self.ReturnError("ZeroDivisionError: division by zero.")
+        else:
+            if '.' in str(a):
+                if str(a).count('.') > 1:
+                    self.ReturnError("Invaild digtal num, many '.' was found.")
+                else:
+                    a = int(a * pow(10, len(str(a).split('.')[1])))
+            if '.' in str(b):
+                if str(b).count('.') > 1:
+                    self.ReturnError("Invaild digtal num, many '.' was found.")
+                else:
+                    b = int(b * pow(10, len(str(b).split('.')[1])))
+            return self.resultformat(cal_result=a / b, cal_fraction=Fraction(a, b))
 
     # x ** a
     def pow(self, x, a):
@@ -45,7 +58,10 @@ class Basic:
 
     # a // b
     def fdiv(self, a, b):
-        return self.resultformat(cal_result=a // b)
+        if b == 0:
+            return self.ReturnError("ZeroDivisionError: integer division or modulo by zero.")
+        else:
+            return self.resultformat(cal_result=a // b)
 
     # a % b
     def mod(self, a, b):
@@ -60,43 +76,51 @@ class Basic:
         return self.resultformat(cal_result=math.pow(x, 2))
 
     # [y]√x
-    def sqrt(self, x, y=2, list_1=None, list_2=None):
-        if '.' in x:
-            if str(x).count('.') > 1:
-                self.ReturnError("Invaild digtal num, many '.' was found.")
-            else:
-                x = Fraction(x * pow(10, len(str(x).split('.')[1].strip())), 10)
-                x_l = str(x).split('/')
-                numerator = x_l[0]
-                denominator = x_l[1]
-                n1 = self.sqrt(numerator, y)
-                n2 = self.sqrt(denominator, y)
-
+    def sqrt(self, x, y=2, list_1=None, list_2=None) -> list:
+        if len(str(x)) > 10:
+            x = int(str(x)[:10])
+            print(x)
+            print("SpillOverError:invaild sqrt parameter 'x' whose length must be inside '10', "
+                  "overflow bits will be rounded."
+                  )
+        if y >= 161:
+            y = 2
+            print("ValueError:invaild sqrt parameter 'y', default set its value to '2'.")
+        elif y == 0:
+            y = 2
+            print("ZeroDivisionError: division by zero, default set parameter 'y' value to '2'.")
         else:
-            if list_1 is None:
-                list_1 = []
-            if list_2 is None:
-                list_2 = ()
+            pass
 
-            digit_result = math.pow(x, 1 / y)
+        if list_1 is None:
+            list_1 = []
+        if list_2 is None:
+            list_2 = ()
 
-            while True:
-                n = 1000
-                while n != 0:
-                    b = x / pow(n, y)
-                    list_1.append(b)
-                    for i in list_1:
-                        list_2 = ('{:g}'.format(i))
-                    if Decimal(list_2) == Decimal(list_2).to_integral():
-                        if int(list_2) == 1:
-                            return self.resultformat(cal_result=digit_result, cal_sqrt=n)
-                        else:
-                            return self.resultformat(
-                                cal_result=digit_result,
-                                cal_sqrt=str(y) + '_' + str(n) + chr(8730) + list_2 if n > 1 and y > 2
-                                else str(y) + '_' + chr(8730) + list_2 if n <= 1 and y > 2
-                                else str(n) + chr(8730) + list_2 if n > 1 and y == 2
-                                else x if y == 1 else chr(8730) + list_2)
+        digit_result = math.pow(x, 1 / y)
+
+        while True:
+            n = 100
+            while n != 0:
+                if x == 0:
+                    break
+                b = x / pow(n, y)
+                list_1.append(b)
+                for i in list_1:
+                    list_2 = ('{:g}'.format(i))
+                if Decimal(list_2) == Decimal(list_2).to_integral():
+                    if int(list_2) == 1:
+                        return self.resultformat(cal_result=digit_result, cal_sqrt=n)
                     else:
-                        n = n - 1
-                        del list_1[0]
+                        return self.resultformat(
+                            cal_result=digit_result,
+                            cal_sqrt=str(y) + '_' + str(n) + chr(8730) + list_2 if n > 1 and y > 2
+                            else str(y) + '_' + chr(8730) + list_2 if n <= 1 and y > 2
+                            else str(n) + chr(8730) + list_2 if n > 1 and y == 2
+                            else x if y == 1 else chr(8730) + list_2
+                        )
+                else:
+                    n = n - 1
+                    del list_1[0]
+
+            return self.resultformat(cal_result=digit_result, cal_sqrt=0)

@@ -218,6 +218,8 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 print('\nSystem Usage Help Page\n')
                 print('System built-in commands:')
                 Help(helpdict)
+            elif cmd_tmp[0] == 'logger':
+                pass
             elif cmd_tmp[0] == "exit" or cmd_tmp[0] == 'logout':
                 print('System shutting ... ', end='', flush=True)
                 time.sleep(3)

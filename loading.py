@@ -18,4 +18,3 @@ def start(tool):
     except SystemExit:
         print(f"Stopping {tool} service.\n")
         time.sleep(1)
-

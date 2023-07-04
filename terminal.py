@@ -224,11 +224,11 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 print('System shutting ... ', end='', flush=True)
                 time.sleep(3)
                 usermgr.databasefile.close()
-                logger.info("UserManager hostdown.")
                 tempmgr.WritePwdUser()
                 tempmgr.PwdUserTmpFile.close()
-                logger.info("TempManager hostdown.")
                 print('done.\n')
+                logger.info("UserManager hostdown.")
+                logger.info("TempManager hostdown.")
                 logger.info("System Terminal hostdown.")
                 break
             elif cmd_tmp[0] == 'clear' and len(cmd_tmp) == 1:

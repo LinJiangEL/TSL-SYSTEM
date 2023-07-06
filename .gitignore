@@ -7,3 +7,4 @@ Temp/logs/*.log
 Temp/*.bat
 Temp/*.sh
 Temp/*.txt
+tools/StudentsInfoDatabase/Datas.xls

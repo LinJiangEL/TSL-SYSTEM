@@ -48,129 +48,133 @@ def make_birth_zodiac(info_index, table):
                       )
 
 
-helpTable = PrettyTable(['Command', ])
+def run():
+    global database_temp, helpTable
+    helpTable = PrettyTable(['Command', ])
 
-print('-' * 32)
-print('|' + ' ' * 5 + 'StudentsInfoDatabase' + ' ' * 5 + '|')
-print('-' * 32)
-time.sleep(1)
+    print('-' * 32)
+    print('|' + ' ' * 5 + 'StudentsInfoDatabase' + ' ' * 5 + '|')
+    print('-' * 32)
+    time.sleep(1)
 
-database_file = xlrd.open_workbook(f'{Main_DIR}/Datas.xls')
-print('\nAvailable Database as follows:', database_file.sheet_names())
-database_sheet = input('\nPlease choose one from the Available list: ')
-if database_sheet in database_file.sheet_names():
-    database_temp = database_file.sheet_by_name(database_sheet)
-else:
-    print('DatabaseNotFoundError:cannot found this database from the Available list! Default use the first one.')
-    database_temp = database_file.sheet_by_index(0)
-
-print('\nStarting database service ... ', end='')
-
-database = PrettyTable(['班级', '学号', '姓名', '性别', '是否住宿', '语种', '组合', '艺体生', '身份证号', '智学网号'])
-database.add_column('出生日期', [])
-database.add_column('星座', [])
-
-for num in range(2, database_temp.nrows):
-    make_birth_zodiac(num, database)
-
-time.sleep(3)
-print('done.\n')
-
-while True:
-    key_word = input('Please input some keywords about the result [exit]：')
-    if key_word == 'exit':
-        if __name__ == '__main__':
-            print('Stopping database ... ', end='')
-            time.sleep(3)
-            print('done.')
-            break
-        else:
-            print('Stopping StudentsInfoDatabase Tool ...')
-            time.sleep(3)
-            if sys.platform == 'win32':
-                os.system('cls && echo. && cat motd && echo.')
-            elif sys.platform == 'linux':
-                os.system('clear && echo && cat motd && echo')
-            break
-    elif key_word == 'all':
-        print(database)
-    elif key_word.startswith('class') and len(key_word.strip()) > 6:
-        classindex = int(key_word[6:].strip())
-        classTable = PrettyTable(['班级', '学号', '姓名', '性别', '是否住宿', '语种', '组合', '艺体生', '身份证号', '智学网号'])
-
-        if classindex in [num for num in range(1, 18)]:
-            classTable.add_column('出生日期', [])
-            classTable.add_column('星座', [])
-            for i in range(2, database_temp.nrows):
-                if int(database_temp.cell_value(rowx=i, colx=0)) == classindex:
-                    make_birth_zodiac(i, classTable)
-                elif int(database_temp.cell_value(rowx=i, colx=0)) > classindex:
-                    break
-                else:
-                    continue
-
-            print(classTable)
-        else:
-            print('IndexError:class index out of database!')
-    elif key_word.startswith('name') and len(key_word.strip()) > 5:
-        name = key_word.split(' ')[1].strip("' '").strip('"')
-        names = database_temp.col_values(2)
-        if name and name in database_temp.col_values(2):
-            print(database.get_string(start=names.index(name) - 2, end=names.index(name) - 1))
-        else:
-            print(f'StudentNotFoundError:cannot found the student named {name}! '
-                  f'Had he or she registered in the school database?'
-                  )
-    elif key_word.startswith('zodiac') and len(key_word.strip()) > 5:
-        zodiacTable = PrettyTable(['班级', '学号', '姓名', '性别', '出生日期', '星座'])
-        command = key_word.split(' ')
-        if len(command) == 2:
-            for index in range(2, database_temp.nrows):
-                z = database_temp.cell_value(rowx=index, colx=8)
-                if z != 'N/A':
-                    zodiac = Zodiac(z[10:12].strip('0'), z[12:14].strip('0'))
-                    if zodiac == key_word.split(' ')[1].strip(' " ').strip("'"):
-                        zodiacTable.add_row([int(float(database_temp.cell_value(rowx=index, colx=0))),
-                                             int(float(database_temp.cell_value(rowx=index, colx=1))),
-                                             database_temp.cell_value(rowx=index, colx=2),
-                                             database_temp.cell_value(rowx=index, colx=3),
-                                             z[6:14],
-                                             Zodiac(z[10:12].strip('0'), z[12:14].strip('0'))
-                                             ])
-                    else:
-                        continue
-                else:
-                    continue
-            print(zodiacTable)
-        elif 3 < len(command) < 5 and command[2].strip(' " ').strip("'") == '--class':
-            class_num = int(command[3].strip(' " ').strip("'"))
-            for index in range(2, database_temp.nrows):
-                z = database_temp.cell_value(rowx=index, colx=8)
-                if z != 'N/A':
-                    zodiac = Zodiac(z[10:12].strip('0'), z[12:14].strip('0'))
-                    if zodiac == key_word.split(' ')[1].strip(' " ').strip("'") \
-                            and int(database_temp.cell_value(rowx=index, colx=0)) == class_num:
-                        zodiacTable.add_row([int(float(database_temp.cell_value(rowx=index, colx=0))),
-                                             int(float(database_temp.cell_value(rowx=index, colx=1))),
-                                             database_temp.cell_value(rowx=index, colx=2),
-                                             database_temp.cell_value(rowx=index, colx=3),
-                                             z[6:14],
-                                             Zodiac(z[10:12].strip('0'), z[12:14].strip('0'))
-                                             ])
-                    else:
-                        continue
-                else:
-                    continue
-            print(zodiacTable)
-        else:
-            print('CommandError:incorrect command usage! [Wrong : Assignment]')
-    elif key_word.strip() in ['name', 'class', 'zodiac']:
-        print('CommandError:incorrect command usage! [Wrong : Usage]')
+    database_file = xlrd.open_workbook(f'{Main_DIR}/Datas.xls')
+    print('\nAvailable Database as follows:', database_file.sheet_names())
+    database_sheet = input('\nPlease choose one from the Available list: ')
+    if database_sheet in database_file.sheet_names():
+        database_temp = database_file.sheet_by_name(database_sheet)
     else:
-        print(f'KeyError:invaild key "{key_word}"! [Wrong : Undefined Command]')
-    print('')
+        print('DatabaseNotFoundError:cannot found this database from the Available list! Default use the first one.')
+        database_temp = database_file.sheet_by_index(0)
+
+    print('\nStarting database service ... ', end='')
+
+    database = PrettyTable(['班级', '学号', '姓名', '性别', '是否住宿', '语种', '组合', '艺体生', '身份证号', '智学网号'])
+    database.add_column('出生日期', [])
+    database.add_column('星座', [])
+
+    for num in range(2, database_temp.nrows):
+        make_birth_zodiac(num, database)
+
+    time.sleep(3)
+    print('done.\n')
+
+    while True:
+        key_word = input('Please input some keywords about the result [exit]：')
+        if key_word == 'exit':
+            if __name__ == '__main__':
+                print('Stopping database ... ', end='')
+                time.sleep(3)
+                print('done.')
+                break
+            else:
+                print('Stopping StudentsInfoDatabase Tool ...')
+                time.sleep(3)
+                if sys.platform == 'win32':
+                    os.system('cls && echo. && cat motd && echo.')
+                elif sys.platform == 'linux':
+                    os.system('clear && echo && cat motd && echo')
+                break
+        elif key_word == 'all':
+            print(database)
+        elif key_word.startswith('class') and len(key_word.strip()) > 6:
+            classindex = int(key_word[6:].strip())
+            classTable = PrettyTable(['班级', '学号', '姓名', '性别', '是否住宿', '语种', '组合', '艺体生', '身份证号', '智学网号'])
+
+            if classindex in [num for num in range(1, 18)]:
+                classTable.add_column('出生日期', [])
+                classTable.add_column('星座', [])
+                for i in range(2, database_temp.nrows):
+                    if int(database_temp.cell_value(rowx=i, colx=0)) == classindex:
+                        make_birth_zodiac(i, classTable)
+                    elif int(database_temp.cell_value(rowx=i, colx=0)) > classindex:
+                        break
+                    else:
+                        continue
+
+                print(classTable)
+            else:
+                print('IndexError:class index out of database!')
+        elif key_word.startswith('name') and len(key_word.strip()) > 5:
+            name = key_word.split(' ')[1].strip("' '").strip('"')
+            names = database_temp.col_values(2)
+            if name and name in database_temp.col_values(2):
+                print(database.get_string(start=names.index(name) - 2, end=names.index(name) - 1))
+            else:
+                print(f'StudentNotFoundError:cannot found the student named {name}! '
+                      f'Had he or she registered in the school database?'
+                      )
+        elif key_word.startswith('zodiac') and len(key_word.strip()) > 5:
+            zodiacTable = PrettyTable(['班级', '学号', '姓名', '性别', '出生日期', '星座'])
+            command = key_word.split(' ')
+            if len(command) == 2:
+                for index in range(2, database_temp.nrows):
+                    z = database_temp.cell_value(rowx=index, colx=8)
+                    if z != 'N/A':
+                        zodiac = Zodiac(z[10:12].strip('0'), z[12:14].strip('0'))
+                        if zodiac == key_word.split(' ')[1].strip(' " ').strip("'"):
+                            zodiacTable.add_row([int(float(database_temp.cell_value(rowx=index, colx=0))),
+                                                 int(float(database_temp.cell_value(rowx=index, colx=1))),
+                                                 database_temp.cell_value(rowx=index, colx=2),
+                                                 database_temp.cell_value(rowx=index, colx=3),
+                                                 z[6:14],
+                                                 Zodiac(z[10:12].strip('0'), z[12:14].strip('0'))
+                                                 ])
+                        else:
+                            continue
+                    else:
+                        continue
+                print(zodiacTable)
+            elif 3 < len(command) < 5 and command[2].strip(' " ').strip("'") == '--class':
+                class_num = int(command[3].strip(' " ').strip("'"))
+                for index in range(2, database_temp.nrows):
+                    z = database_temp.cell_value(rowx=index, colx=8)
+                    if z != 'N/A':
+                        zodiac = Zodiac(z[10:12].strip('0'), z[12:14].strip('0'))
+                        if zodiac == key_word.split(' ')[1].strip(' " ').strip("'") \
+                                and int(database_temp.cell_value(rowx=index, colx=0)) == class_num:
+                            zodiacTable.add_row([int(float(database_temp.cell_value(rowx=index, colx=0))),
+                                                 int(float(database_temp.cell_value(rowx=index, colx=1))),
+                                                 database_temp.cell_value(rowx=index, colx=2),
+                                                 database_temp.cell_value(rowx=index, colx=3),
+                                                 z[6:14],
+                                                 Zodiac(z[10:12].strip('0'), z[12:14].strip('0'))
+                                                 ])
+                        else:
+                            continue
+                    else:
+                        continue
+                print(zodiacTable)
+            else:
+                print('CommandError:incorrect command usage! [Wrong : Assignment]')
+        elif key_word.strip() in ['name', 'class', 'zodiac']:
+            print('CommandError:incorrect command usage! [Wrong : Usage]')
+        else:
+            print(f'KeyError:invaild key "{key_word}"! [Wrong : Undefined Command]')
+        print('')
+
 
 if __name__ == '__main__':
+    run()
     input('\nPress Enter to exit.')
 
 print('')

@@ -1,6 +1,7 @@
 .ssh/
 .idea/
 __pycache__/
+backup/TSL-SYSTEM-BACKUP-FILES/*.tar.gz
 Temp/*.gz
 Temp/*.zip
 Temp/logs/*.log

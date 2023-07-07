@@ -3,6 +3,7 @@ import sys
 import time
 import xlrd
 from prettytable import PrettyTable
+from config import SYSTEM_PRINTER
 
 """
 Help:
@@ -55,7 +56,7 @@ def run():
     print('-' * 32)
     print('|' + ' ' * 5 + 'StudentsInfoDatabase' + ' ' * 5 + '|')
     print('-' * 32)
-    time.sleep(1)
+    time.sleep(0.5)
 
     database_file = xlrd.open_workbook(f'{Main_DIR}/Datas.xls')
     print('\nAvailable Database as follows:', database_file.sheet_names())
@@ -88,11 +89,11 @@ def run():
                 break
             else:
                 print('Stopping StudentsInfoDatabase Tool ...')
-                time.sleep(3)
+                time.sleep(1)
                 if sys.platform == 'win32':
-                    os.system('cls && echo. && cat motd && echo.')
+                    os.system(f'cls && echo. && {SYSTEM_PRINTER} motd && echo.')
                 elif sys.platform == 'linux':
-                    os.system('clear && echo && cat motd && echo')
+                    os.system(f'clear && echo && {SYSTEM_PRINTER} motd && echo')
                 break
         elif key_word == 'all':
             print(database)

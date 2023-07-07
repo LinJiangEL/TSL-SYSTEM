@@ -4,6 +4,7 @@ wget
 termcolor
 loguru
 colorama
+file-read-backwards
 numpy
 xlrd
 xlwt

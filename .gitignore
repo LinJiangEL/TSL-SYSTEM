@@ -8,4 +8,5 @@ Temp/logs/*.log
 Temp/*.bat
 Temp/*.sh
 Temp/*.txt
+Temp/test_*.py
 tools/StudentsInfoDatabase/Datas.xls

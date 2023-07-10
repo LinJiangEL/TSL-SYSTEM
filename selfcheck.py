@@ -3,9 +3,10 @@ import sys
 import time
 import platform
 import wget
+
 if sys.platform == 'win32':
-	import win32api
-	import win32con
+    import win32api
+    import win32con
 
 from setuptools.errors import PlatformError
 
@@ -34,16 +35,20 @@ def selfcheck_system(systemfilelist):
         print('yes')
     else:
         print('no')
-        print('PythonVersionNotSupport:TSL-SYSTEM required Python >= 3.9.2, if you want to use it, please update your Python!')
+        print('PythonVersionNotSupport:TSL-SYSTEM required Python >= 3.9.2, '
+              'if you want to use it, please update your Python!'
+              )
         if __name__ == '__main__':
-            ask_updatePython = win32api.MessageBox(0, "Do you want to update your Python Environment?", "Update Python", win32con.MB_YESNO)
+            ask_updatePython = win32api.MessageBox(0, "Do you want to update your Python Environment?", "Update Python",
+                                                   win32con.MB_YESNO)
             if ask_updatePython == 6:  # 6 -> yes
                 print('Prefer to installing Python-3.9.7')
                 if sys.platform == 'linux':
                     wget.download('https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz')
                     os.system('tar -xzvf Python-3.9.7.tgz')
                     install_to_path = input('Please input the path to install Python-3.9.7 [default: /usr/local]: ')
-                    os.system(f'cd Python-3.9.7 && ./configure --prefix={install_to_path if install_to_path != "" else "/usr/local"} && make && make install')
+                    os.system(
+                        f'cd Python-3.9.7 && ./configure --prefix={install_to_path if install_to_path != "" else "/usr/local"} && make && make install')
                 elif sys.platform == 'win32':
                     bit = int(platform.architecture()[0][:2])
                     if bit == 64:
@@ -60,8 +65,10 @@ def selfcheck_system(systemfilelist):
                 python_error_version = f'{python_version[0]}.{python_version[1]}.{python_version[2]}'
                 raise RuntimeError(f'cannot load TSL-SYSTEM with Python-{python_error_version}!')
 
-def selfcheck_module(name):
+
+def selfcheck_module(name: str):
     print('check %s ... ' % name.strip(), end='', flush=True)
+    name = name.replace('-', '_')
     time.sleep(0.1)
     try:
         exec(f"import {name}; del {name};")

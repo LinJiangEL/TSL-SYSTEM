@@ -4,7 +4,7 @@ import hashlib
 from ast import literal_eval
 from loguru import logger
 from prettytable import PrettyTable
-from config import SYSTEM_ID, SYSTEM_DIR, SYSTEM_LOGSTDOUT, SYSTEM_LOGPATH, SYSTEM_LOGFORMAT
+from config import SYSTEM_ID, SYSTEM_DIR, SYSTEM_LOGSTDOUT, SYSTEM_LOGPATH, SYSTEM_LOGFORMAT, SuperUser
 from tools.Passwd.process import encrypt
 
 if not SYSTEM_LOGSTDOUT:
@@ -49,31 +49,38 @@ class UserManager:
         self.users = [user.split('@')[0] for user in self.userinfos]
         self.UserTable = PrettyTable(['User', 'Mode'])
 
-    def add(self, username, mode='user', password=False):
+    def add(self, username: str, mode='user', password=False):
         if username not in self.users:
-            if not password:
-                password_processor = hashlib.md5()
-                password = getpass.getpass(f"Please set a password to new user named '{username}': ")
-                password = password.encode(encoding='utf-8')
-                password_processor.update(password)
-                password = password_processor.hexdigest()
+            if username.isidentifier() and len(username) >= 4:
+                if not password:
+                    password_processor = hashlib.md5()
+                    password = getpass.getpass(f"Please set a password to new user named '{username}': ")
+                    password = password.encode(encoding='utf-8')
+                    password_processor.update(password)
+                    password = password_processor.hexdigest()
 
-            new_info = f'{username}@{mode}:{encrypt(password.strip(), 3, SYSTEM_ID[:6])}'
-            self.userinfos.append(new_info)
-            self.users.append(username)
-            with open(self.database, 'a+') as addoptfile:
-                addoptfile.write(new_info)
-                addoptfile.write('\n')
-            print(f"Successfully add a user named '{username}' to login database.\n")
-            logger.info(f"'{self.PwdUser}' added a new user to Login Database successfully. "
-                        f"[USERINFO:('{username}', '{mode}')]"
-                        )
+                new_info = f'{username}@{mode}:{encrypt(password.strip(), 3, SYSTEM_ID[:6])}'
+                self.userinfos.append(new_info)
+                self.users.append(username)
+                with open(self.database, 'a+') as addoptfile:
+                    addoptfile.write(new_info)
+                    addoptfile.write('\n')
+                print(f"Successfully add a user named '{username}' to login database.\n")
+                logger.info(f"'{self.PwdUser}' added a new user to Login Database successfully. "
+                            f"[USERINFO:('{username}', '{mode}')]"
+                            )
+            else:
+                print("ValueError:invalid username format.")
+                logger.warning(f"'{self.PwdUser}' tried to add a new user to Login Database "
+                               f"but this operation was blocked because the username is invalid. "
+                               f"[USERINFO:('{username}', '{mode}')]"
+                               )
         else:
             print(f"UserExistsError:user '{username}' exists in login database!\n")
-            logger.info(f"'{self.PwdUser}' tried to add a user, "
-                        "but this operation has been blocked because the user already existed in Login Database. "
-                        f"[USERINFO:('{username}', '{mode}')]"
-                        )
+            logger.warning(f"'{self.PwdUser}' tried to add a user, "
+                           "but this operation has been blocked because the user already existed in Login Database. "
+                           f"[USERINFO:('{username}', '{mode}')]"
+                           )
             return 256
 
     def remove(self, username):
@@ -88,17 +95,17 @@ class UserManager:
                             )
             else:
                 print('OperationForbidden:cannot remove user from I/O, user has been using.\n')
-                logger.info(f"'{self.PwdUser}' tried to remove a user from Login Database,"
-                            "but this operation has been blocked because the user was in used. "
-                            f"[USERINFO:('{username}')]"
-                            )
+                logger.warning(f"'{self.PwdUser}' tried to remove a user from Login Database,"
+                               "but this operation has been blocked because the user was in used. "
+                               f"[USERINFO:('{username}')]"
+                               )
                 return 256
         else:
             print(f"UserNotExistsError:cannot found user named '{username}' in database.\n")
-            logger.info(f"'{self.PwdUser}' tried to remove a user from Login Database,"
-                        "but this operation has been blocked because the user does not exist in Login Database. "
-                        f"[USERINFO:('{username}')]"
-                        )
+            logger.warning(f"'{self.PwdUser}' tried to remove a user from Login Database,"
+                           "but this operation has been blocked because the user does not exist in Login Database. "
+                           f"[USERINFO:('{username}')]"
+                           )
             return 256
 
     def list(self, mode):
@@ -117,10 +124,10 @@ class UserManager:
                         f"[GETINFO:('All {mode} Users', '{mode}')]"
                         )
         else:
-            logger.info(f"'{self.PwdUser}' called the Login Database and tried to get the users' info,"
-                        f"but this operation was blocked because the specified mode is not defined. "
-                        f"[GETINFO:(None, None)]"
-                        )
+            logger.warning(f"'{self.PwdUser}' called the Login Database and tried to get the users' info,"
+                           f"but this operation was blocked because the specified mode is not defined. "
+                           f"[GETINFO:(None, None)]"
+                           )
             print(f"ValueError:mode '{mode}' is not defined in ModeTuple.\n")
             return 256
 
@@ -128,77 +135,86 @@ class UserManager:
         del self.UserTable
         self.UserTable = PrettyTable(['User', 'Mode'])
 
-    def set(self, key, target=None, value=None):
-        index = self.users.index(target) if target in self.users else None
-        if index is None:
-            print(f"UserNotExistsError:user '{target}' is not exists in database.\n")
-            return 256
-        infotmp = self.userinfos[index].split(':')
+    def set(self, key, target=None, value: str = None):
+        if target not in SuperUser:
+            index = self.users.index(target) if target in self.users else None
+            if index is None:
+                print(f"UserNotExistsError:user '{target}' is not exists in database.\n")
+                return 256
+            infotmp = self.userinfos[index].split(':')
 
-        if key == 'username':
-            self.userinfos[index] = f"{value}@{self.userinfos[index].split('@')[1]}"
-            self.users[index] = value
-            self.rewrite(self.userinfos)
-            logger.info(f"'{self.PwdUser}' changed the user's name successfully. "
-                        f"[USERINFO:('{target}' -> '{value}')]"
-                        )
-            print('Successfully operate the login database.\n')
-        elif key == 'mode':
-            _old_value = self.userinfos[index].split(':')[0].split('@')[1]
-            self.userinfos[index] = f"{infotmp[0].split('@')[0]}@{value}:{infotmp[1]}"
-            self.rewrite(self.userinfos)
-            logger.info(f"'{self.PwdUser}' changed the user's mode successfully. "
-                        f"[USERINFO:('{target}', '{_old_value}' -> '{value}')]"
-                        )
-            print('Successfully operate the login database.\n')
-        elif key == 'password':
-            passwd_processor = hashlib.md5()
-            original_password = getpass.getpass('Original Password:')
-            original_password = original_password.encode(encoding='utf-8')
-            passwd_processor.update(original_password)
-            original_password = passwd_processor.hexdigest()
-            oldpasswd = encrypt(original_password, 3, SYSTEM_ID[:6])
-            del original_password, passwd_processor
-            if oldpasswd.strip() == infotmp[1].strip():
-                passwd_processor = hashlib.md5()
-                if value is None:
-                    value = getpass.getpass('New Password: ')
-
-                value = value.encode(encoding='utf-8')
-                passwd_processor.update(value)
-                value = passwd_processor.hexdigest()
-
-                del passwd_processor
-                passwd_processor = hashlib.md5()
-                confirmpasswd = getpass.getpass('Confirm Password:')
-                confirmpasswd = confirmpasswd.encode(encoding='utf-8')
-                passwd_processor.update(confirmpasswd)
-                confirmpasswd = passwd_processor.hexdigest()
-                del passwd_processor
-                if confirmpasswd.strip() == value.strip():
-                    self.userinfos[index] = f"{infotmp[0]}:{encrypt(value, 3, SYSTEM_ID[:6])}\n"
+            if key == 'username':
+                if value.isidentifier() and len(value) >= 4:
+                    self.userinfos[index] = f"{value}@{self.userinfos[index].split('@')[1]}"
+                    self.users[index] = value
                     self.rewrite(self.userinfos)
-                    print('Successfully operate the login database.\n')
-                    logger.info(f"'{self.PwdUser}' changed the user's password successfully. "
-                                f"[USERINFO:('{target}', '{infotmp[1]}' -> '{encrypt(value, 3, SYSTEM_ID[:6])}')]"
+                    logger.info(f"'{self.PwdUser}' changed the user's name successfully. "
+                                f"[USERINFO:('{target}' -> '{value}')]"
                                 )
-                    del value, confirmpasswd
+                    print('Successfully operate the login database.\n')
                 else:
-                    print("ValueError:confirmed password does not match the new password.\n")
-                    return 256
+                    print("ValueError:invalid username format.")
+            elif key == 'mode':
+                _old_value = self.userinfos[index].split(':')[0].split('@')[1]
+                self.userinfos[index] = f"{infotmp[0].split('@')[0]}@{value}:{infotmp[1]}"
+                self.rewrite(self.userinfos)
+                logger.info(f"'{self.PwdUser}' changed the user's mode successfully. "
+                            f"[USERINFO:('{target}', '{_old_value}' -> '{value}')]"
+                            )
+                print('Successfully operate the login database.\n')
+            elif key == 'password':
+                if len(value) >= 6:
+                    passwd_processor = hashlib.md5()
+                    original_password = getpass.getpass('Original Password:')
+                    original_password = original_password.encode(encoding='utf-8')
+                    passwd_processor.update(original_password)
+                    original_password = passwd_processor.hexdigest()
+                    oldpasswd = encrypt(original_password, 3, SYSTEM_ID[:6])
+                    del original_password, passwd_processor
+                    if oldpasswd.strip() == infotmp[1].strip():
+                        passwd_processor = hashlib.md5()
+                        if value is None:
+                            value = getpass.getpass('New Password: ')
+
+                        value = value.encode(encoding='utf-8')
+                        passwd_processor.update(value)
+                        value = passwd_processor.hexdigest()
+
+                        del passwd_processor
+                        passwd_processor = hashlib.md5()
+                        confirmpasswd = getpass.getpass('Confirm Password:')
+                        confirmpasswd = confirmpasswd.encode(encoding='utf-8')
+                        passwd_processor.update(confirmpasswd)
+                        confirmpasswd = passwd_processor.hexdigest()
+                        del passwd_processor
+                        if confirmpasswd.strip() == value.strip():
+                            self.userinfos[index] = f"{infotmp[0]}:{encrypt(value, 3, SYSTEM_ID[:6])}\n"
+                            self.rewrite(self.userinfos)
+                            print('Successfully operate the login database.\n')
+                            logger.info(f"'{self.PwdUser}' changed the user's password successfully. "
+                                        f"[USERINFO:('{target}', '{infotmp[1]}' -> '{encrypt(value, 3, SYSTEM_ID[:6])}')]"
+                                        )
+                            del value, confirmpasswd
+                        else:
+                            print("ValueError:confirmed password does not match the new password.\n")
+                            return 256
+                    else:
+                        print("ValueError:uncorrectly original password, so UserMgr cannot "
+                              "get the permission to change the target's password.\n"
+                              )
+                        logger.warning(f"'{self.PwdUser}' tried to change the user's password, "
+                                       "but this operation has been blocked because "
+                                       "the user's original password does not match the password entered. "
+                                       f"[USERINFO:('{target}')]"
+                                       )
+                        return 256
+                else:
+                    print("ValueError:invalid password format, length must be more than or equal to 6.")
             else:
-                print("ValueError:uncorrectly original password, so UserMgr cannot "
-                      "get the permission to change the target's password.\n"
-                      )
-                logger.error(f"'{self.PwdUser}' tried to change the user's password, "
-                             "but this operation has been blocked because "
-                             "the user's original password does not match the password entered. "
-                             f"[USERINFO:('{target}')]"
-                             )
+                print(f"KeyError:key '{key}' is not defined in UserMgr.set._keys.\n")
                 return 256
         else:
-            print(f"KeyError:key '{key}' is not defined in UserMgr.set._keys.\n")
-            return 256
+            print("PermissionError:UserManager cannot set the SuperUser's attribute, permission denied.")
 
     def info(self, username):
         if username in self.users:
@@ -214,10 +230,10 @@ class UserManager:
             print(self.UserTable, '\n')
         else:
             print(f"UserNotExistedError:no such user named '{username}' was found in login database.\n")
-            logger.info(f"'{self.PwdUser}' called the Login Database and tried to got the user's info,"
-                        "but this operation failed because the user does not exist in Login Database. "
-                        f"[GETINFO:('{username}', None)]"
-                        )
+            logger.warning(f"'{self.PwdUser}' called the Login Database and tried to got the user's info,"
+                           "but this operation failed because the user does not exist in Login Database. "
+                           f"[GETINFO:('{username}', None)]"
+                           )
 
         del self.UserTable
         self.UserTable = PrettyTable(['User', 'Mode'])

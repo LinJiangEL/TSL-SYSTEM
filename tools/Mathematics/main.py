@@ -76,27 +76,20 @@ def run():
                 print()
                 break
             maincmd = cmd.split('(')[0]
-            expressions = '('.join([e.strip() for e in cmd.split('(')[1:]])[:-1].split(',')
-            # try:
-            #     resultdata = {}
-            #     exec("from tools.Mathematics.cal_advanced import Advanced;"
-            #          "advanced = Advanced();"
-            #          f"result = advanced.{maincmd}({expressions})",
-            #          globals(),
-            #          resultdata
-            #          )
-            #     result = resultdata["result"]
-            #     print(result)
-            # except AttributeError:
-            #     print(f"NameError:symbol '{maincmd}' is not defined in Advanced.")
-            resultdata = {}
-            exec("from tools.Mathematics.cal_advanced import Advanced;"
-                 "advanced = Advanced();"
-                 f"result = advanced.{maincmd}({expressions})",
-                 globals(),
-                 resultdata
-                 )
-            result = resultdata["result"]
-            print(result)
+            expressions = [exp for exp in '('.join([e.strip() for e in cmd.split('(')[1:]])[:-1].split(',')
+                           if exp != ''
+                           ]
+            try:
+                resultdata = {}
+                exec("from tools.Mathematics.cal_advanced import Advanced;"
+                     "advanced = Advanced();"
+                     f"result = advanced.{maincmd}({expressions})",
+                     globals(),
+                     resultdata
+                     )
+                result = resultdata["result"]
+                print(result)
+            except AttributeError:
+                print(f"NameError:symbol '{maincmd}' is not defined in Advanced.")
     else:
         print(f"NameError:method '{method}' is not defined.")

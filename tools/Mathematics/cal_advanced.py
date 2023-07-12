@@ -1,5 +1,5 @@
 import re
-from sympy import Eq, solve, symbols
+from sympy import Eq, solve
 from sympy.core import Symbol
 from sympy.parsing.sympy_parser import parse_expr
 from config import SYSTEM_DIGMAX
@@ -89,6 +89,3 @@ class Advanced:
 
         solutions = _solve(equations)
         return solutions
-
-
-

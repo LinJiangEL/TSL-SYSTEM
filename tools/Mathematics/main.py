@@ -1,5 +1,7 @@
-import re
 import string
+import importlib
+from pprint import pprint
+from termcolor import colored
 
 
 def run():
@@ -21,7 +23,7 @@ def run():
         from tools.Mathematics.cal_basic import Basic
         basic = Basic()
         while True:
-            cmd = input('>> ')
+            cmd = input(colored('(basic)', color='magenta') + ' >> ')
             if cmd == '@exit':
                 print()
                 break
@@ -71,25 +73,23 @@ def run():
         advanced = Advanced()
 
         while True:
-            cmd = input('>> ')
+            cmd = input(colored('(advanced)', color='magenta') + ' >> ')
             if cmd == '@exit':
                 print()
                 break
-            maincmd = cmd.split('(')[0]
-            expressions = [exp for exp in '('.join([e.strip() for e in cmd.split('(')[1:]])[:-1].split(',')
-                           if exp != ''
-                           ]
-            try:
-                resultdata = {}
-                exec("from tools.Mathematics.cal_advanced import Advanced;"
-                     "advanced = Advanced();"
-                     f"result = advanced.{maincmd}({expressions})",
-                     globals(),
-                     resultdata
-                     )
-                result = resultdata["result"]
-                print(result)
-            except AttributeError:
-                print(f"NameError:symbol '{maincmd}' is not defined in Advanced.")
+            if cmd.count('(') > cmd.count(')'):
+                print("SyntaxError: unexpected EOF while parsing.")
+            elif cmd.count('(') < cmd.count(')'):
+                print("SyntaxError: unmatched ')'.")
+            else:
+                maincmd = cmd.split('(')[0]
+                expressions = [exp for exp in '('.join([e.strip() for e in cmd.split('(')[1:]])[:-1].split(',')
+                               if exp != ''
+                               ]
+                try:
+                    result = getattr(advanced, maincmd)(expressions)
+                    pprint(result)
+                except AttributeError:
+                    print(f"NameError:symbol '{maincmd}' is not defined in Advanced.")
     else:
         print(f"NameError:method '{method}' is not defined.")

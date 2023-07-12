@@ -87,5 +87,4 @@ class Advanced:
             else:
                 return self.ReturnError("ValueError:'=' was not found in the equation, it was necessary.")
 
-        solutions = _solve(equations)
-        return solutions
+        return _solve(equations)

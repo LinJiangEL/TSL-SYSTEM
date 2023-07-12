@@ -3,14 +3,11 @@ from sympy import Eq, solve, symbols
 from sympy.core import Symbol
 from sympy.parsing.sympy_parser import parse_expr
 from config import SYSTEM_DIGMAX
-from tools.Mathematics.cal_basic import Basic
 
 
 class Advanced:
     def __init__(self):
-        basic = Basic()
         self.digmax = SYSTEM_DIGMAX
-        self._ok = True
 
     def ReturnError(self, errors):
         self.error = errors
@@ -19,7 +16,6 @@ class Advanced:
     def Solve_equation(self, expressions: list):
         ecount = ','.join(expressions).count(',')
         if ecount != 1:
-            self._ok = False
             self.ReturnError("ValueError:Solve_equation() takes 2 positional expression but "
                              f"{ecount + 1 if '' not in expressions else len(expressions) - expressions.count('')} "
                              " were given."
@@ -38,25 +34,14 @@ class Advanced:
 
         expression1 = parse_expr(re.sub(r'(\d)\s*([a-zA-Z])', r'\1*\2', expressions[0].replace("^", "**")))
         expression2 = parse_expr(re.sub(r'(\d)\s*([a-zA-Z])', r'\1*\2', expressions[1].replace("^", "**")))
-
         eq_symbol1 = list(expression1.free_symbols)
         eq_symbol2 = list(expression2.free_symbols)
 
-        # # sympy：3x^2+4x-7,0 sqrt(7)
-        # symbol = eq_symbol1.union(eq_symbol2)
-        # # print(expression1, expression2)
-        # equation = Eq(expression1, expression2)
-        # if len(symbol) > 1:
-        #     print("ValueError:invalid equation symbol, one more symbols was found, "
-        #           "the smallest letter in ASCII code is used as the character variable symbol."
-        #           )
-        # solution = solve(equation, symbol) if len(symbol) == 1 else solve(equation) if len(symbol) > 1 else 'None'
         variables = list(set(eq_symbol1 + eq_symbol2))
         equation = Eq(expression1, expression2)
         solution = []
         for variable in variables:
             solutions = solve(equation, variable, dict=True)
-
             for sol in solutions:
                 for var, expr in sol.items():
                     solution.append(f"{var} = {expr}")
@@ -77,7 +62,6 @@ class Advanced:
             _variables = _extract_variables(eqs)
             _equations = [Eq(eq[0], eq[1]) for eq in eqs]
             _solutions = solve(_equations, _variables)
-            # dict(sorted(d.items(), key=lambda x: x[0]))
 
             format_result = []
             if isinstance(_solutions, list):

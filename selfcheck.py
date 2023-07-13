@@ -1,13 +1,13 @@
 import os
 import sys
 import time
-import platform
 import wget
-
+import platform
+import subprocess
 if sys.platform == 'win32':
     import win32api
     import win32con
-
+from config import SYSTEM_DIR
 from setuptools.errors import PlatformError
 
 
@@ -31,6 +31,8 @@ def selfcheck_system(systemfilelist):
 
     print('check python3 ... ', end='', flush=True)
     python_version = sys.version_info
+    workdir = os.path.join(SYSTEM_DIR, "Temp/__prebuild__/")
+    os.chdir(workdir)
     if python_version[0] >= 3 and python_version[1] >= 7:
         print('yes')
     else:
@@ -38,32 +40,45 @@ def selfcheck_system(systemfilelist):
         print('PythonVersionNotSupport:TSL-SYSTEM required Python >= 3.9.2, '
               'if you want to use it, please update your Python!'
               )
-        if __name__ == '__main__':
-            ask_updatePython = win32api.MessageBox(0, "Do you want to update your Python Environment?", "Update Python",
-                                                   win32con.MB_YESNO)
-            if ask_updatePython == 6:  # 6 -> yes
-                print('Prefer to installing Python-3.9.7')
-                if sys.platform == 'linux':
-                    wget.download('https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz')
-                    os.system('tar -xzvf Python-3.9.7.tgz')
-                    install_to_path = input('Please input the path to install Python-3.9.7 [default: /usr/local]: ')
-                    os.system(
-                        f'cd Python-3.9.7 && ./configure --prefix={install_to_path if install_to_path != "" else "/usr/local"} && make && make install')
-                elif sys.platform == 'win32':
-                    bit = int(platform.architecture()[0][:2])
-                    if bit == 64:
-                        wget.download('https://www.python.org/ftp/python/3.9.7/python-3.9.7-amd64.exe')
-                        os.system('start python-3.9.7-amd64.exe')
-                    elif bit == 32:
-                        wget.download('https://www.python.org/ftp/python/3.9.7/python-3.9.7.exe')
-                        os.system('start python-3.9.7.exe')
-                    else:
-                        raise SystemError('bits calculator broken down!')
+        ask_updatePython = win32api.MessageBox(0,
+                                               "Do you want to update your Python Environment?",
+                                               "Update Python",
+                                               win32con.MB_YESNO
+                                               ) if sys.platform == "win32" else \
+            subprocess.run(['zenity', '--question', '--text="Do you want to update your Python Environment?"'],
+                           capture_output=True, text=True).returncode
+        if ask_updatePython == 6 if sys.platform == 'win32' else 0:  # 6 -> yes, 0 -> yes
+            print('Prefer to installing Python-3.9.7')
+            if sys.platform == 'linux':
+                wget.download('https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz', out={workdir})
+                os.system(f'tar -xzvf {workdir}/Python-3.9.7.tgz')
+                install_to_path = input('Please input the path to install Python-3.9.7 [default: /usr/local]: ')
+                os.system('cd Python-3.9.7 && ./configure --prefix='
+                          f'{install_to_path if install_to_path != "" else "/usr/local"} && make && make install'
+                          )
+            elif sys.platform == 'win32':
+                bit = int(platform.architecture()[0][:2])
+                if bit == 64:
+                    wget.download('https://www.python.org/ftp/python/3.9.7/python-3.9.7-amd64.exe', out=workdir)
+                    os.system(f'start {workdir}/python-3.9.7-amd64.exe')
+                elif bit == 32:
+                    wget.download('https://www.python.org/ftp/python/3.9.7/python-3.9.7.exe', out=workdir)
+                    os.system(f'start {workdir}/python-3.9.7.exe')
                 else:
-                    raise PlatformError('TSL-SYSTEM must run on the win32 or linux platform!')
-            else:  # 7 -> no
-                python_error_version = f'{python_version[0]}.{python_version[1]}.{python_version[2]}'
-                raise RuntimeError(f'cannot load TSL-SYSTEM with Python-{python_error_version}!')
+                    raise SystemError('bits calculator has broken down!')
+            else:
+                raise PlatformError('TSL-SYSTEM must run on the win32 or linux platform!')
+        else:  # 7 -> no
+            python_error_version = f'{python_version[0]}.{python_version[1]}.{python_version[2]}'
+            raise RuntimeError(f'cannot load TSL-SYSTEM with Python-{python_error_version}!')
+
+
+def check_command(command):
+    try:
+        subprocess.run([command, "--version"], capture_output=True, check=True)
+        return True
+    except subprocess.CalledProcessError:
+        return False
 
 
 def selfcheck_module(name: str):

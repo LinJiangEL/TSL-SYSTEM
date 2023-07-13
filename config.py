@@ -1,6 +1,7 @@
 import os
 import sys
 import uuid
+from selfcheck import check_command
 from setuptools.errors import PlatformError
 from loguru import logger
 
@@ -28,10 +29,19 @@ SuperUser = ['root']
 SYSTEM_PRINTER = 'cat' if sys.platform == 'linux' else 'type' if sys.platform == 'win32' else 0
 requirements_file = os.path.join(SYSTEM_DIR, f'{sys.platform}requirements.txt')
 
+
+def get_packagemgr(mgrlist):
+    for manager in mgrlist:
+        if check_command(manager):
+            return manager
+    return None
+
+
 if sys.platform == 'win32':
     Bin_DIR = SYSTEM_DIR + '/bin/win32/'
 elif sys.platform == 'linux':
     Bin_DIR = SYSTEM_DIR + '/bin/linux/'
+    packagemgr = get_packagemgr(["pkg", "apt", "yum", "dnf"])
 else:
     raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
 

@@ -4,10 +4,11 @@ import time
 import wget
 import platform
 import subprocess
+from config import SYSTEM_DIR
+
 if sys.platform == 'win32':
     import win32api
     import win32con
-from config import SYSTEM_DIR
 from setuptools.errors import PlatformError
 
 
@@ -32,7 +33,6 @@ def selfcheck_system(systemfilelist):
     print('check python3 ... ', end='', flush=True)
     python_version = sys.version_info
     workdir = os.path.join(SYSTEM_DIR, "Temp/__prebuild__/")
-    os.chdir(workdir)
     if python_version[0] >= 3 and python_version[1] >= 7:
         print('yes')
     else:
@@ -48,6 +48,7 @@ def selfcheck_system(systemfilelist):
             subprocess.run(['zenity', '--question', '--text="Do you want to update your Python Environment?"'],
                            capture_output=True, text=True).returncode
         if ask_updatePython == 6 if sys.platform == 'win32' else 0:  # 6 -> yes, 0 -> yes
+            os.chdir(workdir)
             print('Prefer to installing Python-3.9.7')
             if sys.platform == 'linux':
                 wget.download('https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz', out={workdir})
@@ -56,17 +57,25 @@ def selfcheck_system(systemfilelist):
                 os.system('cd Python-3.9.7 && ./configure --prefix='
                           f'{install_to_path if install_to_path != "" else "/usr/local"} && make && make install'
                           )
+                os.chdir(SYSTEM_DIR) if python_version[0] >= 3 and python_version[1] >= 7 else \
+                    exec("raise RuntimeError('failed to install python or cannot set it into the path.')")
             elif sys.platform == 'win32':
                 bit = int(platform.architecture()[0][:2])
                 if bit == 64:
                     wget.download('https://www.python.org/ftp/python/3.9.7/python-3.9.7-amd64.exe', out=workdir)
                     os.system(f'start {workdir}/python-3.9.7-amd64.exe')
+                    os.chdir(SYSTEM_DIR) if python_version[0] >= 3 and python_version[1] >= 7 else \
+                        exec("raise RuntimeError('failed to install python or system cannot set it into the path.')")
                 elif bit == 32:
                     wget.download('https://www.python.org/ftp/python/3.9.7/python-3.9.7.exe', out=workdir)
                     os.system(f'start {workdir}/python-3.9.7.exe')
+                    os.chdir(SYSTEM_DIR) if python_version[0] >= 3 and python_version[1] >= 7 else \
+                        exec("raise RuntimeError('failed to install python or cannot set it into the path.')")
                 else:
+                    os.chdir(SYSTEM_DIR)
                     raise SystemError('bits calculator has broken down!')
             else:
+                os.chdir(SYSTEM_DIR)
                 raise PlatformError('TSL-SYSTEM must run on the win32 or linux platform!')
         else:  # 7 -> no
             python_error_version = f'{python_version[0]}.{python_version[1]}.{python_version[2]}'

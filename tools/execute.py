@@ -1,8 +1,8 @@
 from loading import start
 
 _ok = "True"
-Developing_list = ["Chemistry", "MultiMedia", "Philosophy"]
-available_list = ["Mathematics", "Passwd", "Translate", "Network", "StudentsInfoDatabase"]
+Developing_list = ["Chemistry", "Network", "MultiMedia", "Philosophy"]
+available_list = ["Mathematics", "Passwd", "Translate", "StudentsInfoDatabase"]
 
 
 def Execute():

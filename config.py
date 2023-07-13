@@ -1,7 +1,6 @@
 import os
 import sys
 import uuid
-from selfcheck import check_command
 from setuptools.errors import PlatformError
 from loguru import logger
 
@@ -31,6 +30,8 @@ requirements_file = os.path.join(SYSTEM_DIR, f'{sys.platform}requirements.txt')
 
 
 def get_packagemgr(mgrlist):
+    from selfcheck import check_command
+
     for manager in mgrlist:
         if check_command(manager):
             return manager

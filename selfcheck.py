@@ -88,6 +88,8 @@ def check_command(command):
         return True
     except subprocess.CalledProcessError:
         return False
+    except FileNotFoundError:
+        return False
 
 
 def selfcheck_module(name: str):

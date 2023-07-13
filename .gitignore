@@ -9,4 +9,5 @@ Temp/*.bat
 Temp/*.sh
 Temp/*.txt
 Temp/test_*.py
+Temp/PwdUser
 tools/StudentsInfoDatabase/Datas.xls

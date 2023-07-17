@@ -2,6 +2,7 @@ import os
 import sys
 import uuid
 import getpass
+import winreg
 from termcolor import colored
 from setuptools.errors import PlatformError
 from loguru import logger
@@ -11,7 +12,9 @@ SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loadin
                 'upgrade.py', 'sysmgr.py', 'motd', 'terminal.py', 'linuxrequirements.txt', 'win32requirements.txt',
                 'loading.py', 'motd', 'LICENSE',
                 'motd.jpg', 'README.md', 'VERSION']
-SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, getpass.getpass("Please input the permission password: ")))
+APIKEY = getpass.getpass("Please input the permission password: ") if os.getenv("TSL-SYSTEM-APIKEY") is None else \
+         os.getenv("TSL-SYSTEM-APIKEY")
+SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, APIKEY))
 SYSTEM_DIR = os.path.dirname(os.path.abspath(__file__))
 SYSTEM_LOGPATH = os.path.join(SYSTEM_DIR, "Temp/logs")
 SYSTEM_LOGFORMAT = "{time:YYYY-MM-DD HH:mm:ss} [{level}] {message}"
@@ -29,6 +32,9 @@ SYSTEM_DIGMAX = 8
 SuperUser = ['root']
 SYSTEM_PRINTER = 'cat' if sys.platform == 'linux' else 'type' if sys.platform == 'win32' else 0
 requirements_file = os.path.join(SYSTEM_DIR, f'{sys.platform}requirements.txt')
+if not os.path.exists(os.path.join(SYSTEM_DIR, "Temp/PwdUser")):
+    with open(os.path.join(SYSTEM_DIR, "Temp/PwdUser"), 'w') as pwd:
+        pwd.write("0")
 
 
 def get_packagemgr(mgrlist):
@@ -73,6 +79,13 @@ for efile in efiles:
     else:
         continue
 
+
+def set_env_variable(name, value):
+    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment", 0, winreg.KEY_ALL_ACCESS)
+    winreg.SetValueEx(key, name, 0, winreg.REG_SZ, value)
+    winreg.CloseKey(key)
+
+
 id_processor = __import__("hashlib").md5()
 id_processor.update(str(SYSTEM_ID).encode(encoding="utf-8"))
 id_md5 = id_processor.hexdigest()
@@ -80,6 +93,8 @@ print("Checking ... ", end='', flush=True)
 if id_md5 != "22f6fbf8b9bcf38e12ba4cd9e2e3a7f8":
     print(colored('failed', color="red"))
     raise PermissionError("operation had been blocked because the password is uncorrect.")
-print(colored('ok', color="green"))
+else:
+    print(colored('ok', color="green"))
+    set_env_variable("TSL-SYSTEM-APIKEY", APIKEY)
 
 del id_processor

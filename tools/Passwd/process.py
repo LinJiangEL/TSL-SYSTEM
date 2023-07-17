@@ -11,7 +11,7 @@ def baseencrypt(s, n=1, salt=None):
     return s
 
 
-def basedecrypt(bs, n):
+def basedecrypt(bs, n, salt=None):
     for i in range(n):
         if bs[:2] == "b'" and bs[-1] == "'":
             bs = bs.split("'")[1]
@@ -33,16 +33,11 @@ def generate_salt(num):
 
 
 def encrypt(text, n, salt):
-    passwd_processor = hashlib.md5()
-
     x = 9 % (n * 2)
     passwd1 = baseencrypt(s=text, n=n, salt=salt)
-    passwd1 = passwd1.replace('=', salt[4], 1) if passwd1.count('=') == 1 \
-        else passwd1.replace('==', salt[5] + salt[3], 1)
+    passwd1 = passwd1.replace('=', salt[4], 1) if passwd1.count('=') == 1 else passwd1.replace('==', salt[5] + salt[3],
+                                                                                               1)
     passwd = passwd1[:-x] + f't{n}' + passwd1[-x:] + str(x) + salt
-    passwd = passwd.encode(encoding='utf-8')
-    passwd_processor.update(passwd)
-    passwd = passwd_processor.hexdigest()
     return passwd
 
 
@@ -54,12 +49,12 @@ def decrypt(passwd):
         bs = passwd.split('t' + str(n))[0] + passwd.split("t" + str(n))[1][:-7]
         salt = passwd[-6:]
         try:
-            text = basedecrypt(bs=bs, n=int(n))
+            text = basedecrypt(bs=bs, n=int(n), salt=salt)
         except binascii.Error:
             bs = (bs[:-9] + bs[-9:].replace(salt[4], '=', 1)) if (passwd[-8] == salt[4]) \
-                else (bs[:-9] + bs[-9:].replace(salt[5] + salt[3], '==', 1)) \
-                if (passwd[-9:-7] == salt[5] + salt[3]) \
-                else 'error'
+                else ((bs[:-9] + bs[-9:].replace(salt[5] + salt[3], '==', 1))) \
+                      if (passwd[-9:-7] == salt[5] + salt[3]) \
+                      else 'error'
             print(bs)
-            text = basedecrypt(bs=bs, n=int(n))
+            text = basedecrypt(bs=bs, n=int(n), salt=salt)
         return text

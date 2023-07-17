@@ -54,12 +54,12 @@ def decrypt(passwd):
         bs = passwd.split('t' + str(n))[0] + passwd.split("t" + str(n))[1][:-7]
         salt = passwd[-6:]
         try:
-            text = basedecrypt(bs=bs, n=int(n), salt=salt)
+            text = basedecrypt(bs=bs, n=int(n))
         except binascii.Error:
             bs = (bs[:-9] + bs[-9:].replace(salt[4], '=', 1)) if (passwd[-8] == salt[4]) \
                 else (bs[:-9] + bs[-9:].replace(salt[5] + salt[3], '==', 1)) \
                 if (passwd[-9:-7] == salt[5] + salt[3]) \
                 else 'error'
             print(bs)
-            text = basedecrypt(bs=bs, n=int(n), salt=salt)
+            text = basedecrypt(bs=bs, n=int(n))
         return text

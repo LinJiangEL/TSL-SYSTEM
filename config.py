@@ -2,6 +2,7 @@ import os
 import sys
 import uuid
 import getpass
+from termcolor import colored
 from setuptools.errors import PlatformError
 from loguru import logger
 
@@ -75,6 +76,10 @@ for efile in efiles:
 id_processor = __import__("hashlib").md5()
 id_processor.update(str(SYSTEM_ID).encode(encoding="utf-8"))
 id_md5 = id_processor.hexdigest()
+print("Checking ... ", end='', flush=True)
 if id_md5 != "22f6fbf8b9bcf38e12ba4cd9e2e3a7f8":
+    print(colored('failed', color="red"))
     raise PermissionError("operation had been blocked because the password is uncorrect.")
+print(colored('ok', color="green"))
+
 del id_processor

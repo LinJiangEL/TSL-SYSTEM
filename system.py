@@ -113,13 +113,15 @@ while True:
 
     username = input("Username: ")
     if username in mode_info['user'] or username in mode_info['root']:
-        passwd = getpass.getpass("Password: ")
+        passwd = getpass.getpass("Password: ").strip()
         passwd = passwd.encode(encoding='utf-8')
         passwd_processor.update(passwd)
         passwd = passwd_processor.hexdigest()
 
         if encrypt(passwd, 3, SYSTEM_ID[:6]) == login_infos.get(
-                f"{username}@{'root' if username in admin_users else 'user'}").strip():
+                                    f"{username}@"
+                                    f"{'root' if username in admin_users else 'user'}"
+                                    ).strip():
             logger.info("Successfully log in the system. [USERINFO:('{user}')]", user=username)
             print(colored('Successfully log in the system!\n', color="green"))
             break
@@ -129,13 +131,15 @@ while True:
             while True:
                 del passwd, passwd_processor
                 passwd_processor = hashlib.md5()
-                passwd = getpass.getpass("Password: ")
+                passwd = getpass.getpass("Password: ").strip()
                 passwd = passwd.encode(encoding='utf-8')
                 passwd_processor.update(passwd)
                 passwd = passwd_processor.hexdigest()
 
                 if encrypt(passwd, 3, SYSTEM_ID[:6]) == login_infos.get(
-                        f"{username}@{'root' if username in admin_users else 'user'}").strip():
+                                            f"{username}@"
+                                            f"{'root' if username in admin_users else 'user'}"
+                                            ).strip():
                     logger.info("Successfully log in the system. [USERINFO:('{user}')]", user=username)
                     print(colored('Successfully login the system!\n', color="green"))
                     break

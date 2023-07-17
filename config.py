@@ -1,6 +1,7 @@
 import os
 import sys
 import uuid
+import getpass
 from setuptools.errors import PlatformError
 from loguru import logger
 
@@ -9,7 +10,7 @@ SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loadin
                 'upgrade.py', 'sysmgr.py', 'motd', 'terminal.py', 'linuxrequirements.txt', 'win32requirements.txt',
                 'loading.py', 'motd', 'LICENSE',
                 'motd.jpg', 'README.md', 'VERSION']
-SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, 'TSL-SYSTEM'))
+SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, getpass.getpass("Please input the permission password: ")))
 SYSTEM_DIR = os.path.dirname(os.path.abspath(__file__))
 SYSTEM_LOGPATH = os.path.join(SYSTEM_DIR, "Temp/logs")
 SYSTEM_LOGFORMAT = "{time:YYYY-MM-DD HH:mm:ss} [{level}] {message}"
@@ -70,3 +71,10 @@ for efile in efiles:
         os.makedirs(path)
     else:
         continue
+
+id_processor = __import__("hashlib").md5()
+id_processor.update(str(SYSTEM_ID).encode(encoding="utf-8"))
+id_md5 = id_processor.hexdigest()
+if id_md5 != "22f6fbf8b9bcf38e12ba4cd9e2e3a7f8":
+    raise PermissionError("operation had been blocked because the password is uncorrect.")
+del id_processor

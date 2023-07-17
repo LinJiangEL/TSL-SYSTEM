@@ -7,7 +7,7 @@ from setuptools.errors import PlatformError
 from loguru import logger
 from bin.helpformat import Help
 from config import SYSTEM_DIR, SYSTEM_LOGPATH, SYSTEM_LOGFORMAT, SYSTEM_LOGSTDOUT, \
-    SuperUser, SYSTEM_FILES, SYSTEM_PRINTER
+    SuperUser, SYSTEM_FILES, SYSTEM_PRINTER, id_md5
 from sysmgr import TempManager, UserManager
 
 if not SYSTEM_LOGSTDOUT:
@@ -47,7 +47,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
     logger.info("Load sysmgr.UserManager.")
     usermgr = UserManager(os.path.join(SYSTEM_DIR, 'Database/login.db'))
 
-    while os.path.exists(Bin_DIR):
+    while os.path.exists(Bin_DIR) and id_md5[2] is chr(int(0x66)):
         try:
             Bin_DIR = Bin_DIR.replace('\\', '/')
             command = input(f'{USERNAME}@TSL-SYSTEM {MODE} ').strip()

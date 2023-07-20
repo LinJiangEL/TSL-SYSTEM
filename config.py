@@ -92,6 +92,7 @@ def set_env_variable(name, value):
         with open('/etc/environment', 'a') as envir:
             envir.write(f'\nexport {name}={value}')
             envir.close()
+        os.system('sudo source /etc/environment')
     else:
         raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
 

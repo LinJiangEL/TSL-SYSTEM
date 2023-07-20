@@ -38,7 +38,7 @@ Explorer Lab. Built-in SYSTEM. It can only work on Windows(version >= 10) or Lin
 ## 使用方法
 ### 1. 启动部分  
 `Windows` 双击运行TSL-SYSTEM-V5.17.4.exe  
-`Linux` 在命令行窗口输入sudo ./TSL-SYSTEM-V5.17.4后回车  
+`Linux` 在命令行窗口输入`sudo ./TSL-SYSTEM-V5.17.4`后回车  
 `通用` 若为源码包，则运行`python3 system.py`  
     
 ### 2. 程序部分（运行源码时参考此部分）  
@@ -61,9 +61,12 @@ Explorer Lab. Built-in SYSTEM. It can only work on Windows(version >= 10) or Lin
   * restore : 从已创建的系统备份中选择一个时间节点去还原系统。
   * execute : 进入内部模块终端。
   * user : 用户管理指令组。
+  * logger : 日志管理指令组 (开发进程未启动)。
+  * temp : 缓存管理指令组 (开发进程未启动)。
   * trunc : 外部命令执行声明。
   * internal : 内部命令执行声明。
-  * exit : 正常关闭系统，释放并初始化指令组。
+  * logout : 退出当前用户的登录，初始化所有指令组并返回回到登录界面 (开发进程未启动)。
+  * exit : 正常关闭系统，释放并初始化所有指令组。
 ---
 以下是上面指令的一些使用示例。  
 (1)**user**  

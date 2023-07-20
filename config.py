@@ -1,111 +1,111 @@
-import os
-import sys
-import uuid
-import getpass
-if sys.platform == 'win32':
-    import winreg
-from termcolor import colored
-from setuptools.errors import PlatformError
-from loguru import logger
-
-SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loading.py', 'selfcheck.py', 'system.py',
-                'config.py', 'services.py',
-                'upgrade.py', 'sysmgr.py', 'motd', 'terminal.py', 'linuxrequirements.txt', 'win32requirements.txt',
-                'loading.py', 'motd', 'LICENSE',
-                'motd.jpg', 'README.md', 'VERSION']
-APIKEY = getpass.getpass("Please input the permission password: ") if os.getenv("TSL-SYSTEM-APIKEY") is None else \
-         os.getenv("TSL-SYSTEM-APIKEY")
-SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, APIKEY))
-SYSTEM_DIR = os.path.dirname(os.path.abspath(__file__))
-SYSTEM_LOGPATH = os.path.join(SYSTEM_DIR, "Temp/logs")
-SYSTEM_LOGFORMAT = "{time:YYYY-MM-DD HH:mm:ss} [{level}] {message}"
-SYSTEM_STDOUT_LOGFORMAT = "<blue>{time:YYYY-MM-DD HH:mm:ss}</blue> <level>[{level}]</level> <level>{message}</level>"
-SYSTEM_LOGSTDOUT = True
-if not os.path.exists(SYSTEM_LOGPATH):
-    os.mkdir(SYSTEM_LOGPATH)
-logger.remove()
-stdIO = logger.add(sys.stdout,
-                   colorize=True,
-                   format=SYSTEM_STDOUT_LOGFORMAT,
-                   level="DEBUG",
-                   enqueue=False
-                   )
-Tools_DIR = SYSTEM_DIR + '/tools/'
-SYSTEM_DIGMAX = 8
-SuperUser = ['root']
-SYSTEM_PRINTER = 'cat' if sys.platform == 'linux' else 'type' if sys.platform == 'win32' else 0
-requirements_file = os.path.join(SYSTEM_DIR, f'{sys.platform}requirements.txt')
-if not os.path.exists(os.path.join(SYSTEM_DIR, "Temp/PwdUser")):
-    with open(os.path.join(SYSTEM_DIR, "Temp/PwdUser"), 'w') as pwd:
-        pwd.write("0")
-
-
-def get_packagemgr(mgrlist):
-    from selfcheck import check_command
-
-    for manager in mgrlist:
-        if check_command(manager):
-            return manager
-    return None
-
-
-if sys.platform == 'win32':
-    Bin_DIR = SYSTEM_DIR + '/bin/win32/'
-elif sys.platform == 'linux':
-    Bin_DIR = SYSTEM_DIR + '/bin/linux/'
-    packagemgr = get_packagemgr(["pkg", "apt", "yum", "dnf"])
-else:
-    raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
-
-help_keys = []
-help_values = []
-with open(os.path.join(SYSTEM_DIR, f'bin/{sys.platform}bin.help'), 'r') as binhelpdictfile:
-    for line in binhelpdictfile.readlines():
-        if line.startswith('#') or line.strip() == '':
-            continue
-        else:
-            help_keys.append(line.split(':')[0])
-            help_values.append(line.split(':')[1])
-
-if sys.platform == 'win32':
-    binhelp_win32dict = dict(zip(help_keys, help_values))
-elif sys.platform == 'linux':
-    binhelp_linuxdict = dict(zip(help_keys, help_values))
-else:
-    raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
-
-efiles = ['Temp/logs', 'backup/TSL-SYSTEM-BACKUP-FILES']
-for efile in efiles:
-    path = os.path.join(SYSTEM_DIR, efile)
-    if not os.path.exists(path):
-        os.makedirs(path)
-    else:
-        continue
-
-
-def set_env_variable(name, value):
-    if sys.platform == 'win32':
-        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment", 0, winreg.KEY_ALL_ACCESS)
-        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, value)
-        winreg.CloseKey(key)
-    elif sys.platform == 'linux':
-        with open('/etc/environment', 'a') as envir:
-            envir.write(f'\nexport {name}={value}')
-            envir.close()
-        os.system('sudo source /etc/environment')
-    else:
-        raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
-
-
-id_processor = __import__("hashlib").md5()
-id_processor.update(str(SYSTEM_ID).encode(encoding="utf-8"))
-id_md5 = id_processor.hexdigest()
-print("Checking ... ", end='', flush=True)
-if id_md5 != "22f6fbf8b9bcf38e12ba4cd9e2e3a7f8":
-    print(colored('failed', color="red"))
-    raise PermissionError("operation had been blocked because the password is uncorrect.")
-else:
-    print(colored('ok', color="green"))
-    set_env_variable("TSL-SYSTEM-APIKEY", APIKEY)
-
-del id_processor
+gAAAAABkuL4bcY5As4_YWW7KGnbxXVg7mdONlW28NOtucuMJXZ5xm0rY1WdODp3SesNszyt79rzqUY0iD_aLPPNreC6xpM_Lrw==
+gAAAAABkuL4b-Af960yt-VehHEOcj7el3lW24Uoa0kh1Qj8_L6iKZGSU7y-MLFxiBUoTcKswU_NSW70yr1NIV5wDiBQcwksAkA==
+gAAAAABkuL4bQ_Ddm2ci_U8-xO6o74ck2ocEsU74R0xlU8ud7FA0gghO-4Dsjwbj-W6ZQbzRJv2GnGvSStbenGj6KdFe_Nye4A==
+gAAAAABkuL4bScEFYbGcWDGqDMUtiJySFdcC8q-ZbPHHwKMM2lqEFy_33bYRmUXy89JALelFXoQOfXKrJEADVgOyL-Sr_zR_Fw==
+gAAAAABkuL4bof46tE07xTJnQHEBCLswYwgbAolQKrGhNF1m2U3YxWt6XZyl9zVHMf6S5P_M18xvrpVYQgZCEzBff1kQBghx6j40e3tzo4gkxQoYMu_XJFs=
+gAAAAABkuL4bKfwQ8ylxqsOK5XeXSbn2jpgsZ8SdF6yzKxadqQ56Y5iVIYC8tVT9JWmPCzdjWDp78aXJIolRLv5t_EPcCq9pqxz70iDBWWF6pnoFoFp8_k8=
+gAAAAABkuL4bWgzIYDvtkkqqAn2uI-nAb8yrdWbhlm8ymsM2-1qFxqTEoBgHXfKbfT8Pt_5ioI8RMNapSmQHINe_I2XKFB0w53uoVQ5LlruLXLTS9jUUd_g=
+gAAAAABkuL4bOhyVzn7UyU9naBMEq7gpJ2Lm0ULxZHLsxM92LLzRTeIA3Ctr1p2PViJm6ikizjz8QuOr5rZUPQiD36TLj_-xPPQmUj67M93um2tOwm3z7KQ-iZC9NtAxgb6mrVEM08dN
+gAAAAABkuL4cx2zio5jcVNbx8v3CL-Oe8rIfcAhZBGUPcuqVRl2wsxzeDH3I8x3K_4sVxeg4qrLdKZOIUL10xt_F21IWhG8SkDjmfBRhoQixPw2-zlr1vvQ=
+gAAAAABkuL4c5FALCNM9JxtLdsHmpiERTq7UCcvmFFQlyOzPDxBMWmU6nkeQrcLwf2B7BpuFqCwYwlKfrfPWdpIuTfWWm-axMA==
+gAAAAABkuL4c-325S3e9MmzTW4wcVukGEIT3t5-NOrGC9z2COlIvLRnADVZ16A9zj7do5xh8anS16HfrEF5JrRI-uH6Pf_sT-oExri_18R2Uqtq-ER_NAEuNno6_3Cr8WqF0bo_6C3800R8UU4lg7cQ7Jildky0BVSVV4sg3k47BeHfMyHoRzp9SBgIJVz0jVboGN_c0pN3dlhsjvzZEbA8T3TKRax3_XxrOmG7lq7iGqN4XV6GHv68=
+gAAAAABkuL4czb5JXmW5qt71fKkitHqYMNkNNIrc5n9LdApJ6353isuLtQprVsGmKnPrHvtMLbVuRxir4HdPZESX6nVfzPbq3h5gt0JgxseWNS8AMDzyZYPpC4ekD-ZqwrAPAZvdLn-v
+gAAAAABkuL4ccPBAXoTOqAmeP4qBrA79sH22I7gRIXWuxat1scOV4os4Q1sofvMIXXjE-TG4vz9vXyWAOUnvZAxKdCvfqovMRDBeE49ir7Of5hU5KkMciXLlSZ_31Uqd0zjAJ1x5c694ykWre_BrdHrnKJtSBmZw__wGI7AkgyHADZNkEGoDpdFXObUaXkedEkdHpBTwe61EDmPC1igMC2tEPOtl-1-Zo5tNMlKDD-XkA8JaoeiigsQ=
+gAAAAABkuL4cnH926CgSsF69aIPx8hE33jci1jf1E1E47tK5tRqpq2VFWNIpV_3tg9qStfMf_SisoY8gbVDhsteSszzD87it5-3a5i4A0HXxSGcJSBHYVjLm419yJFinxwPtao2npG0mfxD8u84tE_1Z05ohfHm_BQ==
+gAAAAABkuL4c0W6otd5po6bqBI5MrekFbakL3iz-asOsH2-qwDbHp9mBuwOvKIN0dAUarYF6SOA8BkOHuM_l-o8n8x8VGXqdf1LzeHk_BI51uGsAn5YoBt_AE5rAHdA4uajYQc3f0SHvP5bUSfkN-p8fLTJQg5syDQ==
+gAAAAABkuL4cudLQy0t_LZqCg3mjjrf3_25DzxTFzXs0c2xFU681evLAUIg2bfdnb_hLV5b0WryL0Ja8cmBLSIexuYTuzJg0hRCaWDd5stKkwVvOALGaJLKq95fVxKC471yUc7dCxFZT6EVF0lTNHsGeQRe0Ru39xWl7Ot6yVbhdm4FFqhBKLz4lV5ZhNt7IwrKi1RMCGJNNhQiP7TDMEB8CPSyTRAUM9XAcUjIdVVzbu79pjpsX1x8=
+gAAAAABkuL4cTSo5eyZhq5Bu7RzBuRW8vUEd3qh8ogAfENoOj2kGEac99_MWnl6Kr0iZgUtnJTowtQCmwh28bk1bKPxcmBuUYNdtEX9zT2WndVQW3CofWGFrhkDfF8IZI9gB8QwpYRsJ
+gAAAAABkuL4cYl9NtwuZuAD71G3maG1TEZQnGE3-So8jjNBO6vaLBaA-jSrtY5n0syEenVBhcNcaSljdOz7LDOmxnp6CEGUeQ6w1xz9d9PMlLy_8RAtZA9Uu1MoLMHwELcV4i1ZG9tDAD1a_h3Lc079tdy_Oae2DXA==
+gAAAAABkuL4cEzoTyXFBNwHOsLOK5rp78xAfZ68H2IxjU3ApD0I2g4Z6u8UvJdfDNhASpTvn_tySk6-8QL6f2eWoxnU49NV49qltXusFaLY1BOS_Se2k_RsJfg5pUI_U1UnxDLZbZjgkQssjeDjOEvccDICIkSaegg==
+gAAAAABkuL4cAuWbs-D_FEd4-PWelqy3zHP1OyEy5PN2B0zqUE-MYNZjJ7emf4eq9okJYF4k-5Q1EQBgR5JCHMxxMDOd-qiPu-zaXZPU6fK0k36MuvEWHqJKxqKfo0rG1WP6DR8G_getdpZl-hjpt1tfiaEqlgsu1g==
+gAAAAABkuL4cprTjCyAiW5Rd8YpZ1cBzDxRT_lttVbRaRclWKM-DNh3IVt7cWCIfbA0Mu4DNZ1TdQYq8c8zuUUeLoAh57_NMjVrlclbBcWT9d5lxpeI0JX39LokQy0lTuqUYNHEu0HgLUWk_FVbf4V0OnrLksRoYRYILeRh2_g-_yCpEz8Gn508=
+gAAAAABkuL4cNIFIzNIQGDFr1_4tN8doVSF7MB3jEI1Itt2Bl9mN1Dn_4J6u06iQRixE6CEIEHnPESkWxbOW75ZUNf6ZXS1JNc8RFhDNB-_rEIHoYCse6qJNpQ4xCyvgnEMLxT8qZukY-59s0Qs7N4snnaru-lU51Y_YrY0xNb6inx5cZId06V7jJXrMPH2IfXUfm_g4NkiFQFJ0aPqS7ES9LoFiEJwxuBJcuswaoJNAHLc-yiYgnE8=
+gAAAAABkuL4cIsy1IB16yDZb3AiNqGd4ufAIVjhNs9jSwoWvGJAw7k6sW_XxzomZ_55-DWl5OS1efpgXiU2i2mHaXtH_dYagTCr3JgmXLRGRHJo9grEpsnc=
+gAAAAABkuL4cwS0INS7goUqHxngkhcKvPIs5qex-Ci_iue7mIzMk5fUQbjbzh-7IcKftQfC2XfGog8q2NkQZ7LxuTg-w6C0FcwoCZggm1QZ54oSZJd5OwfLY0XkLhqsuPOmsxQZDLFd9
+gAAAAABkuL4cjbeoD3TUA5SEbjyxKHZ8lYrEMhd--OyMeJ3v_8AU3n7T6kIJLhN-aDP3HKuoaSV3gTLLfvhbhVseIKN0F-MWf4Cq7cJ90HuRklrISdLCXNA=
+gAAAAABkuL4cX8L22-nbFopF88BTPoXQxU4OyDFwxMYgrPG6DezDAIxN1EDnmefuOVlPBC7mpVzZ2GbmiqZgQnixI-TFmZKtwA==
+gAAAAABkuL4cIe8Ts8KFG1qePycX9T__0IBX91R71NtYcfmpnAYCacBO5s1xrD9zrsFXc_QU01vfM-BaNKL-oku5Ez4I7kDY_jFfxCNSBCOhCi2pOvuSwGI=
+gAAAAABkuL4de8eLAtpSRYxwJs9L_dVQmmUq77-DBr2_1UtuAjYZgOmoVg3M5z_O8UN9FhU3Z0mMJB3xeMloMffhVw-MvF1qgpENeRFJEVIzkiUNHxddzX326kgRfncQI1XqYzu3cl5o
+gAAAAABkuL4dxJtLwiWoMLS2MT_n_zdC4C52iFfWKO5H1fSLFKK-5Orei1SXXxoDOX4dnxf2cL6JgWjzQZKjE--8bhHcGKkNPrEBUK_AfdGQmWF_O8XxsTaGXetp6DLF5u3NvzW_ugxvBcF1GWCPJHfFb6uBHR4jwg==
+gAAAAABkuL4djrNblSJ8cFcXeelAvGW1cjpU8p_f09Wf0Bd2KtOURhg3TLhzrOjW-1L9tnP3wHr65xhEDYDRbtUOCM7-WKcnssqS3hOXZ7OX0RiknHp-iDeutJaJJfr--BXXNeh2Gggu
+gAAAAABkuL4dFXrAOPpDXJpwdkRpqyxNCTnbmdf045MRDzXPYBGzoA_7AMrU4SE_GVtMCfQqtf_61SAunotHnzc105Pya1pe7V0s-ESncmXYM6_YuttfCjpbc6e4yZ4GiRRRp69097lD
+gAAAAABkuL4dtaFT5fJS-ypvITerdGLYdhESjblg3ltETZPZAy8_iXICJT8JbOe0lXSlUVPAqe3XFKfp4zMFt950wntHyuSEuSv_MJonnQq2FXQBkMpnpB0=
+gAAAAABkuL4dhnY-yXPYNB27G4ElpahRMwAmdFTga18m3Bs4CbHBHQt2-_rssyfBskTOzIMZQpNNKnETtvpn4cMH1L_WH_joyJm_yRNffevPQQniTMRk5EYY1o0ZgC0Ul6_1pLqsh9CH
+gAAAAABkuL4dY8ctbW-orZjmSkv0HjGjnqYV0fCsdXQ7YmlzAe_aS6CyRFdHEZ9dDgb5UXAQnimk_n_37NYxRCJ0UZoopGJlW65qh0t6CVwcH-VDxFXJjjs=
+gAAAAABkuL4dOjX1JPhBGaTdqrcf4O0UiVGGGJbmsvPVFJ2BL_W8tjl19Roa21IptVhxqaWxhg0qzYuJbExy4LcAref-Mxdixe3-OAMRvZ8x1hd_vlZC9Ks=
+gAAAAABkuL4d8Ag08-I1jPM85g_-CgX-3UohqFQgh97TmJu1omMvYklatX1Ew6Ilt2GwsGMNeSMgLoBomNsLc5r7JnYY1KWKW5VOM27lcYpF_e8pV_YbBtD3K0uzJjrXUwdbKgIlIJqaF27vc8BLXE1hYFHuF7XXmEOIsICrGChcDsPfL0jN4uykEx4oMH9b1qvtZbz-Mivn
+gAAAAABkuL4dXZUEVZw4_gV88RxinXZhGOkSbaEneFhwu004eqwP8giFqk9yswDcK5Tmh75DGYKyWYiKfPb0tjL7HugyV8okY71nNSfMvz9-6iVBE2JShXso_xw0lFoKOTBnlLcvji78L1JEd0HTfiHvsaPZzmicScGr3Zz5ha9FBDqt6ACvt6s=
+gAAAAABkuL4d29Y49pjIZ1tQQV9fFyxtvhGLIQsFVO6CTKeafoQT5Fcy7xfYgVBDO-J73XFjuoeOKGR26nR8v-PJ0GJAqPsYeZ7JLoIEE9BECHOhaJzKx1eCdQF2HS1HGDfO3WyyGVjk_DGfACpWB4_1fsHf2j_uLqaSxPquumAbPV2iJ0zaCik=
+gAAAAABkuL4dJUAKd7aqXgfFJ1WidjLv_ZpGPHMRDc9SaTVMU8a715ASdNnXAkexY2RfNhZNBV934faqWzAWpQF3uG1DbmFgOA31QcNS9qravxIP5UvFJBplgoJU8SnFJoyrGjZgiOs8_tjTUiQYmF--oelfRIEXuRjZFZSOiQ3lbWbaSvVOsvM=
+gAAAAABkuL4dIFFWl5I6QORPzwg-T_Z1AY7zBU0IdOdvr1V8u1abBswdkmgmLTsvX8FpuswPBCT-zWSydvu-udct06F33ob0fPwc9e5IJMLCOYbq69YZN-A=
+gAAAAABkuL4dgL_UEHuK52y0WzUNyeChA5hcgHUf1dKYYSr6EAeUJsqGpe-kgfPwdYQ7xPcNSxaiq7tQICOe5yOpx_jhc61E1A==
+gAAAAABkuL4dipG0K4Pm7vC7f3UxmV1IsqTPrizA9_b5lr24cQ4w3uhKDQ5uGNbtM8S4O0gfwO854hQzMIh8yF--U4Ix38_quA==
+gAAAAABkuL4dRGg8-8_fpmYhFDG10BcIDheEGtj2Y6QqEF3aM2riRMF0KNFS8N3jcVzZSvSk2cCP1tJ1HksumisnSIsaMrbZNVSfKypPN-BDLXpG-Ci7V_0=
+gAAAAABkuL4dO7-3epOPrpzlkWNw52MmC1RpNVYtPYP4paJ6oqkYfJk05cFFt3iA0M9fB-u7Vb8z_L2vrwqqj4y0CvHrSoFuJ7qr81_s_TsNVlSqbSkorLfH3ZZ4UPAAm5jv5mOlGWER
+gAAAAABkuL4dgHykJCXVOHMVEAxwbxWeElzstZv25NtwOR5oVwOxJ1ynnDMpHJDJLrBFF8xRsdS881tRIp4c9NYJ2PtgRFnL3w==
+gAAAAABkuL4d932m87SkRGrPZz4wk9ziBi_pEm3DvP2Cv2naYtceEHPuluhjGie6niTvaO7Fiv_pfc47CB285InL-jR8GTa53BVs-Hl5ku66AeDBoyU46H8=
+gAAAAABkuL4dXH1trjFMcS17bz1sr_-FKcFHo2tucSha5tvDlcAcN1-DXrqwOgH55nl-V2Z5x2KCyNaikKZr7QVIGsPGVbU8cxq8bqbILmONEmoqgM2wYtSixs8nsHd3M6gHpHYBq9uY
+gAAAAABkuL4dQMckcobko_RPVLKg6uho_yvkZmcU4vBs42e99qG0UdsB7ka1JPg4qqenIFxzJkQgu5xCDHa7_5Q-0P21JOCn5BiIWK3A9CvNRev4PlYA-dQ=
+gAAAAABkuL4d5FKULMg4jUYo6Z7i7ZgOUL-62bevn_p-3cwn8iT8-7yEdFz_DD43CQ7MOL_Qg3rWYU3fGwV8FCpLka_IsOm30A==
+gAAAAABkuL4dlXzXkOa3-myWxacJq6lToDD_OzqAexTD4jFzdk3yGTk4QW-cBun7bdSRJiVl1RAPl_NnThfvYhuV_XWsAY1Mzw==
+gAAAAABkuL4eQTx7iHtipaFaXBtDuqJmLXK10MDkrkBWFmkiNx79TOrEaYgPCfQ-56YH_ulMy7EybMj0rxX1hxYI_7sL9t-EDQ==
+gAAAAABkuL4eLKMIKQSzJdC69aebuq6oax0C73427mQnYxqTolOHZ-pd9kkdcdnQNRQn4Q6ZU6Z-i3A2Q96b6wjtjRol9NrVpuDQJAKvrduS14zQ3ekUsxQ=
+gAAAAABkuL4eccHwWfrryOK98xPxqUtwHWJD9rMBS4i-mHxEagyFJO_sqK5M2WZF0A72B1STEp7sNpsCMh7-LAKGhfuIXg56eECOBi_PnUOsRWVrTBB9AamRv3tDHHGQYTSBR36zaBSf
+gAAAAABkuL4ey-CwMNKy8uPPx3Z4vHEx2Cs2gWZS_i3ympugP234NuULsx08FTmF16mvz7t66BE6cq5vHHARLZHy9a_t28hKkLKinvmd3w47KqtciQYOV_w=
+gAAAAABkuL4eXqEM98xKoDlUIHaIM6xrPuR0OEKK-P-LHxAzG_SPzSW13N1Ay_RUKvjuYvhIXWHi_Pp_u6MfjVb3cDw-j099tMFLu-owe2PWHJgOSUSHpfYSvMHdaJhHHvKu5Pr8IR5L
+gAAAAABkuL4e5KRVeEhuAmkTaBlnlw8U-cnPI20jmkNbtAJ97g91WX2sJi7Dv3ar1aOTxEeNrNOYrE5SZr5QmPOUQeg7aryf5XypNQjg_afVCjhVpCke_8PESsI491yDZKDzzV9WeKvVTRTwIyL20i0AbaOmtLk9tA==
+gAAAAABkuL4eyz_TB0z5xGwZtvs0p6U2q1aFFjZtbQSDMExMPXNLmxyL21xhNe9PTfADJRBGqYA_hlFscqEH9ovpM4vtlErFqw==
+gAAAAABkuL4e9aRU3SbGpWvZ_CSKDdfkImroU6THicq8gOjyKqXUjbuHe2Dm8zGQzBTVoJ6GwybFLAWUhcDiPANWCjxKl6w3NDCU-wOFFBT7jYuQ9eLcQtJ29SRidefjUMca6s_KxpqDWNAVA0SgTlp4AbQLxe29eV_mF5GD2CQgdq9w14EuQBhFA3AC6dRcgESIKJ0RLcW0
+gAAAAABkuL4eAOSAdZvVqgKs8Xz55a7N5FqUHpHn29wPblaQAWg-_SPvJu6IqBhCXGoUrZVLdWIxe5gFo_M2KDei6Vbs4YG6ng==
+gAAAAABkuL4e-sF0K5UL-mF2-XrRjk9kFBmiaifO6giAPioqh-OP8EMp6vP5EV-wWe3DkpjHAjdOVdUEE90ne7ylnkndRdnkkQ==
+gAAAAABkuL4eyFyQp1CER8hQRZF0MhfwfsfPqT1B4imldB5bpeX7Gsh0P7eS80HCQY-xDQxcpl3WTyK5OoGkx7WY-cwRNgk4whgTwKxyH2ySG3j-OXLtLSg=
+gAAAAABkuL4eQMc2BnPeSoh8Dd45n3ok4BrgXVxlcMMGeIjurooKnRc7-EdyH9QPKjbyxqT1eCF6OQtgGKLRjEH5EpFJz7780Vh8MiZ0rkVmvXBAUIbQNsdtQh3PWeeZIBwlBF81iaMM7Qtf3yjUSUjakb3zKIlAsbe0J8qLP6dLsFqakEdnn0g3wAEShdRyVI2lDJUS_00x
+gAAAAABkuL4eZIm3l_raUGgHo8jkB8pkNOYOIMqDcr8CK3_znD0gbBCgiFnI-b7WhJXexhMwazg8d4eay5Wj9NTJhPmgNagIcFXJkd76-1_V1u4yFNgjRJv4pVcfnrZrEXYmVjWDjN30
+gAAAAABkuL4eh0Bodv6qakM8RAouWvtTJnj7TBVPEceItD3pXz215Hc5CkmCpSkhJs5CbgXt7l3vbTN1lhlMFhMboncFwfO5szspOr3ohiDoMAWsijreoKJXXTCU4_ddqYqplpPw4LXWzCpWR2nhEyTveGv_FhCQ3A==
+gAAAAABkuL4e9N8PVUqTSTbDDa3Kw9qvTlGARkVCI_yVu5n4Lx562GuLyvCtUBoej4RmxgoYNlI9xqltWASRCPgvbS4WIViidvxDVu_vPMsnQ7xXTM6XknY=
+gAAAAABkuL4eANwXvoW3LCJiL0bkftj9XhY-Ceh6KguzGX3UaTpI4vl10ItcxO7XM1XAMKlXcR9qoryEh4EVo4e2qByUb5O2UQ==
+gAAAAABkuL4eb2PCCTNQy2agk3MyXgNGn-Iz4xz4rLMyQgscboDksHgHyfH4Tvnm1Mgj32YwgokuMjdlvnhwGjnAYgXXJ2FqfkBHkXTC66rixL7VzvxgxJVgTjRsHzqhPWYBwnSVxnKe_LWUs9ePb8X-t7vItKlLAQ==
+gAAAAABkuL4e1siACUp0z0U3nCZUiwYsfY-nSbH765nDEraF13TcKnq5i9KR8WIoy40cGI_1hf0mqi8c2cjzTtscxJvnoO8Mvoq49hD8z75yjSgeEBfz18yX_mN9diFMHZ9Iu3G5Bqjdg0jPtPaKTv8ypXfX63Ahcg==
+gAAAAABkuL4eBkV_1sCxajYzIazWbTdznP-G69cgJqNY_fQBn3tDH-j44rz2C3_G63MQCZdGwqdMBM0ki6Gf5i4fD5ZrG1DzOg==
+gAAAAABkuL4eUto6psbiWgyyrl5RGdWl3cWkd2K1R-x0uz5DEhls_WeZo26rIUk2hnhDEY_XyIFZoZd9X6NQoJAoOBCIwKYrj941Yc5BRnOed9Nwp6le3ck=
+gAAAAABkuL4eHhh2v7biioPOlyzoRztrJTaBe7hCSkGzLUS-oVJf71bxGq0yvoHVslgIlfqf4xh3yu1zwMpWzR4Pr18O7Zp7rDl1qhxCoV1bRHlGLd2_c37JIqdUMZfKxp7ebSWd72BavLapwlEnYUDRygAm2BPU2A==
+gAAAAABkuL4exCXMie8ct4Fb4mTyuvcBCwS5ewGxjehxvI9ZmWTLPjfQecwsXLpNwriJ7Rl3D8WDeecYCoMjJBm_M9orB5ZSuB0zmzvdrKtQWBwmnvxlWY0=
+gAAAAABkuL4eu1Y6yyApqpUoxYC2dDxygcggW6k5kpW8vpJiLIU4jJkQYt2hHRB3CL_fXTf4VY85-RR7_-YFbkfNY36dYCkha-NNEnbxdW4ArsIBfrxgOmFB0VbeEao_7olnej-STd5woWMxhQF08rrKCvNuqn0Grg==
+gAAAAABkuL4e49mJ6NLbutiCMn5JEDSn4HV_-75oGJhIo6rR_aSTETheTB91tVBLy-8tfiRA_uykJ8xf8YnTVJ-cKBDLZAO5cA==
+gAAAAABkuL4f6vlzdzwbSII8gLeeKe0oVcG9pCzpK5jNtUbNByUrA9mNKbVYRzo9vHUYERsWReXnw-ZnYYdf4mV2ls0rrYKJA5-MO5MAVK8uA6QLJSFjFJC_hcCffSeSbp4iUOVu9gp1u7C-1YgW9BrwLFtYQO-4UL2Wn-QcXoVau3S7DgaS4sxUr9e02XzG5i1Kr11nYVSX
+gAAAAABkuL4fzTcuSAlEkuhnLCWR5sv8-SCrusKNVMi5x6EF9HqalpS-PSkgbCz9LdbzwFxyk-yZCZ9YnJXIN8Xdenl53xkkjQ==
+gAAAAABkuL4fbbQ2gTM3pkr2qSXqhzrtv5MmZJw24j2zr5oW9OdPI_G9mCfcuLSOmacCOL14Ewl9CVYK4dUEwLhjtrNBFLyElIYVZcRsf2njfdjTyduvELPS_cYsttzBLzLcpqNXlb4gvoAzUjGgAIz8d5Tuzs4d1A==
+gAAAAABkuL4fYShjZqMCHjG7i5X96sW7GMk4mTXn_kv06sQX5bRTek8HdC_-JhNX0ajVnKW8xXnZvhAWT6xObu06ofF1LyxaC6nG-CXC_4udqbk7Guc0g8c=
+gAAAAABkuL4fKiWROnYYaqFCU3NQZHNLKswSZBdEUy9nvUT7qXi8jQ40qQY5sRW-X5axB6M3VnAWp_sdDPCu3IxpvCHCQelH-7CHSzxSDnMpV_RIeb802ZxXP2yhbfmT7k4xASsbd8Ul
+gAAAAABkuL4f1XJ-OPAkxr_hACCVQyrhUqgDw7jFJfjLfEVilqrgGmKNUS5VWooYtSXLj_s7WfacEzZCTZ5TziQw-OSeMqSrezhWfpYr_Wg-GVJjNrByccjUOSnSgYyXGjUyFfhgACKv
+gAAAAABkuL4fv4tdbu5ogHnPsiVxLV1Ep3DzlGGbaXDsauEYEwTGCwIQim7Eqo28V-KYd72rtA_DMXiFCnJVFo1npqFNBmXKCOZq1D2NtLg1e9xD9T9t0Tw=
+gAAAAABkuL4fpE61sU1vYLH-CrUnzIQB8MosDgbnO_xQeIuuyCTZxGhibZarbvZzTbevN-0Jcl-36FNg0_-wBccZdzGw8Dli5Q==
+gAAAAABkuL4f4cKJwOGlPGhRL-EGfKe8q5iOJyz_mkDzttPoTSEAg46nq2Ndz7KoxXwHBtqIaH7pIzo8A7DHqiQmOWOcPzIsOTTSz6RmuQwumE0KOzPDCUs=
+gAAAAABkuL4fjrNUnneiN5EZTKAufj8B7E9pqU-4PzBDcJ4UjZXCTV9n1jPoaesWEPET8g7RVSXlJbxp6lEnkPOSbaCYDME_9A==
+gAAAAABkuL4fBeEVAf8s_DmsSQ1wHsPqTlsb5PwfgP859NdnTFJJYNL2u40nWuZzfeF47psLDC-MT7r9QS0U-76XLkAKX3lBcQ==
+gAAAAABkuL4f0QJJxqK63rySgjoOuO7mliBAIEgTYBFVXrHpgPXWXRRD_vQNkjEIwxPjgx09U_In1Ipz5tng-lI3PVDEQSBmbvZNyaR0ugxz0CcoZufDBl0WUalIVbxym9RzJlgBUZ4n
+gAAAAABkuL4fdobzOcAun_Y-emn5_ewPqWY5e99_4fPUqj3YrHlFXlCYqyEShYtfu1nF6H0H1poH60WIoOVi54uaOcNbtS6YXT9x3YwEywGHVB1T4bsmMdk=
+gAAAAABkuL4fBwelD5xQ6fKZPgSQ1DGyUoLgFfY9S43COiobS9TIQRAz-1-Xh6_7ZzFszQkCwIuACBvoba3-4IDxKiP1b2gHKZiVtGZPfQjJZzy37IUJXn6RIPNJJhG-Bw8pUZ0uPbDIUWKiL6IXFOCcw7ujhc15UGdaNYuCNpwRZtHpkv4kZ4zYeFLNYJ6F0QIW5xw-eITl
+gAAAAABkuL4fr6moNUyM4K-PNgpHeyYXRUL02p42ycq-yhdng8hU0ZUdCBMUBeUGwIodTZk3PHMNtJZZJKeU-S_IM9Mg6p2uu6C-sY7IYn_ejSK2Gta5J8pinjG19dr2mGgujyIo0pho4ahgPU-YXw9MdcBKJSJVdA==
+gAAAAABkuL4feRKL6HWAiokw1jSTVzDsvT7yI8ndKyCkgTHVKWioGDx00qhX4V_hWn5WTh0T4Q_KgDHsmcBHsSZbQoxzaPGSB1s9tkQVQhuqDE0ooVWV0SM=
+gAAAAABkuL4fU7ZlcIngiECSYW8hViBaRk_LngAmFxYIrX0K1wUS5wTtqtphysJ9ZujCzRct5whJntHnwTmB8ZIPSzhJMRj7WRoEnVTKI6IMgFxlb7DBKHzdUeL5vdgynmnUW57TRuCx
+gAAAAABkuL4fluDAvdKOJ4KZEOfwZ9EofV7yGBc4UcrVciWemJlCNUkVLtzK-Q6YVnot72TLPILqvu3IKEcX8ZuREvj2auZilyxePZtMSLF5MGB8K4Ona19pof1kTpAzrI56PSTn5zCeujdXm9Crv3AXc7UyzXrf_w==
+gAAAAABkuL4f0WqJSDYbwdO4lW66f7vq06RxC6mZAWtL4vHRSXfbXwITsLPOqWw2lQYWz8HrzMidBlI9S1VLZEN2tj0TVzlMvdVdpyi15cnrAGNv4q-USZhL0f6U0wjTVM_eSId3qFpmFa6VsASK4WMdJ4N2Dnj2dA==
+gAAAAABkuL4fWVkypoZ3HOAtcYV19aNn1qn7tp45CyLl0P7vPY-9QNR0VedcvO0cw_lAVuL3x1gToyYh4rEx-trjrqnJLXEZRlIzVAVDLBx9ZiV0DANm-gg=
+gAAAAABkuL4fc_TpL3vCglZkUKz_8pHeUxBdvSp9TPYqbFkPNPTKSbuD7eEMCg4vkK2esxwDsi1IqVmWDsZ7j2_OTC759iy8HoZkWqvSIIpvPtJ_vJrh7TAixk-t9O2d18CN0iWbTvCGhp1zgijTPjLAMMIiveXlmQ==
+gAAAAABkuL4fU_VAisq8COlX6aTqECyZfBIci6FSePYNqyG6Jy7erfHPygTuluWs8W_B-KGpym-gkvZ7Eflpg9gObTKfkL3t-A==
+gAAAAABkuL4gUbeRF_kanTX7K80e2MHNDmThV00140LksZdB9soAjmJ0OYtaZZvU5nG2ObYBgftEth2tVLMU7N9pSd6gUbsI50GR6X5Z6DeoIuO6S_ABNRLoMKclU8jDoBur0I_xPD8uHpe2Sk9HcJ9pT4txXj21UzyxgwEwHPwnp6_ScSOBnxTOBWp3CQLqlppcHgUGc9Jn
+gAAAAABkuL4gxB1Sf0UwIAuYZnjDiPw-YaBw5fJrlVzLJtysS5-gVAfr_PNJ25u7B27ptScJKky9GD5YCAK2YdNa7pr13xCzBw==
+gAAAAABkuL4gq9Q6bMGkFfh-YWaYDpMFbSorRDcOglRspYklpLi5v5F0hSWbGvxAOhiuLDKWJIsgCG9oZHWW1lqk-l6YmiJxmA==
+gAAAAABkuL4gZ5uTnA5HkB3QjEhMDG35PKR5acRwRMb8Dc8TdqQNERX3kuNWRKnhA788-pOHURnbSayYmu_CozTtAyFn97TfT3M3xL6Dzp7kob1GuxnNJf5XhkgZ2RwcdZ3tvP74MOlJ
+gAAAAABkuL4g5NTT4uinVLPvi5YahpAvrXWJGjjpxmxJ4zukU2OcGDrEGTYKcRmvulCCXc3KInK1Us_u3k1e6dI-8nRXcVmiLqV--8ba7NPcGW7k7l8txvlQHQ1eHqI3QRj1mKKttakjz_4SxTWj0vfj0d0si0kZGA==
+gAAAAABkuL4gYXDrZ83NESDWX9zxyULwrXW73k2glD3Bx9dsO1fjD_W3CXtqqibp1IthuM0IntVuIhdujlWiTGtRplB80cO9S2JOgsKrh2-jlFpIyTzXO1F7urWu9GhC046pDONAxVQJ
+gAAAAABkuL4g9NNxKmQQOMHAA1Y8JFzzgBvhlIZU2Kh-HPEPi_UY1IAcW3ESod7T7yZtBQGuxQYWRtiYyKyUYrARMy6znpnS3Lcdi8gFK0fcWNHtMPTqz18anhede4o0IqwtA9mCaIjx
+gAAAAABkuL4ghWcTIHB_xRH6ELMCZgJ0oizDd_6eziLnuHg79lFjXRNm6zDauiwYjaKP3Tw3H480YdZZCMw1LUyDOpu83QlqKEiTEgRljg-OD0bR6ElSuNYFP5rCCRGpQ3nmFzsfj-kAUnMDFd4woBG26rkdriGvtg==
+gAAAAABkuL4gP-73B-pUVmAv_xTby9pYLny2ltpFvXBmfPgRNSneYtrXy2TKxL8JiybOLUmHyRV_Gvg7ZxafvOFuwiy8VniIHEz954IU_3M10Pv8BpcfgFGe3Yr-G67FBV6nyxb6MIwH
+gAAAAABkuL4g0vPLM1StTXcPpFO-0bc5Uhx-bafVxmxdIjVlcFkc5g7Rd7NzeZPV3kY0DJGYUzAYbNx_45pw8kJCUILFpO0JVOScqql0ReYJER3TP6fzgENniuwgoh1AuW2KaMXzNRxexCkD0HYEUmhphslGDG_suKm7pnjVsDlZFjag5ON1J6k9qEZ_169KcE92nZi0yx7X
+gAAAAABkuL4gi59CRrcKkpm3WrWsuNkRWBDD4N2SOEi0CEkYOKTLfg2gjHEi0jyIkOmugjQNo_JpwNMDfOftwMuvKsGEk6stew==
+gAAAAABkuL4gVxGuigb7oSuWdoFbkSSg0fF_lYizF3WOFRRRuxGN2blULf9lFrUA_7iRyGo3DbEvzM50R6F1CZsdXPNh61xso6mazBapJ95HIPAYbsrblorq3msNRv9DyMGMP3sncohp
+gAAAAABkuL4gU4w4PmbivaYPmk05-dywzWgU3qlfnaRqQ1zhUny4B-BWLD6eW-W8CuBzdmGI8fGT5xRHvcezdBssoX4n6D8clDTJSg8QgkWBom60B8TY2PcRIS0Bpppi5Kdt3PD-FIlJdKbViiooDNSCNAV1B2BfhQ==
+gAAAAABkuL4gxEDT36-dJufjEx8xBQJA_KLmsEO9trzyrnak-PoT1Q1QPHshTIrIqfAC2dQKOmhF0BEgpA_ZwdLvsv3_nqakBw==
+gAAAAABkuL4gXjRNxWjHV1kZ93VI8TdajGqWk9nmDagf0rCfgvt4YOZP0vXODREZRv-aObW9NpZimbXLnlMFNTeB5-ZXOmcJsVq0ujes6-Dm1yUWsvkiz7I=

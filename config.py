@@ -2,7 +2,8 @@ import os
 import sys
 import uuid
 import getpass
-import winreg
+if sys.platform == 'win32':
+    import winreg
 from termcolor import colored
 from setuptools.errors import PlatformError
 from loguru import logger
@@ -83,9 +84,16 @@ for efile in efiles:
 
 
 def set_env_variable(name, value):
-    key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment", 0, winreg.KEY_ALL_ACCESS)
-    winreg.SetValueEx(key, name, 0, winreg.REG_SZ, value)
-    winreg.CloseKey(key)
+    if sys.platform == 'win32':
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment", 0, winreg.KEY_ALL_ACCESS)
+        winreg.SetValueEx(key, name, 0, winreg.REG_SZ, value)
+        winreg.CloseKey(key)
+    elif sys.platform == 'linux':
+        with open('/etc/environment', 'a') as envir:
+            envir.write(f'\nexport {name}={value}')
+            envir.close()
+    else:
+        raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
 
 
 id_processor = __import__("hashlib").md5()

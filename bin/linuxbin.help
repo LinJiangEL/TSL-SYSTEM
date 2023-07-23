@@ -1,0 +1,7 @@
+"help":"Print this help message and exit."
+"sudo":"Execute command as a SuperUser."
+"execute":"Execute built-in system tools."
+"user":"Manage system users. [user COMMAND **ASSIGNMENTS]"
+"trunc":"Calling external command(from mother system) [trunc EXTERNAL_CMD]"
+"internal":"Calling internal command(from built-in system) [internal BUILT-IN_CMD]"
+"exit":"Exit current user login."

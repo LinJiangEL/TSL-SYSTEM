@@ -12,7 +12,7 @@ Explorer Lab. Built-in SYSTEM. It can only work on Windows(version >= 10) or Lin
     系统名称为TSL-SYSTEM，开发版本为5.17.4。
     可运行在Windows10以上以及Debian, Ubuntu, CentOS等内核版本高于5.9的系统。
 
-    TSL-SYSTEM采用了以python为主，C和nodejs为辅的搭建方式，利用python的跨平台性和可移植性，用C语言做速度优化，
+    TSL-SYSTEM采用了以python为主，C语言和nodejs为辅的搭建方式，利用python的跨平台性和可移植性，用C语言做速度优化，
     很大程度上提高了系统性能，简化了调用过程，并增加了日志记录模块。
 
 ### 关于作者

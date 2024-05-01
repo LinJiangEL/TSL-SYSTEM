@@ -36,6 +36,7 @@ stdIO = logger.add(sys.stderr,
                    format=SYSTEM_STDOUT_LOGFORMAT,
                    level="INFO"
                    )
+null = "NUL 2>&1" if sys.platform == "win32" else "/dev/null 2>&1"
 Tools_DIR = os.path.join(SYSTEM_DIR, 'tools')
 SYSTEM_DIGMAX = 8
 SuperUser = ['root']
@@ -62,10 +63,12 @@ if sys.platform in ['win32', 'linux']:
 else:
     raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
 
-ffmpeg_path = r"D:\ffmpeg\bin\ffmpeg.exe" if sys.platform == "win32" else "/usr/bin/ffmpeg"
+ffmpeg_path = r"D:\ffmpeg\bin\ffmpeg.exe" if sys.platform == "win32" else "ffmpeg"
 
 if sys.platform == 'linux':
     packagemgr = get_packagemgr(["pkg", "apt", "yum", "dnf"])
+
+istermux = True if "termux" in os.getcwd() or "com.termux" in os.environ["SHELL"] else False
 
 help_keys = []
 help_values = []

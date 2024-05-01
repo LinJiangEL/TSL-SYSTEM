@@ -6,19 +6,20 @@ import json
 import time
 import urllib
 import requests
-import playsound
 import py3langid
 from urllib import request, parse
 from translate import Translator
 from fake_useragent import UserAgent
 from setuptools.errors import PlatformError
 from tools.MultiMedia.Extract_wav import Extract_wav
+from tools.MultiMedia.Audio import AudioPlayer
 from tools.__built_in__.GetInfo import GetResourcePath
 
 if sys.platform == 'win32':
     os.system("rem TSL-SYSTEM-Translate-Module")
 
 Main_DIR = os.path.dirname(os.path.abspath(GetResourcePath(__file__)))
+AudioPlayer = AudioPlayer()
 audiofile = ''
 audiofiles = ''
 
@@ -91,15 +92,15 @@ class Youdao:
                           f'{Main_DIR}/Speech_EN/' + word + '.wav']
         if audiotype == 'US_EN':
             print('Playing US Audio ... ', end='', flush=True)
-            playsound.playsound(audiofiles[0])
+            AudioPlayer.play(audiofiles[0])
             print('done.\n')
             time.sleep(1)
             print('Playing EN Audio ... ', end='', flush=True)
-            playsound.playsound(audiofiles[1])
+            AudioPlayer.play(audiofiles[1])
             print('done.\n')
         else:
             print(f'Playing {audiotype} audio ... ', end='', flush=True)
-            playsound.playsound(audiofile)
+            AudioPlayer.play(audiofile)
             print('done.\n')
 
     def _getURL(self):

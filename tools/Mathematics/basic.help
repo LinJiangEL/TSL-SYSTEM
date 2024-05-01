@@ -1,0 +1,49 @@
+<TSL-SYSTEM Tools> %Mathematics@basic, The TSL-SYSTEM Mathematics Tool's Basic Calculations Module.
+Usage: IDENTIFY/SYMBOL [ARGUMENTS]
+Examples: add 1,2
+          div 3,9
+          sqrt 8
+
+A module which can provide most of basic calculations for users.
+
+Symbols:
+    add a,b        Add two operands.
+    sub a,b        Subtract two operands.
+    mul a,b        Multiply two operands.
+    div a,b        Divide two operands.
+    mod a,b        Return the modulus of the operands.
+    pow x,a        Return 'x' to the 'a' power.
+    abs x          Return the absolute value of the operand 'x'.
+    sqr x          Return the square of the operand.
+    sqrt x[,y]     Return the 'y' root of 'x'. [y, OPTIONAL, default: 2]
+    fdiv a,b       Return the result of the divisible operands.
+
+Arguments Options:
+    a,             It is a operand which must follow <Operands Format Rule>.
+    b,             It is a operand which must follow <Operands Format Rule>.
+    x,             It is a operand which must follow <Operands Format Rule>.
+    y,             It is a operand which must follow <Operands Format Rule>.
+
+Identifies:
+    @help,         Print this HelpPage.
+    @exit,         Exit Mathematics tool, and it will return to ExecuteShell if
+                   it got 'True', otherwise it will return to Terminal.
+    @flush,        Flush the module buffer.
+
+<Operands Format Rule>
+  1. The operand cannot contain characters other than Arabic Numerals.
+  2. The expected decimal places should be less than 8.
+  3. If there are two operands, they should be separated by ',',
+     and there can be no other characters between them.
+  4. If there are two or more groups of operands to be operated on,
+     they should be separated by spaces. [Still Under Development.]
+
+<Result Format>
+  1. The output of 'Result (2)' has two decimal precision.
+  2. The output of 'Digits (SYSTEM_DIGMAX)' has decimal precision specified by the sysconfig.
+     [SYSTEM_DIGMAX, default: 8]
+  3. The output of "Fraction" is "None" by default, except for calculation similar to division.
+  4. The output of "Sqrt" is "None" by default, except for calculation similar to radical formula.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

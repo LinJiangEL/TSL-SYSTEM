@@ -1,0 +1,37 @@
+<TSL-SYSTEM Tools> %Mathematics@advanced, The TSL-SYSTEM Mathematics Tool's Advanced Calculations Module.
+Usage: FUNCTION(ARGUMENTS)
+Examples:    Solve_equation(3x+6,0)     Solve_equations(3x+y=0,x-y=4)
+            Solve_equation(3*x+6,0)     Solve_equations(x^2+2y-z=0,x^2=4y,z=6y)
+           Solve_equation(4x^2-4,0)     Solve_equations((x+y)/3=0,x-y=4)
+          Solve_equation(4/x^2-4,0)     Solve_equations(3/x+y=0,x-y=4)
+          Solve_equation(3x^-2,9)
+          P(9,8)  P(8,9) C(5,2) C(90,90)
+
+A module which can provide some of advanced calculations for users.
+
+Functions:
+    Solve_equation(exp1, exp2)            Solve the equation 'exp1 = exp2' and return its result.
+    Solve_equations(eq1, eq2[, ...])      Solve the equations 'eq1&eq2&...' and return the result.
+    P[ermutation](n[, m])                 Calculate permutation, 'n' or 'm' must be a positive integer.
+    C[ombination](n[, m])                 Calculate combination, 'n' or 'm' must be a positive integer.
+
+Identifies:
+    @help,         Print this HelpPage.
+    @exit,         Exit Mathematics tool, and it will return to ExecuteShell if
+                   it got 'True', otherwise it will return to Terminal.
+    @flush,        Flush the module buffer.
+
+<Expression And Equation Format Rule>
+  1. Numerals in the expression or equation cannot contain characters other than Arabic Numerals.
+  2. exp: It can include many symbols like 'x', 'x1', 'ab', 'llvm' and so on.
+     But '=' or other special characters cannot be included.
+     There must be two expressions here.
+  3. eq: It can include many symbols like 'x', 'x1', 'ab', 'llvm' and so on.
+     Also, each equation must include '=' except other special characters.
+     There must be at least two equations here.
+  4. The expected decimal places should be less than 8.
+  5. If there are two or more equations, they should be separated by ','.
+  6. If there are two or more equations, they should be separated by ','.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

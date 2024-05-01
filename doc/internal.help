@@ -1,0 +1,10 @@
+<TSL-SYSTEM Terminal> $internal, A command which makes TSL-users can execute built-in commands.
+Usage: internal COMMAND
+
+Calling internal command(From Built-in System).
+
+Command Options:
+    COMMAND,          Internal System Built-in Command.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

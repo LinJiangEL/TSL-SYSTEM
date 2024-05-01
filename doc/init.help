@@ -1,0 +1,14 @@
+<TSL-SYSTEM Terminal> $init, A command which can initialize the system code.
+Usage: init [NUMBER]
+
+Initialize the system code and work instantly.
+SuperUser permission is required before executing this command.
+
+Command Options:
+    NUMBER,          Integer from -31 to 32.
+                     If it is not specified, system code will be initialized to 0.
+                     'init -1'  ==  'logout';
+                     'init 0'   ==  'exit';
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

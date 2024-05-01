@@ -1,0 +1,11 @@
+<TSL-SYSTEM Terminal> $trunc, A command which makes TSL-users can execute external commands.
+Usage: trunc COMMAND
+
+Calling external command(From Mother System).
+SuperUser permission is required before executing this command.
+
+Command Options:
+    COMMAND,          External System Command.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

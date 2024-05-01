@@ -1,0 +1,12 @@
+<TSL-SYSTEM Terminal> $sudo, A command which makes TSL-users can execute command as a SuperUser.
+Usage: sudo [COMMAND]
+
+Execute command as a SuperUser.
+SuperUser permission is required before executing this command.
+
+Command Options:
+    COMMAND,          Give SuperUser permission to current user to execute the followed command.
+                      If it is not specified, nothing will happen.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

@@ -1,0 +1,45 @@
+<TSL-SYSTEM Terminal> $logger, The TSL-SYSTEM-LoggerManager.
+Usage: logger ASSIGNMENT [ARGUMENTS]
+Examples: logger list
+          logger read LOGFILE/LOGTIME
+          logger write LEVEL MESSAGE [--log LOGFILE]
+          logger delete LOGFILE/LOGTIME
+          logger flush
+
+A manager which can manage TSL-Logs.
+SuperUser permission is required before executing some commands of it.
+
+Commands:
+    list,            List all available logfiles.
+    read,            Read texts from a available logfile.
+    write,           Write some messages to a customized logfile.
+    delete,          Delete a available logfile.
+    flush,           Flush TSL-LOGDIR. (OBSOLETE)
+
+Read Options:
+    LOGFILE,         It is a string which must follow <Logfile Format Rule>.
+    LOGTIME,         It is a string which must follow <Logtime Format Rule>.
+
+Write Options:
+    LEVEL,           Set the level of the message.
+                     (Optional Switches: info, debug, warning, error, critical)
+    MESSAGE,         Set the message.
+    --log,           Set the filename to the logfile. (OPTIONAL, default: 'stdout')
+                     When it is set to 'stdout', it will not create logfile.
+
+Delete Options:
+    LOGFILE,         It is a string which must follow <Logfile Format Rule>.
+    LOGTIME,         It is a string which must follow <Logtime Format Rule>.
+
+<Logfile Format Rule>
+  1. The string cannot contain characters other than ASCII.
+  2. The string length should be less than 32.
+  3. The string must have the suffix '.log' or be set to 'stdout'.
+
+<Logtime Format Rule>
+  1. The string must has one and only one '-' character.
+  2. The string before '-' is year, the string after '-' is month.
+  3. The string length is 4+1+2. [xxxx-xx]
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

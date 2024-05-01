@@ -1,0 +1,11 @@
+<TSL-SYSTEM Terminal> $help, A command to show TSL-SYSTEM-HelpPage.
+Usage: help [COMMAND]
+
+Print HelpPage text and exit.
+
+Command Options:
+    COMMAND,          System built-in Terminal Command.
+                      If it is not specified, SystemUsageHelpPage will be printed.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

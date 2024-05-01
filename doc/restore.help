@@ -1,0 +1,15 @@
+<TSL-SYSTEM Terminal> $restore, A command which can restore system from a existed image.
+Usage: restore [-l] [IMAGEFILE]
+
+Restore system from a historical image.
+SuperUser permission is required before executing this command.
+
+Command Options:
+    -l,                 List all available images.
+    IMAGEFILE,          Existed image in ImageDIR (Conflict with -l switch).
+                        If it is not specified, you will be prompted to provide the image's filename.
+                        When it prompted but then you regretted your operation,
+                        you can press Enter or Ctrl-C to return.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

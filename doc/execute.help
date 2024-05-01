@@ -1,0 +1,13 @@
+<TSL-SYSTEM Terminal> $execute, A command which can run TSL-tools.
+Usage: execute [TOOLNAME]
+
+Execute built-in system tools.
+
+Command Options:
+    TOOLNAME,          System Built-in Tools.
+                       If it is not specified, ExecuteShell will be launched.
+                       <AvailableTools>: ["Mathematics", "Passwd", "Translate", "StudentsInfoDatabase"]
+                       <DevelopingTools>: ["Chemistry", "Network", "MultiMedia", "Philosophy"]
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

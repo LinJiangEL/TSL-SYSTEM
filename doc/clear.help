@@ -1,0 +1,7 @@
+<TSL-SYSTEM Terminal> $clear, A command to clear the terminal's stdout.
+Usage: clear
+
+Clear the stdout and print motd.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

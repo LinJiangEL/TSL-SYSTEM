@@ -1,0 +1,70 @@
+<TSL-SYSTEM Terminal> $user, The TSL-SYSTEM-UserManager.
+Usage: user ASSIGNMENT [ARGUMENTS]
+Examples: user add USERNAME [--mode user/root] [--password PASSWORD]
+          user remove USERNAME
+          user list [--mode user/root/all]
+          user info USERNAME
+          user set username TARGET NEW_VALUE
+          user set mode TARGET user/root
+          user set password TARGET [NEW_VALUE]
+
+A manager which can manage TSL-Users.
+SuperUser permission is required before executing some commands of it.
+
+Commands:
+    add,             Add a user to Login Database.
+    remove,          Remove a user from Login Database.
+    list,            List all eligible TSL-Users.
+    info,            Query a user from Login Database.
+    set,             Modify a user from Login Database.
+
+Add Options:
+    USERNAME,        Set the username of the newly added user.
+    --mode,          Set the mode of the newly added user. (OPTIONAL, default: 'user')
+                     (Optional Switches: user, root)
+    --password       Set the password of the newly added user. (OPTIONAL)
+
+Remove Options:
+    USERNAME,        Set the username of the target which needs to be remove.
+
+List Options:
+    --mode,          Set the mode of querying to list eligible TSL-Users. (OPTIONAL, default: 'all')
+                     (Optional Switches: user, root, all)
+
+Info Options:
+    USERNAME,        Set the username of the target which needs to be shown infomations.
+
+Set Options:
+    username,        Modify TSL-Users username.
+    mode,            Modify TSL-Users mode.
+    password,        Modify TSL-Users password.
+
+Set Username Options:
+    TARGET,          The TSL-User which you want to modify.
+    NEW_VALUE,       The new username which you want to set to the target.
+                     If it is equal to OLD_VALUE, UserMgr will ignore your modification request.
+                     It is a string which must follow <Username Rule>.
+
+Set mode Options:
+    TARGET,          The TSL-User which you want to modify.
+    NEW_VALUE,       A new mode which you want to set to the target. It is a switch.
+                     If it is equal to OLD_VALUE, UserMgr will ignore your modification request.
+                     (Optional Switches: user, root)
+
+Set password Options:
+    TARGET,          The TSL-User which you want to modify.
+    NEW_VALUE,       The new password which you want to set to the target. (OPTIONAL)
+                     If it is equal to OLD_VALUE, UserMgr will ignore your modification request.
+                     It is a string which must follow <Password Rule>.
+
+<Username Rule>
+  1. The string length must range from 4 to 12.
+  2. The string must be a Python valid identifier.
+
+<Password Rule>
+  1. The string length must be more than 6.
+  2. The string cannot contain characters other than ASCII, but only #$&* permitted.
+  3. The string can contain some very special characters, but we don't recommend you to do so.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

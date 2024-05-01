@@ -1,0 +1,7 @@
+<TSL-SYSTEM Terminal> $logout, A command to log out current user.
+Usage: logout
+
+Log out current user and return back to system login page.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>
+

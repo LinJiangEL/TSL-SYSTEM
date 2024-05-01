@@ -1,6 +1,8 @@
 .ssh/
 .idea/
+.venv/*
 __pycache__/
+*.exe
 backup/TSL-SYSTEM-BACKUP-FILES/*.tar.gz
 Temp/*.gz
 Temp/*.zip
@@ -11,3 +13,4 @@ Temp/*.txt
 Temp/test_*.py
 Temp/PwdUser
 tools/StudentsInfoDatabase/Datas.xls
+tools/Psycology/tarot/cards/*

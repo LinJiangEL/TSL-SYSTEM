@@ -68,7 +68,10 @@ ffmpeg_path = r"D:\ffmpeg\bin\ffmpeg.exe" if sys.platform == "win32" else "ffmpe
 if sys.platform == 'linux':
     packagemgr = get_packagemgr(["pkg", "apt", "yum", "dnf"])
 
-istermux = True if "termux" in os.getcwd() or "com.termux" in os.environ["SHELL"] else False
+if sys.platform == 'linux':
+    istermux = True if "termux" in os.getcwd() or "com.termux" in os.environ["SHELL"] else False
+else:
+    istermux = False
 
 help_keys = []
 help_values = []

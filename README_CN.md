@@ -14,7 +14,7 @@ README Document  [English](/README.md) | [Chinese](/README_CN.md)
 1. 将此存储库克隆到您的本地存储并进入到该目录。
 2. 运行`python3 -m venv .venv`，它将创建一个虚拟终端。
    如果您已经部署了虚拟环境，您可以直接运行`run-venv.bat`
-3. 请运行`pip3 install -r Temp\__prebuild__\win32\modlist.txt`
+3. 请运行`pip3 install -r Temp\__prebuild__\win32\modlist.txt`，
    如果在安装过程中出现错误，您可以在线搜索解决方案。目前，我已经为在Windows环境中安装`pygobject`时出现的错误"msvc_recommended_pragmas.h not found"提供了[可行的解决方案](https://blog.csdn.net/qq_56086478/article/details/136005175) 。
 4. 运行`python3 system.py`，输入用户名和密码登录系统终端。
    如果在系统自检过程中遇到不可忽视的错误，程序会立刻停止运行，所以请不要修改一些关键代码以防止程序崩溃，也不要删除源码目录下的文件，如果报错找不到库，请用`pip`安装那个库。
@@ -23,7 +23,7 @@ README Document  [English](/README.md) | [Chinese](/README_CN.md)
 1. 将此存储库克隆到您的本地存储并进入到该目录。
 2. 运行`python3 -m venv .venv`，它将创建一个虚拟终端。
    如果您已经部署了虚拟环境，您可以直接运行`source .venv/bin/activate`
-3. 请运行`pip3 install -r Temp\__prebuild__\linux\modlist.txt`
+3. 请运行`pip3 install -r Temp\__prebuild__\linux\modlist.txt`，
    如果在安装过程中出现错误，您可以在线搜索解决方案。
 4. 运行`python3 system.py`，输入用户名和密码登录系统终端。
    如果在系统自检过程中遇到不可忽视的错误，程序会立刻停止运行，所以请不要修改一些关键代码以防止程序崩溃，也不要删除源码目录下的文件，如果报错找不到库，请用`pip`安装那个库。

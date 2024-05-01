@@ -8,9 +8,11 @@ import urllib
 import requests
 import py3langid
 from urllib import request, parse
+from termcolor import colored
 from translate import Translator
 from fake_useragent import UserAgent
 from setuptools.errors import PlatformError
+from tools.Translate.getdictword import getword
 from tools.MultiMedia.Extract_wav import Extract_wav
 from tools.MultiMedia.Audio import AudioPlayer
 from tools.__built_in__.GetInfo import GetResourcePath
@@ -123,61 +125,42 @@ def translate(text):
     dest = 'en' if lang == 'zh' else 'zh-CN'
     translator = Translator(from_lang=lang, to_lang=dest)
     result = translator.translate(text)
-    return result
 
-
-def get_result(repsonse):
-    result = json.loads(repsonse)
-    print("")
-    print("Input : %s" % result['translateResult'][0][0]['src'])
-    print("Result : %s" % result['translateResult'][0][0]['tgt'])
     raf = open(f"{Main_DIR}/dict.txt", "r")
     ra = raf.readlines()
     a = open(f"{Main_DIR}/dict.txt", "a+")
-    wordinfo = '{"link":"youdao","' + result['translateResult'][0][0]['src'] + \
-               '":"' + result['translateResult'][0][0]['tgt'] + '"}'
+    wordinfo = '{"link":"youdao","' + text + '":"' + result + '"}'
     b = []
     for i in ra:
         b.append("".join(i.split('}')[0] + '}'))
     if wordinfo in b:
-        print("\033[33mWordResultWarning:word '" +
-              result['translateResult'][0][0]['src'] +
-              "' is existing！System will ignore response！\033[0m\n"
-              )
-    elif str(result['translateResult'][0][0]['src']) == str(result['translateResult'][0][0]['tgt']):
-        print("\033[33mWordResultWarning:word '" +
-              result['translateResult'][0][0]['src'] +
-              "' is as the same as its result！System will ignore response！\033[0m\n"
+        print("\033[33mWordResultWarning:word '" + text + "' is existing！System will ignore response！\033[0m")
+    elif str(text) == str(result):
+        print("\033[33mWordResultWarning:word '" + text +
+              "' is as the same as its result！System will ignore response！\033[0m"
               )
     else:
         a.write(wordinfo)
         a.write("\n")
         a.close()
-        print("\033[32mWordResultInfo:word '" +
-              result['translateResult'][0][0]['src'] +
-              "' has written into dictionary successfully！\033[0m\n"
-              )
+        print("\033[32mWordResultInfo:word '" + text + "' has written into dictionary successfully！\033[0m")
     raf.close()
+
+    return result
 
 
 def fanyi(keyword):
-    base_url = 'https://fanyi.baidu.com/sug'
-
-    data = {
-        'kw': keyword
-    }
-
-    data = parse.urlencode(data)
-
-    header = {
-        "User-Agent": UserAgent().random
-    }
-
-    req = request.Request(url=base_url, data=bytes(data, encoding='utf-8'), headers=header)
-    res = request.urlopen(req)
-    str_json = res.read().decode('utf-8')
-    myjson = json.loads(str_json)
-    info = myjson['data'][0]['v']
+    info = getword(keyword, Main_DIR)
+    if info is None:
+        base_url = 'https://fanyi.baidu.com/sug'
+        data = {'kw': keyword}
+        data = parse.urlencode(data)
+        header = {"User-Agent": UserAgent().random}
+        req = request.Request(url=base_url, data=bytes(data, encoding='utf-8'), headers=header)
+        res = request.urlopen(req)
+        str_json = res.read().decode('utf-8')
+        myjson = json.loads(str_json)
+        info = myjson['data'][0]['v']
     print("")
     print("Input :", keyword)
     print("Result :", info)
@@ -188,7 +171,7 @@ def fanyi(keyword):
     for i in ra:
         b.append("".join(i.split('}')[0] + '}'))
     if wordinfo in b:
-        print("\033[33mWordResultWarning:word '" + keyword + "' is existing！System will ignore response！\033[0m\n")
+        print("\033[33mWordResultWarning:word '" + keyword + "' is existing！System will ignore response！\033[0m")
     else:
         a.write(wordinfo)
         a.write("\n")
@@ -202,8 +185,7 @@ def main():
         print("")
         if tran_choice == "common":
             while True:
-                print("Input the word which you want to translate.")
-                word = input('Input：')
+                word = input(colored(f'({tran_choice}) Word：', color='magenta'))
                 if word == "@exit":
                     gc.collect()
                     raise StopIteration
@@ -226,7 +208,8 @@ def main():
                         tf.write('')
                     print('done.\n')
                 else:
-                    result = translate(word)
+                    result = getword(word, Main_DIR)
+                    result = translate(word) if result is None else result
                     print("")
                     print("Input : %s" % word)
                     print("Result : %s" % result)
@@ -234,8 +217,7 @@ def main():
             main()
         elif tran_choice == "senior":
             while True:
-                print("Input the word which you want to translate.")
-                word = input('Input：')
+                word = input(colored(f'({tran_choice}) Word：', color='magenta'))
                 if word == '@exit':
                     gc.collect()
                     raise StopIteration
@@ -272,8 +254,7 @@ def main():
             main()
         elif tran_choice == "reader":
             while True:
-                print("Input the word which you want to listen.")
-                word = input('Input：')
+                word = input(colored(f'({tran_choice}) Word：', color='magenta'))
                 if word == '@exit':
                     gc.collect()
                     raise StopIteration

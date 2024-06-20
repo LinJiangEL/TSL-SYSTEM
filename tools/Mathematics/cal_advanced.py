@@ -3,7 +3,9 @@ from scipy.special import comb
 from sympy import Eq, solve, factorial
 from sympy.core import Symbol
 from sympy.parsing.sympy_parser import parse_expr
-from config import SYSTEM_DIGMAX
+from cachetools import cached
+from config import SYSTEM_DIGMAX, CACHE
+
 
 class Advanced:
     def __init__(self):
@@ -13,6 +15,7 @@ class Advanced:
         self.error = errors
         return self.error
 
+    @cached(cache=CACHE)
     def Solve_equation(self, expressions: list):
         ecount = ','.join(expressions).count(',')
         if ecount != 1:
@@ -48,6 +51,7 @@ class Advanced:
 
         return solution
 
+    @cached(cache=CACHE)
     def Solve_equations(self, expressions):
         def _extract_variables(eqs):
             vars_set = set()
@@ -89,6 +93,7 @@ class Advanced:
 
         return _solve(equations)
 
+    @cached(cache=CACHE)
     def Permutation(self, n, m=None):
         m = n if m is None else m
         if n * m < 0 or isinstance(n, float) or isinstance(m, float):
@@ -98,6 +103,7 @@ class Advanced:
         else:
             return int(factorial(n) // factorial(n - m))
 
+    @cached(cache=CACHE)
     def Combination(self, n, m):
         if n * m < 0 or isinstance(n, float) or isinstance(m, float):
             return self.ReturnError("TypeError:'m' or 'n' must be a positive integer.\n")

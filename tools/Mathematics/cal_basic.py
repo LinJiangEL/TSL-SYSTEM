@@ -1,5 +1,6 @@
 import math
-from config import SYSTEM_DIGMAX
+from cachetools import cached
+from config import SYSTEM_DIGMAX, SYSTEM_POWMAX, CACHE
 from fractions import Fraction
 from decimal import Decimal
 
@@ -24,18 +25,22 @@ class Basic:
         return self.error
 
     # a + b
+    @cached(cache=CACHE)
     def add(self, a, b):
         return self.resultformat(cal_result=math.fsum([a, b]))
 
     # a - b
+    @cached(cache=CACHE)
     def sub(self, a, b):
         return self.resultformat(cal_result=math.fsum([a, -b]))
 
     # a * b
+    @cached(cache=CACHE)
     def mul(self, a, b):
         return self.resultformat(cal_result=a * b)
 
     # a / b
+    @cached(cache=CACHE)
     def div(self, a, b):
         if b == 0:
             return self.ReturnError("ZeroDivisionError: division by zero.")
@@ -53,10 +58,17 @@ class Basic:
             return self.resultformat(cal_result=a / b, cal_fraction=Fraction(a, b))
 
     # x ** a
+    @cached(cache=CACHE)
     def pow(self, x, a):
-        return self.resultformat(cal_result=math.pow(x, a))
+        try:
+            result = math.pow(x, a) if a < SYSTEM_POWMAX else float('inf')
+        except OverflowError:
+            result = float('inf')
+
+        return self.resultformat(cal_result=result)
 
     # a // b
+    @cached(cache=CACHE)
     def fdiv(self, a, b):
         if b == 0:
             return self.ReturnError("ZeroDivisionError: integer division or modulo by zero.")
@@ -64,6 +76,7 @@ class Basic:
             return self.resultformat(cal_result=a // b)
 
     # a % b
+    @cached(cache=CACHE)
     def mod(self, a, b):
         if b == 0:
             return self.ReturnError("ZeroDivisionError: integer division or modulo by zero.")
@@ -71,14 +84,17 @@ class Basic:
             return self.resultformat(cal_result=math.fmod(a, b))
 
     # |a|
+    @cached(cache=CACHE)
     def abs(self, x):
         return self.resultformat(cal_result=math.fabs(x))
 
     # x ** 2
+    @cached(cache=CACHE)
     def sqr(self, x):
         return self.resultformat(cal_result=math.pow(x, 2))
 
     # [y]√x
+    @cached(cache=CACHE)
     def sqrt(self, x, y=2, list_1=None, list_2=None) -> list:
         if len(str(x)) > 10:
             x = int(str(x)[:10])

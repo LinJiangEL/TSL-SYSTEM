@@ -6,6 +6,8 @@ warnings.filterwarnings('ignore')
 if sys.platform == 'win32':
     import winreg
 import getpass
+import math
+from cachetools import LRUCache
 from termcolor import colored
 from setuptools.errors import PlatformError
 from loguru import logger
@@ -39,9 +41,11 @@ stdIO = logger.add(sys.stderr,
 null = "NUL 2>&1" if sys.platform == "win32" else "/dev/null 2>&1"
 Tools_DIR = os.path.join(SYSTEM_DIR, 'tools')
 SYSTEM_DIGMAX = 8
+SYSTEM_POWMAX = math.log(sys.float_info.max)
 SuperUser = ['root']
 SYSTEM_PRINTER = 'cat' if sys.platform == 'linux' else 'type' if sys.platform == 'win32' else 0
 SYSTEM_CLEARSTDOUT = 'clear' if sys.platform == 'linux' else 'cls' if sys.platform == 'win32' else 0
+CACHE = LRUCache(maxsize=64)
 requirements_file = os.path.join(SYSTEM_DIR, f'{sys.platform}requirements.txt')
 if not os.path.exists(os.path.join(SYSTEM_DIR, "Temp/PwdUser")):
     with open(os.path.join(SYSTEM_DIR, "Temp/PwdUser"), 'w') as pwd:

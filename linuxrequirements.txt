@@ -1,6 +1,7 @@
 pymysql
 setuptools
 wget
+cachetools
 termcolor
 loguru
 colorama

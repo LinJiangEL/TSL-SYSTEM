@@ -4,6 +4,7 @@ wget
 win32
 win32api
 win32con
+cachetools
 termcolor
 loguru
 colorama

@@ -41,7 +41,6 @@ stdIO = logger.add(sys.stderr,
 null = "NUL 2>&1" if sys.platform == "win32" else "/dev/null 2>&1"
 Tools_DIR = os.path.join(SYSTEM_DIR, 'tools')
 SYSTEM_DIGMAX = 8
-SYSTEM_POWMAX = math.log(sys.float_info.max)
 SuperUser = ['root']
 SYSTEM_PRINTER = 'cat' if sys.platform == 'linux' else 'type' if sys.platform == 'win32' else 0
 SYSTEM_CLEARSTDOUT = 'clear' if sys.platform == 'linux' else 'cls' if sys.platform == 'win32' else 0

@@ -1,6 +1,6 @@
 import math
 from cachetools import cached
-from config import SYSTEM_DIGMAX, SYSTEM_POWMAX, CACHE
+from config import SYSTEM_DIGMAX, CACHE
 from fractions import Fraction
 from decimal import Decimal
 
@@ -61,7 +61,7 @@ class Basic:
     @cached(cache=CACHE)
     def pow(self, x, a):
         try:
-            result = math.pow(x, a) if a < SYSTEM_POWMAX else float('inf')
+            result = math.pow(x, a)
         except OverflowError:
             result = float('inf')
 

@@ -55,10 +55,9 @@ class UserManager:
         self.PwdUser = TempManager().ReadPwdUser()
         self.database = database_path
         self.databasefile = open(self.database, 'r')
-        self.userinfos = list(filter(lambda line: (not line.startswith('# ')) or line.strip() not in ['', '\n'],
-                                     [userinfo for userinfo in self.databasefile.readlines() if
-                                      (not userinfo.startswith('#')) or userinfo.strip() == '']))
+        self.userinfos = list(filter(lambda line: (not line.startswith('# ')) or line.strip() not in ['', '\n'], [userinfo for userinfo in self.databasefile.readlines() if (not userinfo.startswith('#')) or userinfo.strip() == '']))
         self.users = [user.split('@')[0] for user in self.userinfos]
+        self.superusers = list(filter(lambda info: 'root' == info.split('@')[1], [userinfo.split(':')[0] for userinfo in self.userinfos]))
         self.UserTable = PrettyTable(['User', 'Mode'])
         self.InputProcessor = InputProcessor()
 
@@ -318,6 +317,9 @@ class UserManager:
                 rewriteoptfile.write(info)
         rewriteoptfile.close()
         self.databasefile = open(self.database, 'r')
+
+    def issuperuser(self, username):
+        return True if username in self.superusers else False
 
 
 class LoggerManager:

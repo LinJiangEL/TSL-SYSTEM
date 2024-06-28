@@ -103,10 +103,7 @@ while True:
             passwd_processor.update(passwd)
             passwd = passwd_processor.hexdigest()
 
-            if encrypt(passwd, 3, SYSTEM_ID[:6]) == login_infos.get(
-                                        f"{username}@"
-                                        f"{'root' if username in admin_users else 'user'}"
-                                        ).strip():
+            if encrypt(passwd, 3, SYSTEM_ID[:6]) == login_infos.get(f"{username}@{'root' if username in admin_users else 'user'}").strip():
                 logger.info("Successfully log in the system. [USERINFO:('{user}')]", user=username)
                 print(colored('Successfully log in the system!\n', color="green"))
                 break
@@ -121,10 +118,7 @@ while True:
                     passwd_processor.update(passwd)
                     passwd = passwd_processor.hexdigest()
 
-                    if encrypt(passwd, 3, SYSTEM_ID[:6]) == login_infos.get(
-                                                f"{username}@"
-                                                f"{'root' if username in admin_users else 'user'}"
-                                                ).strip():
+                    if encrypt(passwd, 3, SYSTEM_ID[:6]) == login_infos.get(f"{username}@{'root' if username in admin_users else 'user'}").strip():
                         logger.info("Successfully log in the system. [USERINFO:('{user}')]", user=username)
                         print(colored('Successfully login the system!\n', color="green"))
                         break

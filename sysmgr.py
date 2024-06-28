@@ -51,10 +51,11 @@ class TempManager:
 
 
 class UserManager:
-    def __init__(self, database_path):
+    def __init__(self, database_path, opuser):
         self.PwdUser = TempManager().ReadPwdUser()
         self.database = database_path
         self.databasefile = open(self.database, 'r')
+        self.opuser = opuser
         self.userinfos = list(filter(lambda line: (not line.startswith('# ')) or line.strip() not in ['', '\n'], [userinfo for userinfo in self.databasefile.readlines() if (not userinfo.startswith('#')) or userinfo.strip() == '']))
         self.users = [user.split('@')[0] for user in self.userinfos]
         self.superusers = list(filter(lambda info: 'root' == info.split('@')[1], [userinfo.split(':')[0] for userinfo in self.userinfos]))
@@ -92,6 +93,7 @@ class UserManager:
                     new_info = f'{username}@{mode}:{encrypt(password.strip(), 3, SYSTEM_ID[:6])}'
                     self.userinfos.append(new_info)
                     self.users.append(username)
+                    self.superusers = self.superusers + [username] if mode == 'root' else self.superusers
                     with open(self.database, 'a+') as addoptfile:
                         addoptfile.write(new_info)
                         addoptfile.write('\n')
@@ -129,6 +131,7 @@ class UserManager:
                 self.userinfos = list(filter(lambda user: username != user.split('@')[0], self.userinfos))
                 self.users = [user.split('@')[0] for user in self.userinfos]
                 self.rewrite(self.userinfos)
+                self.superusers = list(filter(lambda info: 'root' == info.split('@')[1], [userinfo.split(':')[0] for userinfo in self.userinfos]))
                 print(f"Successfully remove a user named '{username}' from login database.\n")
                 logger.info(f"'{self.PwdUser}' removed a user from Login Database successfully. "
                             f"[USERINFO:('{username}')]"
@@ -231,6 +234,7 @@ class UserManager:
                 if _old_value != value:
                     self.userinfos[index] = f"{infotmp[0].split('@')[0]}@{value}:{infotmp[1]}"
                     self.rewrite(self.userinfos)
+                    self.superusers.remove(infotmp[0].split('@')[0]) if value == 'user' else self.superusers.append(infotmp[0].split('@')[0])
                     logger.info(f"'{self.PwdUser}' changed the user's mode successfully. "
                                 f"[USERINFO:('{target}', '{_old_value}' -> '{value}')]"
                                 )

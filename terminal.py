@@ -53,7 +53,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
     loggermgr = LoggerManager(SYSTEM_LOGPATH, SYSTEM_PRINTER)
 
     logger.info("Load sysmgr.UserManager.")
-    usermgr = UserManager(os.path.join(SYSTEM_DIR, 'Database/login.db'))
+    usermgr = UserManager(os.path.join(SYSTEM_DIR, 'Database/login.db'), USERNAME)
 
     while os.path.exists(Bin_DIR) and id_md5[2] is chr(int(0x66)):
         try:
@@ -111,6 +111,12 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 logger.info(f"{USERNAME} create an current system image. [IMAGEINFO:'{filename}']")
                 tempmgr.PwdUserTmpFile = open(os.path.join(SYSTEM_DIR, 'Temp/PwdUser'), 'r+')
             elif cmd_tmp[0] == 'restore' and len(cmd_tmp) <= 2:
+                if not is_root:
+                    print('sh: restore: Permission denied.\n')
+                    logger.info(f"{USERNAME} failed to execute 'restore' because {USERNAME} is a SimpleUser. "
+                                f"[CMDINFO:('restore', '{cmd_tmp[1:]}')]"
+                                )
+                    continue
                 if '-l' in cmd_tmp:
                     if not Images:
                         print("Empty images in BACKUP_DIR.")
@@ -202,7 +208,12 @@ def terminal(USERNAME, MODE, Bin_DIR):
                     value = cmd_tmp[-1] if len(cmd_tmp) == 5 else \
                         exec("print('OperationInterrupt:cannot get the new value.\n')") \
                         if key != 'password' else None
-                    usermgr.set(key, target, value)
+                    if target != USERNAME:
+                        print("Failed to change the password because user cannot change others' password. ")
+                        print('sh: user: Permission denied.\n')
+                        continue
+                    else:
+                        usermgr.set(key, target, value)
                 else:
                     if cmd_tmp[1] not in ['add', 'remove', 'list', 'info', 'set']:
                         print(f"AttitudeError:assignment '{cmd_tmp[1]}' is not defined in UserManager.\n")

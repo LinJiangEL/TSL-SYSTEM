@@ -93,7 +93,7 @@ class UserManager:
                     new_info = f'{username}@{mode}:{encrypt(password.strip(), 3, SYSTEM_ID[:6])}'
                     self.userinfos.append(new_info)
                     self.users.append(username)
-                    self.superusers = self.superusers + [username] if mode == 'root' else self.superusers
+                    self.superusers = [*self.superusers, username] if mode == 'root' else self.superusers
                     with open(self.database, 'a+') as addoptfile:
                         addoptfile.write(new_info)
                         addoptfile.write('\n')

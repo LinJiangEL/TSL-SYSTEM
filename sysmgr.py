@@ -286,7 +286,7 @@ class UserManager:
                                             )
                                 del value, confirmpasswd, original_password
                             else:
-                                print("Nothing happen because password is not changed.")
+                                print("Nothing will happen because password is not changed.")
                         else:
                             print("ValueError:confirmed password does not match the new password.\n")
                             return -1

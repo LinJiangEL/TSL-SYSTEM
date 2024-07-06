@@ -29,7 +29,7 @@ SYSTEM_DIR = os.path.dirname(os.path.abspath(GetResourcePath(__file__)))
 SYSTEM_LOGPATH = os.path.join(SYSTEM_DIR, "Temp/logs")
 SYSTEM_LOGFORMAT = "{time:YYYY-MM-DD HH:mm:ss} [{level}] {message}"
 SYSTEM_STDOUT_LOGFORMAT = "<blue>{time:YYYY-MM-DD HH:mm:ss}</blue> <level>[{level}]</level> <level>{message}</level>"
-SYSTEM_LOGSTDOUT = True
+SYSTEM_LOGSTDOUT = os.getenv("SYSTEM_LOGSTDOUT") is None
 if not os.path.exists(SYSTEM_LOGPATH):
     os.mkdir(SYSTEM_LOGPATH)
 logger.remove()

@@ -282,7 +282,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 print()
             elif cmd_tmp[0] == "exit" and len(cmd_tmp) == 1:
                 print('System shutdown ... ', end='', flush=True)
-                time.sleep(3)
+                time.sleep(1)
                 print('done.\n')
                 usermgr.databasefile.close()
                 logger.info("UserManager hostdown.")
@@ -290,13 +290,14 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 tempmgr.PwdUserTmpFile.close()
                 logger.info("TempManager hostdown.")
                 logger.info("System Terminal hostdown.")
-                time.sleep(1)
+                time.sleep(0.5)
                 return 0
             elif cmd_tmp[0] == 'logout' and len(cmd_tmp) == 1:
                 print(f"User '{USERNAME}' logout ... ", end='', flush=True)
                 usermgr.databasefile.close()
                 tempmgr.WritePwdUser()
                 tempmgr.PwdUserTmpFile.close()
+                time.sleep(1)
                 print('done.\n')
                 return -1
             elif cmd_tmp[0] == 'init' and len(cmd_tmp) <= 2:

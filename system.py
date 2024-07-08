@@ -137,7 +137,7 @@ while True:
     if syscode == -1:
         logger.info(f"Terminal returned syscode but nothing will happen. [syscode: {syscode}]")
         logger.info(f'The user "{username}" has logged out.')
-        time.sleep(2)
+        time.sleep(1)
         os.system(SYSTEM_CLEARSTDOUT)
         print('')
         login_datas = load_login_database(os.path.join(SYSTEM_DIR, 'Database/login.db'))

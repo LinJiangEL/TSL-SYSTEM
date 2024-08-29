@@ -151,6 +151,8 @@ def run():
                             result = f'Expression: {maincmd}({m},{n})\nResult: {numresult}\n' \
                                 if isinstance(numresult, int) else numresult
                             print(result)
+                    else:
+                        print(f"NameError:symbol '{maincmd}' is not defined in Advanced.\n")
                 except AttributeError:
                     print(f"NameError:symbol '{maincmd}' is not defined in Advanced.\n")
     else:

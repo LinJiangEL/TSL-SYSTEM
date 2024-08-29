@@ -1,6 +1,7 @@
 .ssh/
 .idea/
 .venv/
+.vs/
 **/__pycache__
 /*.exe
 backup/TSL-SYSTEM-BACKUP-FILES/*.tar.gz

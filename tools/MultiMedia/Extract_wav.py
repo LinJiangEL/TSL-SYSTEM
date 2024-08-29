@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import os
 from config import null, ffmpeg_path
 

@@ -1,4 +1,5 @@
-# -*- encoding:utf-8 -*-
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import os
 import sys
 import time

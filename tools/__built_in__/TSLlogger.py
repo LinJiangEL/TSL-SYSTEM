@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import sys
 
 SYSTEM_STDOUT_LOGFORMAT = "<blue>{time:YYYY-MM-DD HH:mm:ss}</blue> <level>[{level}]</level> <level>{message}</level>"

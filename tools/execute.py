@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 from loading import start
 
 _ok = "True"

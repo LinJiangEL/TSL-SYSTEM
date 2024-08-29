@@ -1,4 +1,5 @@
-import sys
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 from ast import literal_eval
 from prettytable import PrettyTable
 

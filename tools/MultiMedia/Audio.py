@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import os
 import playsound
 from config import null, istermux

@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 from collections import defaultdict
 from ast import literal_eval
 

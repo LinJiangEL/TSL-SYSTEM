@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import math
 from cachetools import cached
 from config import SYSTEM_DIGMAX, CACHE

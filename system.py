@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 from config import *
 from selfcheck import selfcheck_system, selfcheck_module
 

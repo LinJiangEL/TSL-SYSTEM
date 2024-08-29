@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import os
 import os.path
 import sys
@@ -38,13 +40,14 @@ done_event = Event()
 
 def handle_sigint(signum, frame):
     done_event.set()
+    return signum, frame
 
 
 signal.signal(signal.SIGINT, handle_sigint)
 
 
 def copy_url(task_id: TaskID, url: str, path: str) -> None:
-    """Copy data from a url to a local file."""
+    """Copy data from an url to a local file."""
     progress.console.log(f"Requesting {url}")
     response = urlopen(url)
     # This will break if the response doesn't contain content length

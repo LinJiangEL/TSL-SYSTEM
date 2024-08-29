@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import os
 import sys
 import uuid
@@ -6,7 +8,6 @@ warnings.filterwarnings('ignore')
 if sys.platform == 'win32':
     import winreg
 import getpass
-import math
 from cachetools import LRUCache
 from termcolor import colored
 from setuptools.errors import PlatformError
@@ -16,10 +17,10 @@ from tools.__built_in__.GetInfo import GetResourcePath
 
 Logger()
 SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loading.py', 'selfcheck.py', 'system.py',
-                'config.py', 'services.py',
-                'upgrade.py', 'sysmgr.py', 'motd', 'terminal.py', 'linuxrequirements.txt', 'win32requirements.txt',
-                'loading.py', 'motd', 'LICENSE',
-                'motd.jpg', 'README.md', 'VERSION']
+                'config.py', 'services.py', 'upgrade.py', 'sysmgr.py', 'motd',
+                'terminal.py', 'linuxrequirements.txt', 'win32requirements.txt',
+                'loading.py', 'motd', 'LICENSE', 'motd.jpg', 'README.md', 'README_CN.md', 'VERSION'
+                ]
 
 APIKEY_IDENTIFY = "TSL-SYSTEM-APIKEY" if sys.platform == 'win32' else "TSL_SYSTEM_APIKEY"
 APIKEY = getpass.getpass("Please input the permission password: ") if os.getenv(APIKEY_IDENTIFY) is None else \

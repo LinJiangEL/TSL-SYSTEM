@@ -1,6 +1,8 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import itertools, random
 
-# it create a list of tuples
+# it creates a list of tuples
 deck = list(itertools.product(
     range(1, 156),
     ['FOOL UPRIGHT: Beginnings, innocence, spontaneity, a free spirit',

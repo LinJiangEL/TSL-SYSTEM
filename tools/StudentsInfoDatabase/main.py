@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import os
 import sys
 import time
@@ -14,7 +16,6 @@ Help:
 
 Main_DIR = os.path.dirname(os.path.abspath(__file__))
 
-
 def Zodiac(month, day) -> str:
     month = int(month)
     day = int(day)
@@ -24,35 +25,7 @@ def Zodiac(month, day) -> str:
     return n[len(a) % 12]
 
 
-def make_birth_zodiac(info_index, table):
-    zhixue_tmp = database_temp.row_values(info_index)[9]
-    zhixue_id = int(zhixue_tmp) if zhixue_tmp != '' else 'N/A'
-
-    if database_temp.row_values(info_index)[8] != 'N/A':
-        birth = database_temp.row_values(info_index)[8][6:14]
-        birth_temp = birth[-4:]
-        zodiacmean = Zodiac(birth_temp[:2] if '0' not in birth_temp[:2] else birth_temp[1],
-                            birth_temp[2:] if '0' not in birth_temp[2:] else birth_temp[3]
-                            )
-        table.add_row(list(map(str, list(map(int, database_temp.row_values(info_index)[:2])))) +
-                      database_temp.row_values(info_index)[2:9] +
-                      [zhixue_id] +
-                      [birth, zodiacmean]
-                      )
-    else:
-        birth = 'N/A'
-        zodiacnomean = 'N/A'
-        table.add_row(list(map(str, list(map(int, database_temp.row_values(info_index)[:2])))) +
-                      database_temp.row_values(info_index)[2:9] +
-                      [zhixue_id] +
-                      [birth, zodiacnomean]
-                      )
-
-
 def run():
-    global database_temp, helpTable
-    helpTable = PrettyTable(['Command', ])
-
     print('-' * 32)
     print('|' + ' ' * 5 + 'StudentsInfoDatabase' + ' ' * 5 + '|')
     print('-' * 32)
@@ -67,6 +40,29 @@ def run():
         print('DatabaseNotFoundError:cannot found this database from the Available list! Default use the first one.')
         database_temp = database_file.sheet_by_index(0)
 
+    def make_birth_zodiac(info_index, table):
+        zhixue_tmp = database_temp.row_values(info_index)[9]
+        zhixue_id = int(zhixue_tmp) if zhixue_tmp != '' else 'N/A'
+
+        if database_temp.row_values(info_index)[8] != 'N/A':
+            birth = database_temp.row_values(info_index)[8][6:14]
+            birth_temp = birth[-4:]
+            zodiacmean = Zodiac(birth_temp[:2] if '0' not in birth_temp[:2] else birth_temp[1],
+                                birth_temp[2:] if '0' not in birth_temp[2:] else birth_temp[3]
+                                )
+            table.add_row(list(map(str, list(map(int, database_temp.row_values(info_index)[:2])))) +
+                          database_temp.row_values(info_index)[2:9] +
+                          [zhixue_id] +
+                          [birth, zodiacmean]
+                          )
+        else:
+            birth = 'N/A'
+            zodiacnomean = 'N/A'
+            table.add_row(list(map(str, list(map(int, database_temp.row_values(info_index)[:2])))) +
+                          database_temp.row_values(info_index)[2:9] +
+                          [zhixue_id] +
+                          [birth, zodiacnomean]
+                          )
     print('\nStarting database service ... ', end='')
 
     database = PrettyTable(['班级', '学号', '姓名', '性别', '是否住宿', '语种', '组合', '艺体生', '身份证号', '智学网号'])

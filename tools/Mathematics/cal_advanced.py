@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import re
 from scipy.special import comb
 from sympy import Eq, solve, factorial

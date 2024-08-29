@@ -1,3 +1,5 @@
+#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+
 import requests
 
 url = input("Please input website-url which is you want to check: ")

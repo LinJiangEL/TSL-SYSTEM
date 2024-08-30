@@ -43,11 +43,16 @@ def run():
                 continue
             if cmd == '@flush':
                 TempManager().Flush('Mathematics Basic Module')
+                continue
             maincmd = cmd.split(' ')[0]
             try:
                 exec(f"basic.{maincmd if maincmd[0] in string.ascii_letters else exec('raise AttributeError')}") \
                     if maincmd not in ['ReturnError', 'resultformat'] else exec('raise NameError')
-                num_argvs = cmd.split(' ')[1]  # 这里只取了第一组操作数，以后应改为可以计算多组操作数并返回结果。
+                num_argvs = cmd.split(' ')[1]
+                ismanyargvs = len(cmd.split(' ')[1:]) > 1
+                if ismanyargvs:
+                    print("ValueError:cannot process too many arguments.")
+                    continue
                 numab = [float(num) for num in num_argvs.split(',') if num != '']
             except AttributeError:
                 print(f"NameError:symbol '{maincmd}' is not defined in Basic.")

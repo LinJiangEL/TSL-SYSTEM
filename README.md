@@ -7,7 +7,7 @@ It is a system that integrates the functions of various disciplines.
 Out of my love for programming and open source, I have decided to make this project I have been working on for almost two years open source. Although it has taken me nearly two years to develop, I have mostly been working on it during my spare time at my senior high school, when I would sit by the window with a pen and paper to brainstorm its functionalities. Then, I would check the code for bugs using Pydroid3 on my phone when I got home in the evening. Writing code on paper is one of my favourite pastimes, and if you share the same interest, I would be happy to become friends and learn from each other to make progress together.
 
 ## Install and Use
-***Before all installation and use steps begin, please make sure that your python version is 3.9.6 and above, the C runtime is installed in the system, and the packages and modules that this project depends on can be installed correctly.***
+***Before all installation and use steps begin, please make sure that your python version is 3.9.6 or above, the C runtime is installed in the system, and the packages and modules that this project depends on can be installed correctly.***
 
 ### Windows:
 1. Clone this reposity to your local storage and enter the directory.

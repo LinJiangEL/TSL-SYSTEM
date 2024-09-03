@@ -20,3 +20,4 @@ playsound
 fake_useragent
 prettytable
 tqdm
+cachetools

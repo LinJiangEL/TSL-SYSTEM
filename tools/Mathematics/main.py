@@ -8,7 +8,7 @@ from ast import literal_eval
 from termcolor import colored
 from config import Tools_DIR, PageReader
 from sysmgr import TempManager
-from tools.__built_in__.helptool import HelpPage
+from tools.__built_in__.helptool import HelpTool
 
 mathdir = os.path.join(Tools_DIR, "Mathematics")
 
@@ -39,7 +39,7 @@ def run():
                 print()
                 break
             if cmd == '@help':
-                HelpPage(mathdir, PageReader, method)
+                HelpTool(mathdir, PageReader, method)
                 continue
             if cmd == '@flush':
                 TempManager().Flush('Mathematics Basic Module')
@@ -99,7 +99,7 @@ def run():
                 print()
                 break
             if cmd == '@help':
-                HelpPage(mathdir, PageReader, method)
+                HelpTool(mathdir, PageReader, method)
                 continue
             if cmd == '@flush':
                 TempManager().Flush('Mathematics Advanced Module')

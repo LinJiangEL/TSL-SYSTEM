@@ -4,6 +4,7 @@ from ast import literal_eval
 from prettytable import PrettyTable
 
 def Help(helpDict):
+	"""粗略的命令帮助界面。"""
 	helpTable = PrettyTable(['Command', 'Usage'])
 	helpTable.align['Command'] = 'l'
 	helpTable.align['Usage'] = 'l'

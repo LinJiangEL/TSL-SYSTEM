@@ -138,7 +138,7 @@ while True:
     logger.info("System Terminal start running.")
     syscode = terminal(USERNAME=username, MODE='$' if username in mode_info['user'] else '#', Bin_DIR=Bin_DIR)
     if syscode == -1:
-        # 注销
+        # 用户注销
         logger.info(f"Terminal returned syscode but nothing will happen. [syscode: {syscode}]")
         logger.info(f'The user "{username}" has logged out.')
         print(f'The user "{username}" has logged out.')

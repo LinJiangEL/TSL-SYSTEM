@@ -16,10 +16,10 @@ from tools.__built_in__.TSLlogger import Logger
 from tools.__built_in__.GetInfo import GetResourcePath
 
 Logger()
-SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loading.py', 'selfcheck.py', 'system.py',
+SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loading.py',
                 'config.py', 'services.py', 'upgrade.py', 'sysmgr.py', 'motd',
-                'terminal.py', 'linuxrequirements.txt', 'win32requirements.txt',
-                'loading.py', 'motd', 'LICENSE', 'motd.jpg', 'README.md', 'README_CN.md', 'VERSION'
+                'terminal.py', 'runrequirements.txt', 'README.md', 'README_CN.md', 'VERSION',
+                'loading.py', 'motd', 'LICENSE', 'motd.jpg', 'selfcheck.py', 'system.py'
                 ]
 
 APIKEY_IDENTIFY = "TSL-SYSTEM-APIKEY" if sys.platform == 'win32' else "TSL_SYSTEM_APIKEY"

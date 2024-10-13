@@ -1,4 +1,5 @@
 #  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  L.J.Afres: I'm sorry that this file was abandoned.
 
 import os
 import sys

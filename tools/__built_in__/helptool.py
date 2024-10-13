@@ -4,6 +4,7 @@ import os
 
 
 def HelpPage(pagedir, reader, name):
+    """打印帮助界面。"""
     help_pagefile = os.path.join(pagedir, f"{name}.help")
     if os.path.exists(help_pagefile):
         os.system(f'"{reader}" -20 -d -f {help_pagefile}')

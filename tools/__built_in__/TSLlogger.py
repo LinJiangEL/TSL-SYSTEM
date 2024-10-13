@@ -6,6 +6,7 @@ SYSTEM_STDOUT_LOGFORMAT = "<blue>{time:YYYY-MM-DD HH:mm:ss}</blue> <level>[{leve
 
 
 class Logger:
+    """初始化系统日志格式。"""
     def __init__(self):
         from loguru import logger
         logger.remove()

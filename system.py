@@ -2,7 +2,7 @@
 
 from config import *
 from selfcheck import selfcheck_system, selfcheck_module
-
+# 检查是否有系统文件缺失
 selfcheck_system(SYSTEM_FILES)
 
 import time
@@ -10,11 +10,9 @@ import hashlib
 import getpass
 import platform
 from termcolor import colored
-# colored('This is some strings.', color='red') # color:['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
-# magenta: 淡紫, cyan: 淡蓝
 from loguru import logger
 from setuptools.errors import PlatformError
-from loading import load, load_login_database
+from loading import load_user_database
 from services import startService_linux, startService_win32
 from terminal import terminal
 from tools.Passwd.process import encrypt
@@ -22,9 +20,18 @@ from tools.__built_in__.TSLlogger import Logger
 from tools.__built_in__.GetInfo import GetResourcePath
 Logger()
 
+"""
+ 系统默认不会实时输出日志内容，如果有需要:
+  ·Windows下请运行:
+     set LOGSTDOUT=1
+     python3 system.py
+  ·Linux下请运行:
+     LOGSTDOUT=1 python3 system.py
+"""
 if not SYSTEM_LOGSTDOUT:
     logger.remove(handler_id=None)
 
+# 设置系统日志格式
 system_logger = logger.add(os.path.join(SYSTEM_LOGPATH, "log_{time:YYYY-MM}.log"),
                            format=SYSTEM_LOGFORMAT,
                            level="DEBUG",
@@ -35,6 +42,7 @@ system_logger = logger.add(os.path.join(SYSTEM_LOGPATH, "log_{time:YYYY-MM}.log"
 logger.info("System start running.")
 logger.info("GetSystemPlatform() returned: {SysVersion}.", SysVersion=platform.platform())
 
+# 执行系统依赖项自检
 logger.info("System selfcheck start running.")
 runrequire_modules = open(requirements_file, 'r')
 for item in runrequire_modules.readlines():
@@ -47,7 +55,11 @@ for item in runrequire_modules.readlines():
         raise ModuleNotFoundError(f"module {item} is missing!")
     time.sleep(0.1)
 runrequire_modules.close()
+logger.info("System selfcheck has done.")
+print('System Self Checking has done!\n')
+time.sleep(0.3)
 
+# 启动服务项
 runrequire_win32services = []
 runrequire_linuxservices = []
 if sys.platform == 'win32':
@@ -69,20 +81,9 @@ else:
     logger.info("System shutdown with Exceptions.")
     raise PlatformError('TSL-SYSTEM can only run on win32 or linux platform, but yours is %s.' % sys.platform)
 
-logger.info("System selfcheck has done.")
-print('System Self Checking has done!\n')
-time.sleep(0.3)
-
-print('Loading Finite Element Module (FEM) ... ', end='', flush=True)
-load('FEM.h')
-logger.info("Successfully load Finite Element Module (FEM).")
-
-print('Loading Finite Difference Module (FDM) ... ', end='', flush=True)
-load('FDM.h')
-logger.info("Successfully load Difference Module (FDM).")
-
+# 加载用户数据库
 print('Loading Login Database ... ', end='', flush=True)
-login_datas = load_login_database(os.path.join(SYSTEM_DIR, 'Database/login.db'))
+login_datas = load_user_database(os.path.join(SYSTEM_DIR, 'Database/login.db'))
 login_infos = login_datas[0]
 mode_info = login_datas[1]
 admin_users = login_datas[2]
@@ -91,7 +92,7 @@ print('done.')
 logger.info("Successfully load Login Database.")
 
 print("")
-os.system(f'{SYSTEM_PRINTER} {GetResourcePath("motd")}')
+os.system(f'{SYSTEM_PRINTER} {GetResourcePath("motd")}')  # 打印Logo标识
 print("")
 
 while True:
@@ -137,12 +138,14 @@ while True:
     logger.info("System Terminal start running.")
     syscode = terminal(USERNAME=username, MODE='$' if username in mode_info['user'] else '#', Bin_DIR=Bin_DIR)
     if syscode == -1:
+        # 注销
         logger.info(f"Terminal returned syscode but nothing will happen. [syscode: {syscode}]")
         logger.info(f'The user "{username}" has logged out.')
+        print(f'The user "{username}" has logged out.')
         time.sleep(1)
         os.system(SYSTEM_CLEARSTDOUT)
         print('')
-        login_datas = load_login_database(os.path.join(SYSTEM_DIR, 'Database/login.db'))
+        login_datas = load_user_database(os.path.join(SYSTEM_DIR, 'Database/login.db'))
         login_infos = login_datas[0]
         mode_info = login_datas[1]
         admin_users = login_datas[2]
@@ -151,13 +154,16 @@ while True:
         print('')
         continue
     elif not syscode:
+        # 正常退出
         logger.info("System shutdown normally.")
         break
     elif not -31 <= syscode <= 32:
+        # 异常退出
         logger.error(f"invaild syscode. [syscode: {syscode}]")
         logger.warning("System shutdown with invaild syscode.")
         break
     else:
+        # 未知情况退出
         logger.info(f"Terminal returned syscode but nothing will happen. [syscode: {syscode}]")
         logger.info("System shutdown normally.")
         break

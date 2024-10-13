@@ -4,18 +4,11 @@ import gc
 import sys
 import time
 import importlib
-from config import SYSTEM_DIR
 from loguru import logger
 
 
-def load(module):
-    path = f'{SYSTEM_DIR}/modules/{module}'
-    print('done')
-    time.sleep(0.5)
-    return open(path, 'r')
-
-
-def load_login_database(databasefile):
+def load_user_database(databasefile):
+    """加载用户数据库。"""
     login_infos = {}
     mode_info = {}
     admin_users = []
@@ -44,6 +37,7 @@ def load_login_database(databasefile):
 
 
 def start(tool):
+    """启动系统工具。"""
     try:
         print('')
         # exec(f"from tools.{tool}.main import run;run();")

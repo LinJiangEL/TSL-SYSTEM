@@ -4,6 +4,7 @@ from ast import literal_eval
 
 
 class InputProcessor:
+    """处理系统所有输入输出内容，并过滤掉非法的部分。"""
     def __init__(self):
         self.string_simplify = lambda string: list(dict.fromkeys(string))
         self.PatternList = lambda a, b: list(range(a, b))

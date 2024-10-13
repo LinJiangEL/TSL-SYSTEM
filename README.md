@@ -17,6 +17,7 @@ Out of my love for programming and open source, I have decided to make this proj
    If an error occurs during the installation process, you can search for a solution online. Currently, I have provided a [feasible solution](https://blog.csdn.net/qq_56086478/article/details/136005175) for the error 'msvc_recommended_pragmas.h not found' that occurs during the installation of `pygobject` in a Windows environment.
 4. Run `python3 system.py` and log in to the system terminal by entering your username and password. 
    If you encounter any critical errors during the system self-check process, the program will immediately stop running. Therefore, please avoid modifying any critical code to prevent the program from crashing, and refrain from deleting any files under the source code directory. If you encounter any errors regarding missing modules, please use `pip` to install the required modules.
+5. If you're just testing whether it can run normally, then in *step 3*, replace the command with `pip3 install -r runrequirements.txt`, and then proceed to *step 4*.
 
 ### Linux && Termux:
 1. Clone this reposity to your local storage and enter the directory.
@@ -26,6 +27,7 @@ Out of my love for programming and open source, I have decided to make this proj
    If an error occurs during the installation process, you can search for a solution online.
 4. Run `python3 system.py` and log in to the system terminal by entering your username and password. 
    If you encounter any critical errors during the system self-check process, the program will immediately stop running. Therefore, please avoid modifying any critical code to prevent the program from crashing, and refrain from deleting any files under the source code directory. If you encounter any errors regarding missing modules, please use `pip` to install the required modules.
+5. If you're just testing whether it can run normally, then in *step 3*, replace the command with `pip3 install -r runrequirements.txt`, and then proceed to *step 4*.
 
 Here is the initial username and password.  
 Username|Password|Mode

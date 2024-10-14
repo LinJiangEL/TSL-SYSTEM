@@ -22,7 +22,7 @@ APIKEY = getpass.getpass("Please input the permission password: ") if os.getenv(
          os.getenv(APIKEY_IDENTIFY)
 SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, APIKEY))
 SYSTEM_DIR = os.path.dirname(os.path.abspath(GetResourcePath(__file__)))
-SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'modules', 'Temp', 'loading.py',
+SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'Temp', 'loading.py',
                 'config.py', 'services.py', 'upgrade.py', 'sysmgr.py', 'motd',
                 'terminal.py', 'runrequirements.txt', 'README.md', 'README_CN.md', 'VERSION',
                 'loading.py', 'motd', 'LICENSE', 'motd.jpg', 'selfcheck.py', 'system.py',

@@ -8,6 +8,7 @@ loguru
 wget
 prettytable
 pymysql
+meson
 file-read-backwards
 lxml
 translate
@@ -18,6 +19,6 @@ py3langid
 xlrd
 xlwt
 playsound==1.2.2
-pygobject
+# pygobject
 fake-useragent
 tqdm

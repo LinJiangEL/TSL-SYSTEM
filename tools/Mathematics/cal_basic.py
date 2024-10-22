@@ -47,16 +47,18 @@ class Basic:
         if b == 0:
             return self.ReturnError("ZeroDivisionError: division by zero.")
         else:
+            get_float_length = lambda n:len(str(n).split('.')[1])
+            max_float_length = max(get_float_length(a), get_float_length(b))
             if '.' in str(a):
                 if str(a).count('.') > 1:
                     self.ReturnError("Invaild digtal num, many '.' was found.")
                 else:
-                    a = int(a * pow(10, len(str(a).split('.')[1])))
+                    a = int(a * pow(10, max_float_length))
             if '.' in str(b):
                 if str(b).count('.') > 1:
                     self.ReturnError("Invaild digtal num, many '.' was found.")
                 else:
-                    b = int(b * pow(10, len(str(b).split('.')[1])))
+                    b = int(b * pow(10, max_float_length))
             return self.resultformat(cal_result=a / b, cal_fraction=Fraction(a, b))
 
     # x ** a

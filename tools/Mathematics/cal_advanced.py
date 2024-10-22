@@ -17,7 +17,7 @@ class Advanced:
         self.error = errors
         return self.error
 
-    @cached(cache=CACHE)
+    # @cached(cache=CACHE)
     def Solve_equation(self, expressions: list):
         ecount = ','.join(expressions).count(',')
         if ecount != 1:
@@ -53,7 +53,7 @@ class Advanced:
 
         return solution
 
-    @cached(cache=CACHE)
+    # @cached(cache=CACHE)
     def Solve_equations(self, expressions):
         def _extract_variables(eqs):
             vars_set = set()

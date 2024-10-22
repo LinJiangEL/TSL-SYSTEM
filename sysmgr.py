@@ -27,11 +27,13 @@ sysmgr_logger = logger.add(os.path.join(SYSTEM_LOGPATH, "log_{time:YYYY-MM}.log"
 
 
 class TempManager:
+    """缓存管理。"""
     def __init__(self):
         self._ok = "True"
         self.PwdUserTmpFile = open(os.path.join(SYSTEM_DIR, 'Temp/PwdUser'), 'r+')
 
     def WritePwdUser(self, username='0'):
+        """写入系统用户登录缓存。"""
         self.PwdUserTmpFile.close()
         os.remove(os.path.join(SYSTEM_DIR, 'Temp/PwdUser'))
         self.PwdUserTmp = open(os.path.join(SYSTEM_DIR, 'Temp/PwdUser'), 'w')
@@ -40,19 +42,23 @@ class TempManager:
         self.PwdUserTmpFile = open(os.path.join(SYSTEM_DIR, 'Temp/PwdUser'), 'r+')
 
     def ReadPwdUser(self):
+        """读取用户登录名(cached)。"""
         return str(self.PwdUserTmpFile.readlines()[0].strip())
 
     def CheckPwdUser(self):
+        """检查异常退出系统的用户，系统正常退出则文件内容为0，否则为最后使用系统的用户名。"""
         PwdUser = f'"{self.ReadPwdUser()}"'
         return tuple([literal_eval(PwdUser) == '0', PwdUser])
 
     def Flush(self, name):
+        """刷新缓存。"""
         literal_eval(self._ok)
         print(f"Successfully flush the '{name}' temp.\n")
         return gc.collect()
 
 
 class UserManager:
+    """用户管理。"""
     def __init__(self, database_path, opuser):
         self.PwdUser = TempManager().ReadPwdUser()
         self.database = database_path
@@ -65,6 +71,7 @@ class UserManager:
         self.InputProcessor = InputProcessor()
 
     def add(self, username: str, mode='user', password=False):
+        """添加用户。"""
         if username not in self.users:
             if self.InputProcessor.Input_illegal_check(username, "username"):
                 if username.isidentifier() and 4 <= len(username) <= 12:
@@ -128,6 +135,7 @@ class UserManager:
             return -1
 
     def remove(self, username):
+        """删除用户。"""
         if username in self.users:
             if username != self.PwdUser:
                 self.userinfos = list(filter(lambda user: username != user.split('@')[0], self.userinfos))
@@ -154,6 +162,7 @@ class UserManager:
             return -1
 
     def list(self, mode):
+        """列出用户。"""
         if mode == 'all':
             for userRow in self.userinfos:
                 self.UserTable.add_row(userRow.split(':')[0].split('@'))
@@ -181,6 +190,7 @@ class UserManager:
         self.UserTable = PrettyTable(['User', 'Mode'])
 
     def info(self, username):
+        """查询用户信息。"""
         if username in self.users:
             for userRow in self.userinfos:
                 if username == userRow.split('@')[0]:
@@ -203,6 +213,7 @@ class UserManager:
         self.UserTable = PrettyTable(['User', 'Mode'])
 
     def set(self, key, target=None, value: str = None):
+        """修改用户。"""
         if target not in SuperUser:
             index = self.users.index(target) if target in self.users else None
             if index is None:
@@ -315,6 +326,7 @@ class UserManager:
         return
 
     def rewrite(self, context):
+        """重写系统用户数据库。"""
         self.databasefile.close()
         os.remove(self.database)
         with open(self.database, 'w') as rewriteoptfile:
@@ -325,10 +337,12 @@ class UserManager:
         self.databasefile = open(self.database, 'r')
 
     def issuperuser(self, username):
+        """判断是否为超级权限用户。"""
         return True if username in self.superusers else False
 
 
 class LoggerManager:
+    """日志管理。"""
     def __init__(self, logpath, printer):
         self.LOGPATH = logpath
         self.printer = printer
@@ -340,6 +354,7 @@ class LoggerManager:
         self.return_codes = {'RuntimeError': -1, 'Warning': 1, 'Normal': 0}
 
     def list(self):
+        """列出所有日志。"""
         n = 0
         for logfileindex in self.logfilesindex:
             n = n + 1 if n <= 5 else 0
@@ -349,6 +364,7 @@ class LoggerManager:
         print("")
 
     def read(self, logtime):
+        """读取指定日志内容。"""
         logname = logtime if logtime.endswith('.log') else f"log_{logtime}.log"
         logfile = os.path.join(self.LOGPATH, logname)
         print("{0:-^37}".format(logtime))
@@ -359,6 +375,7 @@ class LoggerManager:
         print("{0:-^37}".format("The End"))
 
     def write(self, level, message, logfile="stdout"):
+        """写入日志。"""
         logtext = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} [{level}] {message}"
         logtextlist = logtext.split(" ")
         attrs = ['bold'] if level == 'critical' else None
@@ -377,6 +394,7 @@ class LoggerManager:
         print(logftext)
 
     def delete(self, logtime):
+        """删除日志。"""
         logname = logtime if logtime.endswith('.log') else f"log_{logtime}.log"
         logfile = os.path.join(self.LOGPATH, logname)
         if os.path.exists(logfile):
@@ -385,6 +403,7 @@ class LoggerManager:
             print("FileNotFoundError:cannot delete this logfile, the logfile does not exist.")
 
     def flush(self):
+        """刷新缓存。"""
         print("RuntimeError:class method 'flush' is obsolete.")
 
         return self.return_codes['RuntimeError']

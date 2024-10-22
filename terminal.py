@@ -16,6 +16,14 @@ from sysmgr import TempManager, UserManager, LoggerManager
 from tools.__built_in__.TSLlogger import Logger
 Logger()
 
+"""
+ 系统默认不会实时输出日志内容，如果有需要:
+  ·Windows下请运行:
+     set LOGSTDOUT=1
+     python3 system.py
+  ·Linux下请运行:
+     LOGSTDOUT=1 python3 system.py
+"""
 if not SYSTEM_LOGSTDOUT:
     logger.remove(handler_id=None)
 

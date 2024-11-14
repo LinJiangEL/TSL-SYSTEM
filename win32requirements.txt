@@ -17,6 +17,7 @@ py3langid
 xlrd
 xlwt
 uuid
+rich
 cmake
 cython
 requests

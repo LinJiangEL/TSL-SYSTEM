@@ -15,6 +15,7 @@ xlrd
 xlwt
 uuid
 cython
+rich
 requests
 urllib3
 playsound

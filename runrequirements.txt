@@ -18,6 +18,7 @@ scipy
 py3langid
 xlrd
 xlwt
+rich
 playsound==1.2.2
 # pygobject
 fake-useragent

@@ -27,17 +27,17 @@ class Basic:
         return self.error
 
     # a + b
-    @cached(cache=CACHE)
+    # @cached(cache=CACHE)
     def add(self, a, b):
         return self.resultformat(cal_result=math.fsum([a, b]))
 
     # a - b
-    @cached(cache=CACHE)
+    # @cached(cache=CACHE)
     def sub(self, a, b):
         return self.resultformat(cal_result=math.fsum([a, -b]))
 
     # a * b
-    @cached(cache=CACHE)
+    # @cached(cache=CACHE)
     def mul(self, a, b):
         return self.resultformat(cal_result=a * b)
 
@@ -88,7 +88,7 @@ class Basic:
             return self.resultformat(cal_result=math.fmod(a, b))
 
     # |a|
-    @cached(cache=CACHE)
+    # @cached(cache=CACHE)
     def abs(self, x):
         return self.resultformat(cal_result=math.fabs(x))
 

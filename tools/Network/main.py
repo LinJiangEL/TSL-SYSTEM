@@ -1,6 +1,4 @@
 #  Copyright (c) 2024. L.J.Afres, All rights reserved.
-
-# socket, psutil, netifaces
 import os
 from config import Tools_DIR
 

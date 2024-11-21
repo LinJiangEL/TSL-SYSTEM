@@ -46,7 +46,7 @@ def run():
                 continue
             maincmd = cmd.split(' ')[0]
             try:
-                exec(f"basic.{maincmd if maincmd[0] in string.ascii_letters else exec('raise AttributeError')}") \
+                exec(f"basic = Basic();basic.{maincmd if maincmd[0] in string.ascii_letters else exec('raise AttributeError')}") \
                     if maincmd not in ['ReturnError', 'resultformat'] else exec('raise NameError')
                 num_argvs = cmd.split(' ')[1]
                 ismanyargvs = len(cmd.split(' ')[1:]) > 1

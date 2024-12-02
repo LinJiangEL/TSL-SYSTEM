@@ -83,27 +83,33 @@ def terminal(USERNAME, MODE, Bin_DIR):
             is_root = True if command.startswith('sudo') or MODE == '#' else False
             if cmd_tmp[0] == '':
                 continue
-            elif cmd_tmp[0] == 'trunc' and len(cmd_tmp) >= 2:
+            elif cmd_tmp[0] == 'trunc':
                 if is_root:
-                    os.system(f'{" ".join(cmd_tmp[1:])}')
-                    logger.info(f"{USERNAME} succeed in executing 'trunc' as a SuperUser. "
-                                f"[CMDINFO:('trunc', '{cmd_tmp[1:]}')]"
-                                )
+                    if len(cmd_tmp) >= 2:
+                        os.system(f'{" ".join(cmd_tmp[1:])}')
+                        logger.info(f"{USERNAME} succeed in executing 'trunc' as a SuperUser. "
+                                    f"[CMDINFO:('trunc', '{cmd_tmp[1:]}')]"
+                                    )
+                    else:
+                        continue
                 else:
                     print('sh: trunc: Permission denied.\n')
                     logger.info(f"{USERNAME} failed to execute 'trunc' because {USERNAME} is a SimpleUser. "
                                 f"[CMDINFO:('trunc', '{cmd_tmp[1:]}')]"
                                 )
-            elif cmd_tmp[0] == 'internal' and len(cmd_tmp) >= 2:
-                argvs = cmd_tmp[2:]
-                if (cmd_tmp[1] if sys.platform == 'linux' else f'{cmd_tmp[1]}.bat') in os.listdir(Bin_DIR):
-                    os.system(f'{os.path.join(Bin_DIR, cmd_tmp[1])} {" ".join(argvs)}')
-                    logger.info(f"{USERNAME} succeed in executing 'internal'. [CMDINFO:{cmd_tmp}]")
+            elif cmd_tmp[0] == 'internal':
+                if len(cmd_tmp) >= 2:
+                    argvs = cmd_tmp[2:]
+                    if (cmd_tmp[1] if sys.platform == 'linux' else f'{cmd_tmp[1]}.bat') in os.listdir(Bin_DIR):
+                        os.system(f'{os.path.join(Bin_DIR, cmd_tmp[1])} {" ".join(argvs)}')
+                        logger.info(f"{USERNAME} succeed in executing 'internal'. [CMDINFO:{cmd_tmp}]")
+                    else:
+                        print(f"CommandNotFoundError:internal command '{cmd_tmp[1]}' cannot be found in BinDIR.")
+                        logger.error(f"{USERNAME} failed to execute 'trunc' because command cannot be found in BinDIR. "
+                                     f"[CMDINFO:{cmd_tmp}]"
+                                     )
                 else:
-                    print(f"CommandNotFoundError:internal command '{cmd_tmp[1]}' cannot be found in BinDIR.")
-                    logger.error(f"{USERNAME} failed to execute 'trunc' because command cannot be found in BinDIR. "
-                                 f"[CMDINFO:{cmd_tmp}]"
-                                 )
+                    continue
             elif cmd_tmp[0] == "execute" and len(cmd_tmp) <= 2:
                 from tools import execute
                 toolcode = execute.Execute(cmd_tmp[1] if len(cmd_tmp) == 2 else None)
@@ -341,7 +347,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 print('')
                 os.system(f'{SYSTEM_PRINTER} motd')
                 print('')
-            elif (cmd_tmp[0] in ['trunc', 'internal', 'user', 'logger'] and len(cmd_tmp) == 1) \
+            elif (cmd_tmp[0] in ['user', 'logger'] and len(cmd_tmp) == 1) \
                     or (cmd_tmp[0] in ['backup', 'exit', 'logout', 'clear'] and len(cmd_tmp) != 1) \
                     or (cmd_tmp[0] in ['restore', 'execute', 'init', 'help'] and len(cmd_tmp) > 2):
                 print(f"CommandUsageError:incorrectly {cmd_tmp[0]} usage, "

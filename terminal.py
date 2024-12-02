@@ -316,9 +316,13 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 print('done.\n')
                 return -1
             elif cmd_tmp[0] == 'init' and len(cmd_tmp) <= 2:
-                cmd_tmp[1] = literal_eval(cmd_tmp[1])
-                if not isinstance(cmd_tmp[1], int):
-                    print(f"TypeError:syscode must be int not {gettype(cmd_tmp[1])}.")
+                if len(cmd_tmp) == 1:
+                    cmd_tmp.append(None)
+                cmd_tmp[1] = literal_eval(f"\'{cmd_tmp[1]}\'")
+                if cmd_tmp[1].isdigit():
+                    cmd_tmp[1] = eval(cmd_tmp[1])
+                if gettype(cmd_tmp[1]) != "int":
+                    print(f"TypeError:syscode must be int not {gettype(cmd_tmp[1])}.\n")
                     continue
                 else:
                     if is_root:

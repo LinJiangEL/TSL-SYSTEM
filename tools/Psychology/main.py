@@ -13,4 +13,7 @@ def run():
     print('|    TSL-SYSTEM Psychology Module    |')
     print('-'*36)
 
-    cmd = input(colored('[Psychology]', color='light_cyan') + ' >> ').strip()
+    while True:
+        cmd = input(colored('[Psychology]', color='light_cyan') + ' >> ').strip()
+        if cmd == 'exit':
+            break

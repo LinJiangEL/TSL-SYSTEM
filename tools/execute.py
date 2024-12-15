@@ -4,7 +4,7 @@ from loading import start
 
 _ok = "True"
 Developing_list = ["Chemistry", "Network", "MultiMedia", "Philosophy"]
-available_list = ["Mathematics", "Passwd", "Translate", "StudentsInfoDatabase"]
+available_list = ["Mathematics", "Passwd", "Translate", "StudentsInfoDatabase", "Psychology"]
 
 
 def Execute(tool=None):

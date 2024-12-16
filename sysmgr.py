@@ -233,14 +233,14 @@ class UserManager:
                                         )
                             print('Successfully operate the login database.\n')
                         else:
-                            print("Nothing happen because username is not changed.")
+                            print("Nothing happen because username is not changed.\n")
                     else:
                         print("ValueError:the username must be a legal identifier, "
                               "and the length of it should be between 4 and 12."
                               )
                         return -1
                 else:
-                    print("ValueError:more than one illegal characters were found in the username.")
+                    print("ValueError:more than one illegal characters were found in the username.\n")
                     return -1
             elif key == 'mode':
                 _old_value = self.userinfos[index].split(':')[0].split('@')[1]
@@ -253,7 +253,7 @@ class UserManager:
                                 )
                     print('Successfully operate the login database.\n')
                 else:
-                    print("Nothing happen because mode is not changed.")
+                    print("Nothing happen because mode is not changed.\n")
             elif key == 'password':
                 if value is None or len(value) >= 6:
                     passwd_processor = hashlib.md5()
@@ -269,14 +269,14 @@ class UserManager:
                             value = getpass.getpass('New Password: ')
                             if self.InputProcessor.Input_illegal_check(value, key):
                                 if len(value) < 6:
-                                    print("ValueError:invalid password format, length must be more than or equal to 6.")
+                                    print("ValueError:invalid password format, length must be more than or equal to 6.\n")
                                     return -1
                             else:
-                                print("ValueError:more than one illegal characters were found in the password.")
+                                print("ValueError:more than one illegal characters were found in the password.\n")
                                 return -1
                         else:
                             if not self.InputProcessor.Input_illegal_check(value, key):
-                                print("ValueError:more than one illegal characters were found in the password.")
+                                print("ValueError:more than one illegal characters were found in the password.\n")
                                 return -1
                         value = value.encode(encoding='utf-8')
                         passwd_processor.update(value)
@@ -299,7 +299,7 @@ class UserManager:
                                             )
                                 del value, confirmpasswd, original_password
                             else:
-                                print("Nothing will happen because password is not changed.")
+                                print("Nothing will happen because password is not changed.\n")
                         else:
                             print("ValueError:confirmed password does not match the new password.\n")
                             return -1
@@ -314,13 +314,13 @@ class UserManager:
                                        )
                         return -1
                 else:
-                    print("ValueError:invalid password format, length must be more than or equal to 6.")
+                    print("ValueError:invalid password format, length must be more than or equal to 6.\n")
                     return -1
             else:
                 print(f"KeyError:key '{key}' is not defined in UserMgr.set._keys.\n")
                 return -1
         else:
-            print("PermissionError:UserManager cannot set the SuperUser's attribute, permission denied.")
+            print("PermissionError:UserManager cannot set the SuperUser's attribute, permission denied.\n")
             return -1
 
         return

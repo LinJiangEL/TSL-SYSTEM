@@ -134,7 +134,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                     continue
                 if '-l' in cmd_tmp:
                     if not Images:
-                        print("Empty images in BACKUP_DIR.")
+                        print("Empty images in BACKUP_DIR.\n")
                         logger.warning(f"'{USERNAME}' tried to list exists images and chose one to execute 'restore', "
                                        "but this operation was blocked because there were no previous backup images. "
                                        f"[USERINFO:('{USERNAME}')]"
@@ -151,6 +151,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 else:
                     image = input('Please input image filename to recover this system: ').strip()
                     if image == '':
+                        print()
                         continue
                     imagepath = os.path.join(ImagePath, image)
                     restore(USERNAME, is_root, imagepath, cmd_tmp, tempmgr, usermgr, logger)

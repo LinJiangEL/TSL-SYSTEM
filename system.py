@@ -155,15 +155,19 @@ while True:
         continue
     elif not syscode:
         # 正常退出
+        print("System shutdown normally.")
         logger.info("System shutdown normally.")
         break
     elif not -31 <= syscode <= 32:
         # 异常退出
+        print("System shutdown with invaild syscode.")
         logger.error(f"invaild syscode. [syscode: {syscode}]")
         logger.warning("System shutdown with invaild syscode.")
         break
     else:
         # 未知情况退出
+        print(f"Terminal returned syscode but nothing will happen. [syscode: {syscode}]")
+        print("System shutdown normally.")
         logger.info(f"Terminal returned syscode but nothing will happen. [syscode: {syscode}]")
         logger.info("System shutdown normally.")
         break

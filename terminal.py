@@ -316,13 +316,13 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 print('done.\n')
                 return -1
             elif cmd_tmp[0] == 'init' and len(cmd_tmp) <= 2:
-                if len(cmd_tmp) == 1:
-                    cmd_tmp.append(None)
-                if not isnum(cmd_tmp[1]):
-                    print(f"TypeError:syscode must be int not {gettype(cmd_tmp[1])}.\n")
-                    continue
-                else:
-                    if is_root:
+                if is_root:
+                    if len(cmd_tmp) == 1:
+                        cmd_tmp.append(None)
+                    if not isnum(cmd_tmp[1]):
+                        print(f"TypeError:syscode must be int not {gettype(cmd_tmp[1])}.\n")
+                        continue
+                    else:
                         cmd_tmp[1] = eval(cmd_tmp[1])
                         if (not cmd_tmp[1]) if len(cmd_tmp) == 2 else 0:
                             print('System shutdown ... ', end='', flush=True)
@@ -338,11 +338,11 @@ def terminal(USERNAME, MODE, Bin_DIR):
                             return 0
                         else:
                             return cmd_tmp[1]
-                    else:
-                        print('sh: init: Permission denied.\n')
-                        logger.info(f"{USERNAME} failed to execute 'init' because {USERNAME} is a SimpleUser. "
-                                    f"[CMDINFO:('init', '{cmd_tmp[1]}')]"
-                                    )
+                else:
+                    print('sh: init: Permission denied.\n')
+                    logger.info(f"{USERNAME} failed to execute 'init' because {USERNAME} is a SimpleUser. "
+                                f"[CMDINFO:('init', '{cmd_tmp[1]}')]"
+                                )
             elif cmd_tmp[0] == 'clear' and len(cmd_tmp) == 1:
                 os.system(SYSTEM_CLEARSTDOUT)
                 print('')

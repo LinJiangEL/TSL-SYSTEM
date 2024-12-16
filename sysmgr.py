@@ -84,14 +84,14 @@ class UserManager:
                                 password_processor.update(password)
                                 password = password_processor.hexdigest()
                             else:
-                                print("ValueError:invalid password format, length must be more than or equal to 6.")
+                                print("ValueError:invalid password format, length must be more than or equal to 6.\n")
                                 logger.warning(f"'{self.PwdUser}' tried to add a new user to Login Database "
                                                f"but this operation was blocked because the password was invalid. "
                                                f"[USERINFO:('{username}', '{mode}')]"
                                                )
                                 return -1
                         else:
-                            print("ValueError:more than one illegal characters were found in the password.")
+                            print("ValueError:more than one illegal characters were found in the password.\n")
                             logger.warning(f"'{self.PwdUser}' tried to add a new user to Login Database "
                                            "but this operation was blocked because "
                                            "the password has invalid characters. "
@@ -112,7 +112,7 @@ class UserManager:
                                 )
                 else:
                     print("ValueError:the username must be a legal identifier, "
-                          "and the length of it should be between 4 and 12."
+                          "and the length of it should be between 4 and 12.\n"
                           )
                     logger.warning(f"'{self.PwdUser}' tried to add a new user to Login Database "
                                    f"but this operation was blocked because the username was invalid. "
@@ -120,7 +120,7 @@ class UserManager:
                                    )
                     return -1
             else:
-                print("ValueError:more than one illegal characters were found in the username.")
+                print("ValueError:more than one illegal characters were found in the username.\n")
                 logger.warning(f"'{self.PwdUser}' tried to add a new user to Login Database "
                                f"but this operation was blocked because the username has invalid characters. "
                                f"[USERINFO:('{username}', '{mode}')]"

@@ -9,7 +9,7 @@ from loguru import logger
 from bin.helpformat import Help
 from doc.helppage import HelpPage
 from tools.__built_in__.restore import ImagePath, Images, restore
-from tools.__built_in__.typemod import gettype
+from tools.__built_in__.typemod import gettype, isnum
 from config import SYSTEM_DIR, SYSTEM_LOGPATH, SYSTEM_LOGFORMAT, SYSTEM_LOGSTDOUT, \
     SuperUser, SYSTEM_FILES, SYSTEM_PRINTER, SYSTEM_CLEARSTDOUT, HelpPages_DIR, PageReader, id_md5
 from sysmgr import TempManager, UserManager, LoggerManager
@@ -68,7 +68,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
         try:
             Bin_DIR = Bin_DIR.replace('\\', '/')
             command = input(f'{USERNAME}@TSL-SYSTEM {MODE} ').strip()
-            cmd_tmp = [cmd_argv.strip() for cmd_argv in command.split()]
+            cmd_tmp = [cmd_argv.strip() for cmd_argv in command.split() if cmd_argv]
             if not cmd_tmp:
                 cmd_tmp.append('')
 
@@ -318,17 +318,15 @@ def terminal(USERNAME, MODE, Bin_DIR):
             elif cmd_tmp[0] == 'init' and len(cmd_tmp) <= 2:
                 if len(cmd_tmp) == 1:
                     cmd_tmp.append(None)
-                cmd_tmp[1] = literal_eval(f"\'{cmd_tmp[1]}\'")
-                if cmd_tmp[1].isdigit():
-                    cmd_tmp[1] = eval(cmd_tmp[1])
-                if gettype(cmd_tmp[1]) != "int":
+                if not isnum(cmd_tmp[1]):
                     print(f"TypeError:syscode must be int not {gettype(cmd_tmp[1])}.\n")
                     continue
                 else:
                     if is_root:
+                        cmd_tmp[1] = eval(cmd_tmp[1])
                         if (not cmd_tmp[1]) if len(cmd_tmp) == 2 else 0:
                             print('System shutdown ... ', end='', flush=True)
-                            time.sleep(3)
+                            time.sleep(1)
                             print('done.\n')
                             usermgr.databasefile.close()
                             logger.info("UserManager hostdown.")
@@ -336,11 +334,10 @@ def terminal(USERNAME, MODE, Bin_DIR):
                             tempmgr.PwdUserTmpFile.close()
                             logger.info("TempManager hostdown.")
                             logger.info("System Terminal hostdown.")
-                            time.sleep(1)
-                        if len(cmd_tmp) == 2:
-                            return cmd_tmp[1]
-                        else:
+                            time.sleep(0.5)
                             return 0
+                        else:
+                            return cmd_tmp[1]
                     else:
                         print('sh: init: Permission denied.\n')
                         logger.info(f"{USERNAME} failed to execute 'init' because {USERNAME} is a SimpleUser. "

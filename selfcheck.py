@@ -11,8 +11,8 @@ import subprocess
 from config import SYSTEM_DIR
 
 if sys.platform == 'win32':
-    import win32api
     import win32con
+    from win32api import MessageBox
 from setuptools.errors import PlatformError
 
 
@@ -44,11 +44,11 @@ def selfcheck_system(systemfilelist):
         print('PythonVersionNotSupport:TSL-SYSTEM required Python >= 3.9.2, '
               'if you want to use it, please update your Python!'
               )
-        ask_updatePython = win32api.MessageBox(0,
-                                               "Do you want to update your Python Environment?",
-                                               "Update Python",
-                                               win32con.MB_YESNO
-                                               ) if sys.platform == "win32" else \
+        ask_updatePython = MessageBox(0,
+                                      "Do you want to update your Python Environment?",
+                                      "Update Python",
+                                      win32con.MB_YESNO
+                                      ) if sys.platform == "win32" else \
             subprocess.run(['zenity', '--question', '--text="Do you want to update your Python Environment?"'],
                            capture_output=True, text=True).returncode
         if ask_updatePython == 6 if sys.platform == 'win32' else 0:  # 6 -> yes, 0 -> yes
@@ -97,19 +97,21 @@ def check_command(command):
 
 
 def selfcheck_module(name: str):
-    print('check %s ... ' % name.strip(), end='', flush=True)
+    _flushblock = 50
+    print(f'\rcheck %s ... ' % name.strip(), end='', flush=True)
     name = name.replace('-', '_')
     time.sleep(0.1)
     try:
         fake_stdout = io.StringIO()
         with contextlib.redirect_stdout(fake_stdout):
             exec(f"import {name}; del {name};")
-        # Debug returned message
-        # hidden_output = fake_stdout.getvalue()
-        # print(hidden_output)
     except ImportError:
-        print('no')
+        print('no', end=f'\r', flush=True)
+        time.sleep(0.1)
+        print('', end=f'{" "*_flushblock}\r')
         return False
     else:
-        print('yes')
+        print('yes', end=f'\r', flush=True)
+        time.sleep(0.1)
+        print('', end=f'{" " * _flushblock}\r')
         return True

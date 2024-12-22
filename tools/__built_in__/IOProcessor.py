@@ -8,10 +8,11 @@ class InputProcessor:
     def __init__(self):
         self.string_simplify = lambda string: list(dict.fromkeys(string))
         self.PatternList = lambda a, b: list(range(a, b))
-        self.patterns = ['username', 'password', 'terminal']
+        self.patterns = ['username', 'password', 'terminal', 'identkey']
         self.pattern_username = self.PatternList(48, 58) + self.PatternList(65, 91) + self.PatternList(97, 123)
         self.pattern_password = self.pattern_username + [35, 36, 38, 42]
         self.pattern_terminal = []
+        self.pattern_identkey = []
 
     def Input_illegal_check(self, text, pattern):
         if pattern in self.patterns:

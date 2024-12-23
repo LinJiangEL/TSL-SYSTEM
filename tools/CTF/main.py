@@ -3,7 +3,7 @@
 import os
 from config import Tools_DIR
 
-ctfdir = os.path.join(Tools_DIR, "Mathematics")
+ctfdir = os.path.join(Tools_DIR, "CTF")
 
 
 def run():

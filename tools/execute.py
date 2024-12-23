@@ -7,7 +7,7 @@ Developing_list = ["Chemistry", "Network", "MultiMedia", "Philosophy"]
 available_list = ["Mathematics", "Passwd", "Translate", "StudentsInfoDatabase", "Psychology"]
 
 
-def Execute(tool=None):
+def execute(tool=None):
     if tool is None:
         while True:
             print('Please input the fullname of tool which you want to use. '

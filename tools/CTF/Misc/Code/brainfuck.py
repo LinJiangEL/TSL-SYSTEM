@@ -270,7 +270,7 @@ def execute(opcodes, input_data=None, time_limit=None, tape_size=30000,
     """
 
     stdin_buf = None
-    if input_data != None:
+    if input_data is not None:
         stdin_buf = list(reversed(input_data))
 
     tape = bytearray(tape_size)

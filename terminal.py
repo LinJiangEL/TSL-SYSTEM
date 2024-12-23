@@ -112,7 +112,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                     continue
             elif cmd_tmp[0] == "execute" and len(cmd_tmp) <= 2:
                 from tools import execute
-                toolcode = execute.Execute(cmd_tmp[1] if len(cmd_tmp) == 2 else None)
+                toolcode = execute.execute(cmd_tmp[1] if len(cmd_tmp) == 2 else None)
                 if toolcode == -1:
                     continue
                 literal_eval(execute._ok)

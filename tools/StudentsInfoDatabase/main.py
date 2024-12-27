@@ -166,7 +166,7 @@ def run():
         elif key_word.strip() in ['name', 'class', 'zodiac']:
             print('CommandError:incorrect command usage! [Wrong : Usage]')
         else:
-            print(f'KeyError:invaild key "{key_word}"! [Wrong : Undefined Command]')
+            print(f'KeyError:invalid key "{key_word}"! [Wrong : Undefined Command]')
         print('')
 
 

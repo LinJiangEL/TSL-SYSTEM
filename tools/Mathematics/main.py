@@ -59,7 +59,7 @@ def run():
             except NameError:
                 print(f"NameError:internal symbol '{maincmd}' cannot be called by users.")
             except IndexError:
-                print('SyntaxError:invaild maincmd format.')
+                print('SyntaxError:invalid maincmd format.')
             except ValueError as e:
                 if 'convert' in str(e):
                     print("ValueError:expression operation is not supported.")
@@ -67,9 +67,9 @@ def run():
                 try:
                     nums = list(map(float, num_argvs.split(',')))
                 except ValueError:
-                    print('SyntaxError:invaild num_argvs format.')
+                    print('SyntaxError:invalid num_argvs format.')
                 else:
-                    error = 'SyntaxError:invaild num_argvs format.'
+                    error = 'SyntaxError:invalid num_argvs format.'
                     argvs = f'{numab[0]},{numab[1]}' if maincmd in basic.two and len(num_argvs.split(',')) == 2 \
                         else numab[0] if maincmd in basic.one and ',' not in num_argvs \
                         else nums if maincmd in basic.needlist \
@@ -148,7 +148,7 @@ def run():
                         m, n = literal_eval(m) if m.isnumeric() else None, \
                             literal_eval(n) if n.isnumeric() else None
                         if m is None or n is None:
-                            print("ValueError:invaild 'm' or 'n' format.\n")
+                            print("ValueError:invalid 'm' or 'n' format.\n")
                         else:
                             m, n = (n, m) if m > n else (m, n)
                             m = min(m, n)

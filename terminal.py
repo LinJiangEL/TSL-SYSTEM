@@ -165,7 +165,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                         continue
                 if cmd_tmp[2] in ['--mode', '--password'] if len(cmd_tmp) > 2 else False:
                     if cmd_tmp[1] != 'list':
-                        print("CommandError:invaild user command format:"
+                        print("CommandError:invalid user command format:"
                               f"'{cmd_tmp[2]}' cannot be followed by '{cmd_tmp[1]}'!\n"
                               )
                         continue
@@ -209,7 +209,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                         mode = cmd_tmp[cmd_tmp.index('--mode') + 1] if '--mode' in cmd_tmp \
                             and cmd_tmp[-1] != '--mode' else \
                             cmd_tmp[2] if len(cmd_tmp) == 3 else \
-                            exec("print('SyntaxError:invaild UserManager.list called format.\n')")
+                            exec("print('SyntaxError:invalid UserManager.list called format.\n')")
                         if mode is None:
                             continue
                         usermgr.list(mode)
@@ -234,7 +234,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                     if cmd_tmp[1] not in ['add', 'remove', 'list', 'info', 'set']:
                         print(f"AttitudeError:assignment '{cmd_tmp[1]}' is not defined in UserManager.\n")
                     else:
-                        print(f"SyntaxError:invaild UserManager.{cmd_tmp[1]} called format.\n")
+                        print(f"SyntaxError:invalid UserManager.{cmd_tmp[1]} called format.\n")
                     continue
             elif cmd_tmp[0] == 'help' and len(cmd_tmp) <= 2:
                 if len(cmd_tmp) == 1:
@@ -263,7 +263,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                         print("ParameterWarning:unclarified '--log' parameter, default set 'stdout' to it.")
                     logfile = cmd_tmp[-1] if cmd_tmp[-2] == '--log' and command.count('--log') == 1 else 'stdout'
                     if not logfile.endswith('.log') and logfile != 'stdout':
-                        print('ValueError:invaild logfile format.\n')
+                        print('ValueError:invalid logfile format.\n')
                         continue
 
                     level = cmd_tmp[2]
@@ -293,7 +293,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                     if cmd_tmp[1] not in ['list', 'read', 'write', 'delete', 'flush']:
                         print(f"AttitudeError:assignment '{cmd_tmp[1]}' is not defined in LoggerManager.\n")
                     else:
-                        print(f"SyntaxError:invaild LoggerManager.{cmd_tmp[1]} called format.\n")
+                        print(f"SyntaxError:invalid LoggerManager.{cmd_tmp[1]} called format.\n")
                     continue
                 print()
             elif cmd_tmp[0] == "exit" and len(cmd_tmp) == 1:

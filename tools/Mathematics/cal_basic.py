@@ -57,12 +57,12 @@ class Basic:
             max_float_length = max(get_float_length(a), get_float_length(b))
             if '.' in str(a):
                 if str(a).count('.') > 1:
-                    self.ReturnError("Invaild digtal num, many '.' was found.")
+                    self.ReturnError("Invalid digtal num, many '.' was found.")
                 else:
                     a = int(a * pow(10, max_float_length))
             if '.' in str(b):
                 if str(b).count('.') > 1:
-                    self.ReturnError("Invaild digtal num, many '.' was found.")
+                    self.ReturnError("Invalid digtal num, many '.' was found.")
                 else:
                     b = int(b * pow(10, max_float_length))
             return self.resultformat(cal_result=a / b, cal_fraction=Fraction(a, b))
@@ -106,11 +106,13 @@ class Basic:
     # [y]√x
     @cached(cache=CACHE)
     def sqrt(self, x, y=2, list_1=None, list_2=None) -> list:
+        if len(x) > 12:
+            return self.ReturnError("Invalid")
         # sqrt 8,0.2 -> 8**5
         # x = int(x) if isnum(x) else x
         if y >= 161:
             y = 2
-            print("ValueError:invaild sqrt parameter 'y', default set its value to '2'.\n")
+            print("ValueError:invalid sqrt parameter 'y', default set its value to '2'.\n")
         elif y == 0:
             y = 2
             print("ZeroDivisionError: division by zero, default set parameter 'y' value to '2'.\ns")

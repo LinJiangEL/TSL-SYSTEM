@@ -160,9 +160,9 @@ while True:
         break
     elif not -31 <= syscode <= 32:
         # 异常退出
-        print("System shutdown with invaild syscode.")
-        logger.error(f"invaild syscode. [syscode: {syscode}]")
-        logger.warning("System shutdown with invaild syscode.")
+        print("System shutdown with invalid syscode.")
+        logger.error(f"invalid syscode. [syscode: {syscode}]")
+        logger.warning("System shutdown with invalid syscode.")
         break
     else:
         # 未知情况退出

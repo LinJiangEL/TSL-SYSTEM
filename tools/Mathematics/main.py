@@ -48,8 +48,8 @@ def run():
             try:
                 exec(f"basic = Basic();basic.{maincmd if maincmd[0] in string.ascii_letters else exec('raise AttributeError')}") \
                     if maincmd not in ['ReturnError', 'resultformat'] else exec('raise NameError')
-                num_argvs = cmd.split(' ')[1]
-                ismanyargvs = len(cmd.split(' ')[1:]) > 1
+                num_argvs = cmd.split(' ', maxsplit=1)[1]
+                ismanyargvs = cmd.split(' ', maxsplit=1)[1].count(',') > 1
                 if ismanyargvs:
                     print("ValueError:cannot process too many arguments.")
                     continue

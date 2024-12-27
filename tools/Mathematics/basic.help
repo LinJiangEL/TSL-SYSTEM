@@ -44,6 +44,8 @@ Identifies:
      [SYSTEM_DIGMAX, default: 8]
   3. The output of "Fraction" is "None" by default, except for calculation similar to division.
   4. The output of "Sqrt" is "None" by default, except for calculation similar to radical formula.
+     > sqrt 64,5
+     Sqrt: 2(5)√2
 
 Email bug reports, questions, discussions to <linjiangxv101@qq.com>
 

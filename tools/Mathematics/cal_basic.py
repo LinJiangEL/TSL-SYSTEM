@@ -6,6 +6,13 @@ from config import SYSTEM_DIGMAX, CACHE
 from fractions import Fraction
 from decimal import Decimal
 
+def get_float_length(n):
+    return len(str(n).split('.')[1])
+
+def dot2fraction(n: float):
+    _num = Fraction(str(n))
+    return Fraction(_num.numerator, _num.denominator)
+
 
 class Basic:
     def __init__(self):
@@ -47,7 +54,6 @@ class Basic:
         if b == 0:
             return self.ReturnError("ZeroDivisionError: division by zero.")
         else:
-            get_float_length = lambda n:len(str(n).split('.')[1])
             max_float_length = max(get_float_length(a), get_float_length(b))
             if '.' in str(a):
                 if str(a).count('.') > 1:
@@ -100,30 +106,25 @@ class Basic:
     # [y]√x
     @cached(cache=CACHE)
     def sqrt(self, x, y=2, list_1=None, list_2=None) -> list:
-        if len(str(x)) > 10:
-            x = int(str(x)[:10])
-            print(x)
-            print("SpillOverError:invaild sqrt parameter 'x' whose length must be inside '10', "
-                  "overflow bits will be rounded."
-                  )
+        # sqrt 8,0.2 -> 8**5
+        # x = int(x) if isnum(x) else x
         if y >= 161:
             y = 2
-            print("ValueError:invaild sqrt parameter 'y', default set its value to '2'.")
+            print("ValueError:invaild sqrt parameter 'y', default set its value to '2'.\n")
         elif y == 0:
             y = 2
-            print("ZeroDivisionError: division by zero, default set parameter 'y' value to '2'.")
+            print("ZeroDivisionError: division by zero, default set parameter 'y' value to '2'.\ns")
         else:
             pass
+        y = dot2fraction(y)
 
-        if list_1 is None:
-            list_1 = []
-        if list_2 is None:
-            list_2 = ()
+        list_1 = [] if list_1 is None else list_1
+        list_2 = () if list_2 is None else list_2
 
         digit_result = math.pow(x, 1 / y)
 
         while True:
-            n = 100
+            n = 1000
             while n != 0:
                 if x == 0:
                     break
@@ -137,10 +138,12 @@ class Basic:
                     else:
                         return self.resultformat(
                             cal_result=digit_result,
-                            cal_sqrt=str(y) + '_' + str(n) + chr(8730) + list_2 if n > 1 and y > 2
-                            else str(y) + '_' + chr(8730) + list_2 if n <= 1 and y > 2
-                            else str(n) + chr(8730) + list_2 if n > 1 and y == 2
-                            else x if y == 1 else chr(8730) + list_2
+                            cal_sqrt=f"{str(n)}({str(y)}){chr(8730)}{list_2}" if n > 1 and y > 2
+                            else f"({str(y)}){chr(8730)}{list_2}" if n <= 1 and y > 2
+                            else f"{str(n)}{chr(8730)}{list_2}" if n > 1 and y == 2
+                            else x if y == 1
+                            else f"({str(y)}){chr(8730)}{list_2}" if y < 2
+                            else chr(8730) + list_2
                         )
                 else:
                     n = n - 1

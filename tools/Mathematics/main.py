@@ -53,7 +53,7 @@ def run():
                 if ismanyargvs:
                     print("ValueError:cannot process too many arguments.")
                     continue
-                numab = [float(num) for num in num_argvs.split(',') if num != '']
+                numab = [float(num) for num in num_argvs.split(',') if num]
             except AttributeError:
                 print(f"NameError:symbol '{maincmd}' is not defined in Basic.")
             except NameError:

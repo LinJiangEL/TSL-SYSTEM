@@ -4,6 +4,7 @@ import math
 from cachetools import cached
 from config import SYSTEM_DIGMAX, CACHE
 from fractions import Fraction
+from ast import literal_eval
 from decimal import Decimal
 
 def get_float_length(n):
@@ -30,6 +31,8 @@ class Basic:
         return resultlist
 
     def ReturnError(self, errors):
+        if "Error" not in errors:
+            errors = f"Error:{errors}"
         self.error = errors
         return self.error
 
@@ -106,18 +109,11 @@ class Basic:
     # [y]√x
     @cached(cache=CACHE)
     def sqrt(self, x, y=2, list_1=None, list_2=None) -> list:
-        if len(x) > 12:
-            return self.ReturnError("Invalid")
+        # if len(str(x)) > 12:
+        #     return self.ReturnError("ValueError:invalid operator x.")
         # sqrt 8,0.2 -> 8**5
-        # x = int(x) if isnum(x) else x
-        if y >= 161:
-            y = 2
-            print("ValueError:invalid sqrt parameter 'y', default set its value to '2'.\n")
-        elif y == 0:
-            y = 2
-            print("ZeroDivisionError: division by zero, default set parameter 'y' value to '2'.\ns")
-        else:
-            pass
+        if y > 154.1273577 or not y:
+            return self.ReturnError("ValueError:invalid operate y.")
         y = dot2fraction(y)
 
         list_1 = [] if list_1 is None else list_1
@@ -126,16 +122,19 @@ class Basic:
         digit_result = math.pow(x, 1 / y)
 
         while True:
-            n = 1000
+            n = 100
             while n != 0:
                 if x == 0:
                     break
-                b = x / pow(n, y)
-                list_1.append(b)
+                try:
+                    b = x / pow(n, y)
+                    list_1.append(b)
+                except OverflowError:
+                    return self.ReturnError("OverflowError:int too large to operate.")
                 for i in list_1:
                     list_2 = ('{:g}'.format(i))
                 if Decimal(list_2) == Decimal(list_2).to_integral():
-                    if int(list_2) == 1:
+                    if int(literal_eval(f"{list_2}")) == 1:
                         return self.resultformat(cal_result=digit_result, cal_sqrt=n)
                     else:
                         return self.resultformat(
@@ -145,7 +144,7 @@ class Basic:
                             else f"{str(n)}{chr(8730)}{list_2}" if n > 1 and y == 2
                             else x if y == 1
                             else f"({str(y)}){chr(8730)}{list_2}" if y < 2
-                            else chr(8730) + list_2
+                            else f"{chr(8730)}{list_2}"
                         )
                 else:
                     n = n - 1

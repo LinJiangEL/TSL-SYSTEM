@@ -1,6 +1,7 @@
 #  Copyright (c) 2024. L.J.Afres, All rights reserved.
 
 import math
+import numpy
 from cachetools import cached
 from config import SYSTEM_DIGMAX, CACHE
 from fractions import Fraction
@@ -35,6 +36,10 @@ class Basic:
             errors = f"Error:{errors}"
         self.error = errors
         return self.error
+
+    @staticmethod
+    def iseven(n):
+        return n % 2 == 0
 
     # a + b
     # @cached(cache=CACHE)
@@ -109,17 +114,21 @@ class Basic:
     # [y]√x
     @cached(cache=CACHE)
     def sqrt(self, x, y=2, list_1=None, list_2=None) -> list:
+        if self.iseven(y) and x < 0:
+            return self.ReturnError("ValueError: math domain error.")
         # if len(str(x)) > 12:
         #     return self.ReturnError("ValueError:invalid operator x.")
         # sqrt 8,0.2 -> 8**5
         if y > 154.1273577 or not y:
             return self.ReturnError("ValueError:invalid operate y.")
+        if y < 0:
+            return self.ReturnError("ValueError:please simplify the negative number y before execute calculate command.")
         y = dot2fraction(y)
 
         list_1 = [] if list_1 is None else list_1
         list_2 = () if list_2 is None else list_2
 
-        digit_result = math.pow(x, 1 / y)
+        digit_result = math.pow(abs(x), 1/y) * (1, -1)[x < 0]
 
         while True:
             n = 100
@@ -134,7 +143,7 @@ class Basic:
                 for i in list_1:
                     list_2 = ('{:g}'.format(i))
                 if Decimal(list_2) == Decimal(list_2).to_integral():
-                    if int(literal_eval(f"{list_2}")) == 1:
+                    if math.fabs(int(literal_eval(f"{list_2}"))) == 1:
                         return self.resultformat(cal_result=digit_result, cal_sqrt=n)
                     else:
                         return self.resultformat(

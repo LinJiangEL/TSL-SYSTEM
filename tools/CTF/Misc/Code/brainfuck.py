@@ -4,19 +4,19 @@ import os
 import sys
 import time
 
-OPCODE_MOVE   = 0
-OPCODE_LEFT   = 1
-OPCODE_RIGHT  = 2
-OPCODE_ADD    = 3
-OPCODE_SUB    = 4
-OPCODE_OPEN   = 5
-OPCODE_CLOSE  = 6
-OPCODE_INPUT  = 7
+OPCODE_MOVE = 0
+OPCODE_LEFT = 1
+OPCODE_RIGHT = 2
+OPCODE_ADD = 3
+OPCODE_SUB = 4
+OPCODE_OPEN = 5
+OPCODE_CLOSE = 6
+OPCODE_INPUT = 7
 OPCODE_OUTPUT = 8
-OPCODE_CLEAR  = 9
-OPCODE_COPY   = 10
-OPCODE_SCANL  = 11
-OPCODE_SCANR  = 12
+OPCODE_CLEAR = 9
+OPCODE_COPY = 10
+OPCODE_SCANL = 11
+OPCODE_SCANR = 12
 
 opcode_map = {
     "<": OPCODE_LEFT,
@@ -29,14 +29,17 @@ opcode_map = {
     ".": OPCODE_OUTPUT,
 }
 
+
 def _isstr(s):
     return isinstance(s, str)
+
 
 class BrainfuckSyntaxError(Exception):
     """
     Raised when brainfuck source contains invalid syntax
     """
     pass
+
 
 class Opcode(object):
     """
@@ -69,8 +72,10 @@ class Opcode(object):
 
         return ret
 
+
 def _raise_unmatched(brace):
     raise BrainfuckSyntaxError("Error: unmatched '" + brace + "' symbol")
+
 
 def _count_dupes_ahead(string, index):
     """
@@ -85,6 +90,7 @@ def _count_dupes_ahead(string, index):
         ret += 1
 
     return ret
+
 
 def _is_copyloop(program, size, index, ii):
     """
@@ -135,29 +141,32 @@ def _is_copyloop(program, size, index, ii):
 
     return ret, (i - index) + 1
 
+
 def _is_scanloop(program, size, index, ii):
     """
     Detects a scan loop and returns equivalent opcodes
     """
 
     if index < (size - 3):
-        clr = program[index : index + 3]
+        clr = program[index: index + 3]
         if clr == "[>]":
             return [Opcode(OPCODE_SCANR, ii)], 3
         elif clr == "[<]":
             return [Opcode(OPCODE_SCANL, ii)], 3
     return [], 0
 
+
 def _is_clearloop(program, size, index, ii):
     """
     Detects a clear loop and returns equivalent opcodes
     """
     if index < (size - 3):
-        clr = program[index : index + 3]
+        clr = program[index: index + 3]
         if clr == "[+]" or clr == "[-]":
             return [Opcode(OPCODE_CLEAR, ii)], 3
 
     return [], 0
+
 
 def _run_optimizers(program, size, index, ii):
     """
@@ -174,6 +183,7 @@ def _run_optimizers(program, size, index, ii):
             return codes, chars
 
     return [], 0
+
 
 def parse(program):
     """
@@ -247,8 +257,9 @@ def parse(program):
 
     return opcodes
 
+
 def execute(opcodes, input_data=None, time_limit=None, tape_size=30000,
-              buffer_output=False, write_byte=None, read_byte=None):
+            buffer_output=False, write_byte=None, read_byte=None):
     """
     Execute a list of intermediate opcodes
 
@@ -326,7 +337,7 @@ def execute(opcodes, input_data=None, time_limit=None, tape_size=30000,
         elif op.code == OPCODE_OPEN:
             pi += op.move
             if tape[pi] == 0:
-               ii = op.value
+                ii = op.value
         elif op.code == OPCODE_CLOSE:
             pi += op.move
             if tape[pi] != 0:
@@ -348,7 +359,7 @@ def execute(opcodes, input_data=None, time_limit=None, tape_size=30000,
                 for off in op.value:
                     index = pi + off
                     tape[index] = (tape[index]
-                        + (tape[pi] * op.value[off])) % 256
+                                   + (tape[pi] * op.value[off])) % 256
                 tape[pi] = 0
         elif op.code == OPCODE_SCANL:
             pi += op.move
@@ -365,8 +376,9 @@ def execute(opcodes, input_data=None, time_limit=None, tape_size=30000,
         return None
     return "".join(ret)
 
+
 def interpret(program, input_data=None, time_limit=None, tape_size=30000,
-        buffer_output=False, write_byte=None, read_byte=None):
+              buffer_output=False, write_byte=None, read_byte=None):
     """
     Interpret & execute a brainfuck program
 
@@ -388,8 +400,7 @@ def interpret(program, input_data=None, time_limit=None, tape_size=30000,
     """
 
     if not _isstr(program):
-        raise BrainfuckSyntaxError("expecting a string containing Brainfuck "
-            "code. Got %s instead" % type(program))
+        raise BrainfuckSyntaxError("expecting a string containing Brainfuck code. Got %s instead" % type(program))
 
     opcodes = parse(program)
     return execute(opcodes, input_data, time_limit, tape_size, buffer_output, write_byte, read_byte)
@@ -400,4 +411,3 @@ def brainf_decode(file):
         code = f.read()
 
     return interpret(code, buffer_output=True)
-

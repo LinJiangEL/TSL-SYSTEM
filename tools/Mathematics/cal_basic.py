@@ -116,8 +116,6 @@ class Basic:
     def sqrt(self, x, y=2, list_1=None, list_2=None) -> list:
         if self.iseven(y) and x < 0:
             return self.ReturnError("ValueError: math domain error.")
-        # if len(str(x)) > 12:
-        #     return self.ReturnError("ValueError:invalid operator x.")
         # sqrt 8,0.2 -> 8**5
         if y > 154.1273577 or not y:
             return self.ReturnError("ValueError:invalid operate y.")

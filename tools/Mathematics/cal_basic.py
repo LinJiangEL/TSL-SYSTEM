@@ -1,7 +1,6 @@
 #  Copyright (c) 2024. L.J.Afres, All rights reserved.
 
 import math
-import numpy
 from cachetools import cached
 from config import SYSTEM_DIGMAX, CACHE
 from fractions import Fraction
@@ -142,7 +141,7 @@ class Basic:
                     list_2 = ('{:g}'.format(i))
                 if Decimal(list_2) == Decimal(list_2).to_integral():
                     if math.fabs(int(literal_eval(f"{list_2}"))) == 1:
-                        return self.resultformat(cal_result=digit_result, cal_sqrt=n)
+                        return self.resultformat(cal_result=digit_result, cal_sqrt=n * (1, -1)[x < 0])
                     else:
                         return self.resultformat(
                             cal_result=digit_result,

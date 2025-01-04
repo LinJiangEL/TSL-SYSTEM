@@ -1,4 +1,3 @@
-pymysql
 setuptools
 wget
 cachetools
@@ -14,11 +13,14 @@ py3langid
 xlrd
 xlwt
 uuid
-cython
 rich
+cmake
+cython
 requests
 urllib3
 playsound
+librosa
+matplotlib
 fake_useragent
 prettytable
 tqdm

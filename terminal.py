@@ -1,4 +1,4 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
 
 import os
 import sys
@@ -8,6 +8,7 @@ from setuptools.errors import PlatformError
 from loguru import logger
 from bin.helpformat import Help
 from doc.helppage import HelpPage
+from selfcheck import check_command
 from tools.__built_in__.restore import ImagePath, Images, restore
 from tools.__built_in__.typemod import gettype, isnum
 from config import SYSTEM_DIR, SYSTEM_LOGPATH, SYSTEM_LOGFORMAT, SYSTEM_LOGSTDOUT, \
@@ -316,6 +317,14 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 time.sleep(1)
                 print('done.\n')
                 return -1
+            elif cmd_tmp[0] == 'upgrade':
+                if check_command('git'):
+                    if os.getcwd() == SYSTEM_DIR:
+                        os.system('git pull')
+                    else:
+                        print("FileNotFoundError:the upgrade must be performed in the SYSTEM_DIR.\n.")
+                else:
+                    print("RuntimeError:'git' is not in the path, please install it and try again.\n")
             elif cmd_tmp[0] == 'init' and len(cmd_tmp) <= 2:
                 if is_root:
                     if len(cmd_tmp) == 1:

@@ -1,4 +1,3 @@
-pymysql
 setuptools
 wget
 win32
@@ -23,6 +22,8 @@ cython
 requests
 urllib3
 playsound
+librosa
+matplotlib
 fake_useragent
 prettytable
 tqdm

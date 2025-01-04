@@ -1,4 +1,4 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
 
 import math
 from cachetools import cached
@@ -23,7 +23,7 @@ class Basic:
         self.digmax = SYSTEM_DIGMAX
 
     def resultformat(self, cal_result, cal_fraction=None, cal_sqrt=None):
-        resulttext = f"Result (2): {round(cal_result, 2)}\n" + \
+        resulttext = f"Result (2): {round(cal_result, 2):.2f}\n" + \
                      f"Digits ({self.digmax}): {round(cal_result, self.digmax)}\n" + \
                      f"Fraction: {cal_fraction}\n" + \
                      f"Sqrt: {cal_sqrt}"
@@ -138,7 +138,7 @@ class Basic:
                 except OverflowError:
                     return self.ReturnError("OverflowError:int too large to operate.")
                 for i in list_1:
-                    list_2 = ('{:g}'.format(i))
+                    list_2 = f'{i:g}'
                 if Decimal(list_2) == Decimal(list_2).to_integral():
                     if math.fabs(int(literal_eval(f"{list_2}"))) == 1:
                         return self.resultformat(cal_result=digit_result, cal_sqrt=n * (1, -1)[x < 0])

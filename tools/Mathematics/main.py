@@ -1,9 +1,10 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
 
 import os
 import gc
 import re
 import string
+import importlib
 from ast import literal_eval
 from termcolor import colored
 from config import Tools_DIR, PageReader
@@ -23,7 +24,7 @@ def run():
         print()
         return 0
     try:
-        exec(f"from tools.Mathematics.cal_{method.lower()} import {method[0].upper() + method[1:].lower()}")
+        importlib.import_module(f'tools.Mathematics.cal_{method.lower()}.{method[0].upper() + method[1:].lower()}')
         _ok = "True"
     except ModuleNotFoundError:
         _ok = "False"
@@ -112,9 +113,7 @@ def run():
                 maincmd = cmd.split('(')[0]
                 try:
                     if maincmd in ['Solve_equations', 'Solve_equation']:
-                        expressions = [exp for exp in '('.join([e.strip() for e in cmd.split('(')[1:]])[:-1].split(',')
-                                       if exp != ''
-                                       ]
+                        expressions = [exp for exp in '('.join([e.strip() for e in cmd.split('(')[1:]])[:-1].split(',') if exp != '']
                         result = getattr(advanced, maincmd)(expressions)
 
                         # 结果处理

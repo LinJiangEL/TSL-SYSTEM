@@ -1,4 +1,4 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
 import os
 import sys
 import warnings
@@ -15,12 +15,12 @@ def set_env_variable(name, value):
         winreg.CloseKey(key)
     elif sys.platform == 'linux':
         home = os.getenv("HOME")
-        if os.path.exists(os.path.join(home, '.zshrc')):
-            with open(os.path.join(home, '.zshrc'), 'a') as envir:
+        if os.path.exists(os.path.join(home, '.bashrc')):
+            with open(os.path.join(home, '.bashrc'), 'a+') as envir:
                 envir.write(f'\nexport "{name}"={value}')
                 envir.close()
-        else:
-            with open(os.path.join(home, '.zshrc'), 'w') as envir:
+        if os.path.exists(os.path.join(home, '.zshrc')):
+            with open(os.path.join(home, '.zshrc'), 'a+') as envir:
                 envir.write(f'\nexport "{name}"={value}')
                 envir.close()
         os.system(f'export "{name}"={value}')

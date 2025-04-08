@@ -13,6 +13,7 @@ def set_env_variable(name, value):
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment", 0, winreg.KEY_ALL_ACCESS)
         winreg.SetValueEx(key, name, 0, winreg.REG_SZ, value)
         winreg.CloseKey(key)
+        os.environ[name] = value
     elif sys.platform == 'linux':
         home = os.getenv("HOME")
         if os.path.exists(os.path.join(home, '.bashrc')):
@@ -23,6 +24,6 @@ def set_env_variable(name, value):
             with open(os.path.join(home, '.zshrc'), 'a+') as envir:
                 envir.write(f'\nexport {name}={value}')
                 envir.close()
-        os.system(f'export {name}={value}')
+        os.environ[name] = value
     else:
         raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')

@@ -1,4 +1,4 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
 
 import os
 import sys
@@ -47,6 +47,7 @@ SuperUser = ['root']  # 设置'root'用户为系统最高管理者
 SYSTEM_PRINTER = 'cat' if sys.platform == 'linux' else 'type' if sys.platform == 'win32' else 0
 SYSTEM_CLEARSTDOUT = 'clear' if sys.platform == 'linux' else 'cls' if sys.platform == 'win32' else 0
 CACHE = LRUCache(maxsize=64)  # 设置最大缓存数为 64
+REFRESH_SWITCH = True
 requirements_file = os.path.join(SYSTEM_DIR, f'{sys.platform}requirements.txt')
 if not os.path.exists(os.path.join(SYSTEM_DIR, "Temp/PwdUser")):
     # 初始化用户登录缓存文件

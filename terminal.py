@@ -3,6 +3,7 @@
 import os
 import sys
 import time
+import subprocess
 from ast import literal_eval
 from setuptools.errors import PlatformError
 from loguru import logger
@@ -87,7 +88,9 @@ def terminal(USERNAME, MODE, Bin_DIR):
             elif cmd_tmp[0] == 'trunc':
                 if is_root:
                     if len(cmd_tmp) >= 2:
-                        os.system(f'{" ".join(cmd_tmp[1:])}')
+                        subprocess.run(['cmd', '/V:ON', '/C', f'set PATH={os.environ.get("PATH", "")} && {" ".join(cmd_tmp[1:])}'],
+                                       shell=True
+                                       )
                         logger.info(f"{USERNAME} succeed in executing 'trunc' as a SuperUser. "
                                     f"[CMDINFO:('trunc', '{cmd_tmp[1:]}')]"
                                     )
@@ -111,6 +114,22 @@ def terminal(USERNAME, MODE, Bin_DIR):
                                      )
                 else:
                     continue
+            elif cmd_tmp[0] == "chjava" and len(cmd_tmp) <= 2:
+                if is_root:
+                    if len(cmd_tmp) == 1:
+                        print("KeyError:version\n")
+                        continue
+                    from tools.__built_in__.chjava import setjava
+                    if cmd_tmp[1].isdigit():
+                        setjava(int(cmd_tmp[1]))
+                    else:
+                        print("TypeError:the version must be an integer.\n")
+                        continue
+                else:
+                    print('sh: chjava: Permission denied.\n')
+                    logger.info(f"{USERNAME} failed to execute 'trunc' because {USERNAME} is a SimpleUser. "
+                                f"[CMDINFO:('chjava', '{cmd_tmp[1:]}')]"
+                                )
             elif cmd_tmp[0] == "execute" and len(cmd_tmp) <= 2:
                 from tools import execute
                 toolcode = execute.execute(cmd_tmp[1] if len(cmd_tmp) == 2 else None)

@@ -1,0 +1,12 @@
+<TSL-SYSTEM Terminal> $chjava, A command which can change the java version.
+Usage: chjava [VERSION]
+Examples: chjava 17
+          chjava 8
+
+Change the java version in global PATH.
+SuperUser permission is required before executing this command.
+
+Command Options:
+    VERSION,          Integer java version.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>

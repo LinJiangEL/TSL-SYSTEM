@@ -1,4 +1,4 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
 
 from ast import literal_eval
 
@@ -14,7 +14,7 @@ class InputProcessor:
         self.pattern_terminal = []
         self.pattern_identkey = []
 
-    def Input_illegal_check(self, text, pattern):
+    def input_illegal_check(self, text, pattern):
         if pattern in self.patterns:
             chars = self.string_simplify(text)
             result = []

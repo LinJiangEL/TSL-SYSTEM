@@ -1,4 +1,4 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
 
 import os
 import gc
@@ -73,12 +73,12 @@ class UserManager:
     def add(self, username: str, mode='user', password=False):
         """添加用户。"""
         if username not in self.users:
-            if self.InputProcessor.Input_illegal_check(username, "username"):
+            if self.InputProcessor.input_illegal_check(username, "username"):
                 if username.isidentifier() and 4 <= len(username) <= 12:
                     if not password:
                         password_processor = hashlib.md5()
                         password = getpass.getpass(f"Please set a password to user '{username}': ")
-                        if self.InputProcessor.Input_illegal_check(password, "password"):
+                        if self.InputProcessor.input_illegal_check(password, "password"):
                             if len(password) >= 6:
                                 password = password.encode(encoding='utf-8')
                                 password_processor.update(password)
@@ -222,7 +222,7 @@ class UserManager:
             infotmp = self.userinfos[index].split(':')
 
             if key == 'username':
-                if self.InputProcessor.Input_illegal_check(value, key):
+                if self.InputProcessor.input_illegal_check(value, key):
                     if value.isidentifier() and 4 <= len(value) <= 12:
                         if target != value:
                             self.userinfos[index] = f"{value}@{self.userinfos[index].split('@')[1]}"
@@ -267,7 +267,7 @@ class UserManager:
                         passwd_processor = hashlib.md5()
                         if value is None:
                             value = getpass.getpass('New Password: ')
-                            if self.InputProcessor.Input_illegal_check(value, key):
+                            if self.InputProcessor.input_illegal_check(value, key):
                                 if len(value) < 6:
                                     print("ValueError:invalid password format, length must be more than or equal to 6.\n")
                                     return -1
@@ -275,7 +275,7 @@ class UserManager:
                                 print("ValueError:more than one illegal characters were found in the password.\n")
                                 return -1
                         else:
-                            if not self.InputProcessor.Input_illegal_check(value, key):
+                            if not self.InputProcessor.input_illegal_check(value, key):
                                 print("ValueError:more than one illegal characters were found in the password.\n")
                                 return -1
                         value = value.encode(encoding='utf-8')

@@ -1,5 +1,6 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
 
+import re
 from .cal_basic import Basic
 
 basic = Basic()
@@ -7,36 +8,23 @@ basic = Basic()
 
 class Compound:
     def __init__(self):
-        self.variables = {}
+        self.varibles = {}
+        self._patterns = {
+            "symbol": re.compile(r"^\d+(?:\.\d+)?(?:[+\-*/]\d+(?:\.\d+)?)+$"),
+            "expression": re.compile(r""),
+        }
 
-    def set_variable(self, name, value):
-        self.variables[name] = value
+    def base(self, expression):
+        """Base calculation."""
+        if self._check_if_vaild(expression) is None:
+            print("SyntaxError:invalid syntax.")
+        else:
+            try:
+                result = eval(expression, {"__builtins__": None}, {})
+                return result
+            except ZeroDivisionError:
+                return "ZeroDivisionError: division by zero."
 
-    def get_variable(self, name):
-        return self.variables.get(name, None)
+    def _check_if_vaild(self, oridata):
+        return re.fullmatch(self._patterns["symbol"], oridata)
 
-    def evaluate(self, expression):
-        try:
-            local_vars = {
-                'add': Basic.add,
-                'sub': Basic.sub,
-                'mul': Basic.mul,
-                'div': Basic.div,
-                **self.variables  # 添加用户定义的变量到local_vars
-            }
-            result = eval(expression, {}, local_vars)
-            print(f"Result: {result}")
-            return result
-        except ... as e:
-            ...
-
-    def parse_variable(self, command):
-        try:
-            _, rest = command.split(' ', 1)
-            name, value_expr = rest.split('=')
-            name = name.strip()
-            value = self.evaluate(value_expr.strip())
-            if value is not None:
-                self.set_variable(name, value)
-        except Exception as e:
-            print(f"Invalid variable assignment. Error: {str(e)}")

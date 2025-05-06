@@ -19,7 +19,7 @@ def run():
     print('|   TSL-SYSTEM Mathematics Module   |')
     print('-' * 37)
 
-    method = input('Please input a method which you want to use [basic/advanced]: ')
+    method = input('Please input a method which you want to use [basic/advanced/compound]: ')
     if method.strip() == '':
         print()
         return 0
@@ -159,5 +159,23 @@ def run():
                         print(f"NameError:symbol '{maincmd}' is not defined in Advanced.\n")
                 except AttributeError:
                     print(f"NameError:symbol '{maincmd}' is not defined in Advanced.\n")
+    elif _ok and method == 'compound':
+        from tools.Mathematics.cal_compound import Compound
+        compound = Compound()
+
+        while True:
+            cmd = input(colored('(compound)', color='magenta') + ' >> ').strip()
+            if cmd == '':
+                pass
+            elif cmd == '@exit':
+                print()
+                break
+            elif cmd == '@help':
+                HelpTool(mathdir, PageReader, method)
+                continue
+            elif cmd == '@flush':
+                TempManager().Flush('Mathematics Compound Module')
+            else:
+                print(compound.base(cmd), '\n')
     else:
         print(f"NameError:method '{method}' is not defined.")

@@ -372,6 +372,8 @@ def terminal(USERNAME, MODE, Bin_DIR):
                     logger.info(f"{USERNAME} failed to execute 'init' because {USERNAME} is a SimpleUser. "
                                 f"[CMDINFO:('init', '{cmd_tmp[1]}')]"
                                 )
+            elif cmd_tmp[0] == 'throw':
+                raise RuntimeError("terminated system.")
             elif cmd_tmp[0] == 'clear' and len(cmd_tmp) == 1:
                 os.system(SYSTEM_CLEARSTDOUT)
                 print('')

@@ -17,6 +17,7 @@ def dot2fraction(n: float):
 
 class Basic:
     def __init__(self):
+        self.error = ""
         self.one = ['abs', 'sqr', 'sqrt']
         self.two = ['add', 'sub', 'mul', 'div', 'pow', 'fdiv', 'mod', 'sqrt']
         self.needlist = []

@@ -57,7 +57,7 @@ class Basic:
         return self.resultformat(cal_result=a * b)
 
     # a / b
-    @cached(cache=CACHE)
+    # @cached(cache=CACHE)
     def div(self, a, b):
         if b == 0:
             return self.ReturnError("ZeroDivisionError: division by zero.")

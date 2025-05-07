@@ -176,6 +176,6 @@ def run():
             elif cmd == '@flush':
                 TempManager().Flush('Mathematics Compound Module')
             else:
-                print(compound.base(cmd), '\n')
+                print(compound.base(cmd)[0], '\n')
     else:
         print(f"NameError:method '{method}' is not defined.")

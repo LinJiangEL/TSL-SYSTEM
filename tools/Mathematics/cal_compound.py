@@ -39,7 +39,6 @@ class Compound:
             #     return f"SyntaxError:{e}"
             nums = re.findall(r'\d+(?:\.\d+)?', expression)
             operators = re.findall(r'[+\-*/]', expression)
-            print(nums, operators)
             nums = [float(n) for n in nums]
 
             i = 0
@@ -65,14 +64,13 @@ class Compound:
                 if isinstance(result, list):
                     result = result[1]
 
+            # 使用 Fraction 来正确化简分数
+            fraction_result = Fraction(str(result)).limit_denominator()
             resulttext = f"Result (2): {round(result, 2):.2f}\n" + \
                         f"Digits (8): {round(result, 8)}\n" + \
-                        f"Fraction: {Fraction(str(result))}"
-            return [resulttext, result, Fraction(str(result))]
+                        f"Fraction: {fraction_result}"
+            return [resulttext, result, fraction_result]
 
     def _check_if_vaild(self, oridata: str) -> bool:
         oridata = ''.join([exp.strip() for exp in oridata.split(' ') if exp])
         return re.fullmatch(self._patterns["symbol"], oridata) is None
-
-    def parse(self, expression):
-        pass

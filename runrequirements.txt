@@ -16,6 +16,7 @@ sympy
 numpy
 scipy
 py3langid
+mido
 xlrd
 xlwt
 rich

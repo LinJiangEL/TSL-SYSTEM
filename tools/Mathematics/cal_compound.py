@@ -1,8 +1,8 @@
-#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import re
 from fractions import Fraction
-from .cal_basic import Basic
+from tools.Mathematics.cal_basic import Basic
 
 basic = Basic()
 
@@ -67,8 +67,8 @@ class Compound:
             # 使用 Fraction 来正确化简分数
             fraction_result = Fraction(str(result)).limit_denominator()
             resulttext = f"Result (2): {round(result, 2):.2f}\n" + \
-                        f"Digits (8): {round(result, 8)}\n" + \
-                        f"Fraction: {fraction_result}"
+                         f"Digits (8): {round(result, 8)}\n" + \
+                         f"Fraction: {fraction_result}"
             return [resulttext, result, fraction_result]
 
     def _check_if_vaild(self, oridata: str) -> bool:

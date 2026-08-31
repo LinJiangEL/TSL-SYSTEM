@@ -1,4 +1,4 @@
-#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import os
 import gc
@@ -166,7 +166,7 @@ def run():
         while True:
             cmd = input(colored('(compound)', color='magenta') + ' >> ').strip()
             if cmd == '':
-                pass
+                continue
             elif cmd == '@exit':
                 print()
                 break
@@ -175,6 +175,7 @@ def run():
                 continue
             elif cmd == '@flush':
                 TempManager().Flush('Mathematics Compound Module')
+                continue
             else:
                 print(compound.base(cmd)[0], '\n')
     else:

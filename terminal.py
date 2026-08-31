@@ -1,4 +1,4 @@
-#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import os
 import sys
@@ -87,15 +87,21 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 continue
             elif cmd_tmp[0] == 'trunc':
                 if is_root:
-                    if len(cmd_tmp) >= 2:
-                        subprocess.run(['cmd', '/V:ON', '/C', f'set PATH={os.environ.get("PATH", "")} && {" ".join(cmd_tmp[1:])}'],
-                                       shell=True
-                                       )
-                        logger.info(f"{USERNAME} succeed in executing 'trunc' as a SuperUser. "
-                                    f"[CMDINFO:('trunc', '{cmd_tmp[1:]}')]"
-                                    )
-                    else:
-                        continue
+                    print("This function has been abandoned.")
+                    # if len(cmd_tmp) >= 2:
+                    #     print(['cmd', '/V:ON', '/C', f'{" ".join(cmd_tmp[1:])}'])
+                    #     # subprocess.run(['cmd', '/V:ON', '/C', f'set PATH={os.environ.get("PATH", "")} && {" ".join(cmd_tmp[1:])}'],
+                    #     #                shell=True
+                    #     #                )
+                    #     subprocess.run(
+                    #         ['cmd', '/V:ON', '/C', f"\"{cmd_tmp[1]} {cmd_tmp[2]}\""],
+                    #         shell=False
+                    #         )
+                    #     logger.info(f"{USERNAME} succeed in executing 'trunc' as a SuperUser. "
+                    #                 f"[CMDINFO:('trunc', '{cmd_tmp[1:]}')]"
+                    #                 )
+                    # else:
+                    #     continue
                 else:
                     print('sh: trunc: Permission denied.\n')
                     logger.info(f"{USERNAME} failed to execute 'trunc' because {USERNAME} is a SimpleUser. "

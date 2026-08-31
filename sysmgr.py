@@ -1,4 +1,4 @@
-#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import os
 import gc
@@ -141,7 +141,8 @@ class UserManager:
                 self.userinfos = list(filter(lambda user: username != user.split('@')[0], self.userinfos))
                 self.users = [user.split('@')[0] for user in self.userinfos]
                 self.rewrite(self.userinfos)
-                self.superusers = list(filter(lambda info: 'root' == info.split('@')[1], [userinfo.split(':')[0] for userinfo in self.userinfos]))
+                self.superusers = list(filter(lambda info: 'root' == info.split('@')[1],
+                                              [userinfo.split(':')[0] for userinfo in self.userinfos]))
                 print(f"Successfully remove a user named '{username}' from login database.\n")
                 logger.info(f"'{self.PwdUser}' removed a user from Login Database successfully. "
                             f"[USERINFO:('{username}')]"

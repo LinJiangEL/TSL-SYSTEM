@@ -1,4 +1,4 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import os
 import playsound
@@ -15,3 +15,9 @@ class AudioPlayer:
         else:
             playsound.playsound(filename)
 
+
+class MIDI:
+    def __init__(self):
+        pass
+
+    

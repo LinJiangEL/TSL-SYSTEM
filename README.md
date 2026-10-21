@@ -57,6 +57,10 @@ Local music is stored in `tools/Music/Musics` (override it with the `TSL_MUSIC_D
 ## Network Module
 Run `execute Network` to use the network probing and analysis functions: `dns` (A/AAAA/MX/NS/TXT/CNAME with a built-in DNS client), `ping`, `trace` (traceroute), `ports` (TCP port scan), `http` (status code, headers, timings and security headers), `tls` (certificate subject, issuer, validity, days left and alternative names), `whois` (RFC 3912), `local` (interfaces, gateway, DNS and the ARP table), `public` (public IP and location), `speed` (download speed) and `analyze HOST` (a combined report). Everything is implemented with the standard library; `ping`/`tracert` rely on the commands shipped with the operating system, and when ICMP is blocked the tools report a clear error instead of failing silently.
 
+## License
+TSL-SYSTEM is licensed under the [PolyForm Noncommercial License 1.0.0](/LICENSE).
+Noncommercial use is permitted; commercial use requires a separate license from the author.
+
 ## Citation Literature
 - [Detailed Annotation on Python Regex](https://zhuanlan.zhihu.com/p/479731754)
 - [Detailed Annotation on Python loguru](https://blog.csdn.net/Kangyucheng/article/details/112794185)

@@ -58,6 +58,10 @@ user|user|user
 ## 网络模块
 运行`execute Network`可使用网络探测与分析功能：`dns`（A/AAAA/MX/NS/TXT/CNAME，内置DNS客户端）、`ping`、`trace`（路由追踪）、`ports`（TCP端口扫描）、`http`（状态码、响应头、耗时与安全响应头）、`tls`（证书主体、颁发者、有效期、剩余天数与备用名称）、`whois`（RFC 3912）、`local`（网卡、网关、DNS与ARP表）、`public`（出口IP与归属地）、`speed`（下载测速）和`analyze HOST`（综合报告）。全部以标准库实现，`ping`/`tracert`依赖系统自带命令；如果网络屏蔽了ICMP，程序会给出明确的错误提示而不是静默失败。
 
+## 许可证
+TSL-SYSTEM 使用 [PolyForm Noncommercial License 1.0.0](/LICENSE) 授权，仅允许非商业用途；
+如需商业使用，请与作者联系获取授权。
+
 ## 参考文献
 - [Detailed Annotation on Python Regex](https://zhuanlan.zhihu.com/p/479731754)
 - [Detailed Annotation on Python loguru](https://blog.csdn.net/Kangyucheng/article/details/112794185)

@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `user@TSL-SYSTEM` prompt keeps its original uncoloured form, while banners, hints and messages are
   styled.
 - **Version** bumped from `5.17.4` to `7.5.0`.
+- **License** changed from GNU GPL-3.0 to the PolyForm Noncommercial License 1.0.0.
 
 ### Fixed
 - `trunc` no longer breaks quoted arguments: `trunc python -c "import os"`, paths containing spaces and

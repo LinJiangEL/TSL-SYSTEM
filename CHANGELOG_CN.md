@@ -45,6 +45,7 @@ CHANGELOG Document  [English](/CHANGELOG.md) | [Chinese](/CHANGELOG_CN.md)
 - **`execute`** 现在把 `Network` 列为可用模块；`Chemistry`、`MultiMedia` 和 `Philosophy` 仍处于开发中。
 - `user@TSL-SYSTEM` 提示符保持原有的无颜色样式，而横幅、提示与消息使用彩色样式。
 - **版本号** 从 `5.17.4` 更新为 `7.5.0`。
+- **许可证** 从 GNU GPL-3.0 更换为 PolyForm Noncommercial License 1.0.0。
 
 ### 修复
 - `trunc` 不再破坏带引号的参数：`trunc python -c "import os"`、含空格的路径以及管道现在都能正常工作，

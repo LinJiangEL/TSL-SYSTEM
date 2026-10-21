@@ -1,4 +1,5 @@
 #  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
+from tools.__built_in__ import style
 
 import os
 from config import Tools_DIR
@@ -9,7 +10,7 @@ mediadir = os.path.join(Tools_DIR, 'media')
 
 def run():
     print('-'*38)
-    print('|    TSL-SYSTEM MultiMedia Module    |')
+    style.banner('TSL-SYSTEM MultiMedia Module', width=37)
     print('-'*38)
 
     while True:

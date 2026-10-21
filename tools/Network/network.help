@@ -1,0 +1,39 @@
+<TSL-SYSTEM Tools> %Network@network, A module which probes and analyses the network.
+
+Usage: COMMAND [ARGUMENTS]
+
+Commands:
+    help / @help            Print this HelpPage.
+    list                    List the available commands.
+    dns HOST [TYPE]         Resolve DNS records. TYPE can be A, AAAA, CNAME, MX, NS, TXT, SOA or PTR.
+    ping HOST [COUNT]       Send ICMP echo requests and report the round-trip time.
+    port HOST [PORTS]       Scan TCP ports. PORTS accepts 'top', '80,443' or '1-1024'.
+    trace HOST [HOPS]       Trace the route to a host and show every hop.
+    http URL                Analyze an HTTP/HTTPS response: status, headers, timing and security headers.
+    tls HOST [PORT]         Inspect the TLS certificate and the negotiated cipher.
+    whois TARGET            Query the whois record of a domain or an IP address.
+    local                   Show the local interfaces, gateway, DNS servers and ARP table.
+    public                  Show the public IP address and its location.
+    speed [URL]             Measure the download speed and the TCP handshake latency.
+    analyze TARGET          Run all of the checks above against one target.
+    @exit                   Return to the ExecuteShell or the Terminal.
+    @flush                  Flush the module cache.
+
+Examples:
+    dns example.com
+    dns example.com MX
+    ping github.com 6
+    port 127.0.0.1 22,80,443
+    trace example.com
+    http https://example.com
+    tls github.com 443
+    whois example.com
+    speed
+    analyze https://example.com
+
+Notes:
+    Port scanning and whois queries should only be used against hosts you own
+    or are authorized to test. The module never sends exploit payloads; it only
+    performs ordinary DNS, ICMP, TCP and HTTP requests.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>

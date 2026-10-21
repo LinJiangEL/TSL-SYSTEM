@@ -6,8 +6,8 @@ Execute built-in system tools.
 Command Options:
     TOOLNAME,          System Built-in Tools.
                        If it is not specified, ExecuteShell will be launched.
-                       <AvailableTools>: ["Mathematics", "Passwd", "Translate", "StudentsInfoDatabase", "Psychology"]
-                       <DevelopingTools>: ["Chemistry", "Network", "MultiMedia", "Philosophy"]
+                       <AvailableTools>: ["Mathematics", "Passwd", "Translate", "StudentsInfoDatabase", "Psychology", "Music", "Network"]
+                       <DevelopingTools>: ["Chemistry", "MultiMedia", "Philosophy"]
 
 Email bug reports, questions, discussions to <linjiangxv101@qq.com>
 

@@ -8,6 +8,7 @@
 "logger":"Manage system logs. [logger COMMANG **ASSIGNMENTS]"
 "trunc":"Calling external command(from mother system). [trunc EXTERNAL_CMD]"
 "internal":"Calling internal command(from built-in system). [internal BUILT-IN_CMD]"
+"music":"Search online music and play local music in the background. [music play|stop|pause|search|get]"
 "init":"Initialize the system code and work instantly."
 "logout":"Log out current user and return back to system login page."
 "exit":"Exit Terminal and shutdown TSL-SYSTEM."

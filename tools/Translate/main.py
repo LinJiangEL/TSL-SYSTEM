@@ -1,4 +1,5 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
+from tools.__built_in__ import style
 
 import os
 import sys
@@ -183,11 +184,11 @@ def fanyi(keyword):
 
 def main():
     try:
-        tran_choice = input("Choice one to continue：[ common/senior/reader ] ")
+        tran_choice = input(style.prompt("Choice one to continue：[ common/senior/reader ] "))
         print("")
         if tran_choice == "common":
             while True:
-                word = input(colored(f'({tran_choice}) Word：', color='magenta'))
+                word = input(style.prompt(f'({tran_choice}) Word'))
                 if word == "@exit":
                     gc.collect()
                     raise StopIteration
@@ -219,7 +220,7 @@ def main():
             main()
         elif tran_choice == "senior":
             while True:
-                word = input(colored(f'({tran_choice}) Word：', color='magenta'))
+                word = input(style.prompt(f'({tran_choice}) Word'))
                 if word == '@exit':
                     gc.collect()
                     raise StopIteration
@@ -256,7 +257,7 @@ def main():
             main()
         elif tran_choice == "reader":
             while True:
-                word = input(colored(f'({tran_choice}) Word：', color='magenta'))
+                word = input(style.prompt(f'({tran_choice}) Word'))
                 if word == '@exit':
                     gc.collect()
                     raise StopIteration
@@ -278,7 +279,7 @@ def main():
                     print('done.\n')
                 else:
                     sp = Youdao()
-                    en_us = input("Please input audio standard [ English[en]/American[us]/All[en_us] ]：")
+                    en_us = input(style.prompt("Please input audio standard [ English[en]/American[us]/All[en_us] ]："))
                     if en_us == "us":
                         sp.setAccent(0)
                         audiotype = 'US'
@@ -365,8 +366,6 @@ def main():
 
 
 def run():
-    print('-' * 37)
-    print('|    TSL-SYSTEM Translate Module    |')
-    print('-' * 37, '\n')
+    style.banner('TSL-SYSTEM Translate Module', width=37)
 
     main()

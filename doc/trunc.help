@@ -4,8 +4,25 @@ Usage: trunc COMMAND
 Calling external command(From Mother System).
 SuperUser permission is required before executing this command.
 
+The command is passed to the shell of the mother system:
+    Windows:    cmd /C COMMAND
+    Linux:      /bin/sh -c COMMAND
+
 Command Options:
     COMMAND,          External System Command.
+
+Exit Status:
+    0,        The external command finished successfully.
+    Other,    The external command finished with failure, and its exit code
+              is printed before the next prompt.
+
+Examples:
+    trunc dir
+    trunc echo TSL-SYSTEM
+    trunc python --version
+    trunc python -c "import os"
+
+Arguments containing spaces follow the quoting rules of the shell above.
 
 Email bug reports, questions, discussions to <linjiangxv101@qq.com>
 

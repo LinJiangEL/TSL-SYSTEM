@@ -40,6 +40,7 @@ class TempManager:
         self.PwdUserTmp.write(username)
         self.PwdUserTmp.close()
         self.PwdUserTmpFile = open(os.path.join(SYSTEM_DIR, 'Temp/PwdUser'), 'r+')
+        logger.debug(f"TempManager wrote the login user cache. [TEMPINFO:('{username}')]")
 
     def ReadPwdUser(self):
         """读取用户登录名(cached)。"""
@@ -54,6 +55,7 @@ class TempManager:
         """刷新缓存。"""
         literal_eval(self._ok)
         print(f"Successfully flush the '{name}' temp.\n")
+        logger.info(f"TempManager flushed the '{name}' temp. [TEMPINFO:('{name}')]")
         return gc.collect()
 
 
@@ -219,6 +221,10 @@ class UserManager:
             index = self.users.index(target) if target in self.users else None
             if index is None:
                 print(f"UserNotExistsError:user '{target}' is not exists in database.\n")
+                logger.warning(f"'{self.PwdUser}' tried to set the user's attribute, "
+                               "but this operation failed because the user does not exist in Login Database. "
+                               f"[USERINFO:('{target}')]"
+                               )
                 return -1
             infotmp = self.userinfos[index].split(':')
 
@@ -322,6 +328,10 @@ class UserManager:
                 return -1
         else:
             print("PermissionError:UserManager cannot set the SuperUser's attribute, permission denied.\n")
+            logger.warning(f"'{self.PwdUser}' tried to set the SuperUser's attribute, "
+                           "but this operation was blocked because the built-in user cannot be changed. "
+                           f"[USERINFO:('{target}')]"
+                           )
             return -1
 
         return
@@ -336,6 +346,7 @@ class UserManager:
                 rewriteoptfile.write(info)
         rewriteoptfile.close()
         self.databasefile = open(self.database, 'r')
+        logger.debug(f"UserManager rewrote the Login Database. [DATABASEINFO:('{self.database}', {len(context)})]")
 
     def issuperuser(self, username):
         """判断是否为超级权限用户。"""
@@ -350,7 +361,8 @@ class LoggerManager:
         if not os.path.exists(self.LOGPATH):
             os.makedirs(self.LOGPATH)
         self.logfiles = [logfile for logfile in os.listdir(self.LOGPATH) if logfile.endswith('.log')]
-        self.logfilesindex = [logfile.split('_')[1].split('.')[0] for logfile in self.logfiles]
+        self.logfilesindex = [logfile.split('_', 1)[1].split('.')[0] if logfile.startswith('log_')
+                              else logfile.split('.')[0] for logfile in self.logfiles]
         self.logcolors = {'info': 'green', 'debug': 'cyan', 'warning': 'yellow', 'error': 'red', 'critical': 'red'}
         self.return_codes = {'RuntimeError': -1, 'Warning': 1, 'Normal': 0}
 
@@ -363,6 +375,7 @@ class LoggerManager:
                 print("")
             print(logfileindex, end='\t')
         print("")
+        logger.debug(f"LoggerManager listed all the log files. [LOGFILES:{self.logfiles}]")
 
     def read(self, logtime):
         """读取指定日志内容。"""
@@ -371,8 +384,12 @@ class LoggerManager:
         print("{0:-^37}".format(logtime))
         if logtime in self.logfilesindex and os.path.exists(logfile):
             os.system(f'{self.printer} "{logfile}"')
+            logger.debug(f"LoggerManager read the log file. [LOGFILES:('{logname}')]")
         else:
             print("An error was found when open the logfile, maybe it is missing.")
+            logger.warning(f"LoggerManager failed to read the log file because it was missing. "
+                           f"[LOGFILES:('{logname}')]"
+                           )
         print("{0:-^37}".format("The End"))
 
     def write(self, level, message, logfile="stdout"):
@@ -387,11 +404,19 @@ class LoggerManager:
         if logfile != "stdout":
             if not logfile.isascii():
                 print("ValueError:invalid logfile format, you may need to use 'help logger' to learn how to use it.")
+                logger.warning(f"LoggerManager failed to write the log message because the logfile format "
+                               f"was invalid. [LOGFILES:('{logfile}')]"
+                               )
                 return -1
             else:
                 with open(logfile, 'a+') as logf:
                     logf.write(logtext)
                     logf.write('\n')
+                logger.info(f"LoggerManager wrote a log message into the logfile. "
+                            f"[LOGFILES:('{logfile}', '{level}')]"
+                            )
+        else:
+            logger.debug(f"LoggerManager wrote a log message to the stdout. [LOGFILES:('stdout', '{level}')]")
         print(logftext)
 
     def delete(self, logtime):
@@ -400,11 +425,16 @@ class LoggerManager:
         logfile = os.path.join(self.LOGPATH, logname)
         if os.path.exists(logfile):
             os.remove(logfile)
+            logger.info(f"LoggerManager deleted the log file. [LOGFILES:('{logname}')]")
         else:
             print("FileNotFoundError:cannot delete this logfile, the logfile does not exist.")
+            logger.warning(f"LoggerManager failed to delete the log file because it was missing. "
+                           f"[LOGFILES:('{logname}')]"
+                           )
 
     def flush(self):
         """刷新缓存。"""
         print("RuntimeError:class method 'flush' is obsolete.")
+        logger.warning("LoggerManager.flush() is obsolete and did nothing.")
 
         return self.return_codes['RuntimeError']

@@ -38,6 +38,25 @@ user|user|user
 ## Help Document
 After running `python3 system.py`, you can log in to the system terminal by entering your username and password. Then, you can print the help page by inputing `help` or `help [command]`.
 
+## Changelog
+The release history is documented in [CHANGELOG.md](/CHANGELOG.md).
+
+## Breakpoint Protection
+The system is protected by a breakpoint guard. While the system runs, the guard keeps a checkpoint in `Temp/Breakpoint.state` (current user, mode, pid, session start, command count, last command and phase):
+- Before each command is executed, the checkpoint is rewritten, so an unexpected stop tells exactly which command was interrupted.
+- Normal exits (`exit`, `logout`, `init`, shutdown) disarm the guard.
+- If the process is killed or crashes, the state file still says the session is alive, so the next launch of `system.py` prints a warning, and the last checkpoints, the fault time, the operating system and the Python version are written to the *breakpoint record file* (`Temp/logs/log_breakpoint.log`) with the `CRITICAL` level.
+- Uncaught exceptions, fatal signals and thread exceptions are written to `Temp/logs/log_breakpoint.log` together with their full traceback; `Temp/logs/log_fault.log` keeps the fatal-fault dumps produced by `faulthandler`.
+- A `Ctrl-C` (`KeyboardInterrupt`) is recorded and the terminal keeps running. The `throw` command terminates the system on purpose with a fatal error to test this mechanism.
+
+All the operation logs (`INFO` level and above) are written to `Temp/logs/log_YYYY-MM.log`; the breakpoint records (`DEBUG` level and above), including the thrown tracebacks, are written to `Temp/logs/log_breakpoint.log`.
+
+## Music Module
+Local music is stored in `tools/Music/Musics` (override it with the `TSL_MUSIC_DIR` environment variable). Run `execute Music` to open the point-song station: `search KEYWORD` searches online, `get INDEX/KEYWORD` downloads the selected music into that directory and queues it automatically, `local` searches local files, and `list`, `queue`, `drop`, `clear`, `play`, `pause` and `stop` manage the playlist and playback. In the terminal, `music play|stop|pause`, `music search KEYWORD` and `music get INDEX/KEYWORD` are available; playback runs on a background thread through MCI (Windows) or `ffplay` (Linux), so it never blocks the terminal, and several terminal processes share the playback state through `Temp/MusicState.json` and `Temp/MusicControl.json`. Because of copyright restrictions, anonymous searches usually return only covers or free tracks.
+
+## Network Module
+Run `execute Network` to use the network probing and analysis functions: `dns` (A/AAAA/MX/NS/TXT/CNAME with a built-in DNS client), `ping`, `trace` (traceroute), `ports` (TCP port scan), `http` (status code, headers, timings and security headers), `tls` (certificate subject, issuer, validity, days left and alternative names), `whois` (RFC 3912), `local` (interfaces, gateway, DNS and the ARP table), `public` (public IP and location), `speed` (download speed) and `analyze HOST` (a combined report). Everything is implemented with the standard library; `ping`/`tracert` rely on the commands shipped with the operating system, and when ICMP is blocked the tools report a clear error instead of failing silently.
+
 ## Citation Literature
 - [Detailed Annotation on Python Regex](https://zhuanlan.zhihu.com/p/479731754)
 - [Detailed Annotation on Python loguru](https://blog.csdn.net/Kangyucheng/article/details/112794185)

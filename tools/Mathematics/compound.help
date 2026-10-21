@@ -1,36 +1,85 @@
 <TSL-SYSTEM Tools> %Mathematics@compound, The TSL-SYSTEM Mathematics Tool's Compound Calculations Module.
 Usage: IDENTIFY/EXPRESSION
-Examples:
 
-A module which can provide most of basic calculations for users.
+A module which can provide most of compound calculations for users.
+
+Examples:
+    1+2*3                ->  Expression: 1+2*3 / Result (2): 7.00
+    (1+2)*3              ->  Result (2): 9.00
+    2^3^2                ->  Result (2): 512.00
+    -2^2                 ->  Result (2): -4.00
+    2^-3                 ->  Fraction: 1/8
+    0.1+0.2              ->  Fraction: 3/10
+    7//2                 ->  Result (2): 3.00
+    20%3                 ->  Result (2): 2.00
+    x=3                  ->  x = 3 / Result (2): 3.00
+    x*2                  ->  Result (2): 6.00
+    sqrt(16)             ->  Result (2): 4.00
+    sqrt(8)              ->  Sqrt: 2√2
+    abs(-3)              ->  Result (2): 3.00
 
 Symbols:
-    +
-    -
-    *
-    /
+    +        Addition.
+    -        Subtraction, and negative sign.
+    *        Multiplication.
+    /        Division (true division).
+    //       Floor division.
+    %        Modulo.
+    ^        Exponentiation, and it is right-associative.
+    ( )      Grouping, and the parentheses must be paired.
+    ,        Separating the arguments of a function.
+    =        Assigning an expression to a variable.
+
+Functions:
+    abs(x),   sqr(x),   sqrt(x[, y])
+    add(a, b),   sub(a, b),   mul(a, b),   div(a, b)
+    pow(x, y),   fdiv(a, b),   mod(a, b)
+
+Variables:
+    A variable name is made up of letters, digits and underscores.
+    Assign a value to a variable by 'x=3', and then use it in an
+    expression like 'x*2'. The variables are kept until the module
+    buffer is flushed by @flush.
 
 Identifies:
     @help,         Print this HelpPage.
-    @exit,         Exit Mathematics tool, and it will return to ExecuteShell if
-                   it got 'True', otherwise it will return to Terminal.
-    @flush,        Flush the module buffer.
+    @exit,         Return to the terminal directly.
+    @flush,        Flush the module buffer, and all variables are cleared.
 
-<Operands Format Rule>
-  1. The operand cannot contain characters other than Arabic Numerals.
-  2. The expected decimal places should be less than 8.
-  3. If there are two operands, they should be separated by ',',
-     and there can be no other characters between them.
-  4. If there are two or more groups of operands to be operated on,
-     they should be separated by spaces. [Still Under Development.]
+  Commands which take no argument must start with '@'.
+
+<Expression Format Rule>
+  1. Only Arabic Numerals, decimal points, letters, underscores and the
+     symbols above can appear in an expression.
+  2. The parentheses must be paired, and the absolute value of an exponent
+     should not be larger than 1024.
+  3. Decimal operands are computed exactly as fractions when possible.
+  4. An empty input is ignored, an unknown input prints an error and keeps the
+     module running.
 
 <Result Format>
-  1. The output of 'Result (2)' has two decimal precision.
-  2. The output of 'Digits (SYSTEM_DIGMAX)' has decimal precision specified by the sysconfig.
+  Every successful calculation prints the same block:
+    Expression: 1+2*3
+    Result (2): 7.00
+    Digits (8): 7.0
+    Fraction: 7
+    Sqrt: None
+  1. The output of 'Expression' shows the expression which was evaluated.
+  2. The output of 'Result (2)' has two decimal precision.
+  3. The output of 'Digits (SYSTEM_DIGMAX)' has decimal precision specified by the sysconfig.
      [SYSTEM_DIGMAX, default: 8]
-  3. The output of "Fraction" is "None" by default, except for calculation similar to division.
+  4. The output of "Fraction" is the exact fraction of the result, or "None" when
+     the result is not exact enough to be written as a fraction.
+  5. The output of "Sqrt" is shown only if a square root was calculated.
 
-If you required more methods to calculate, please turn to advanced mode.
+<Errors>
+  SyntaxError:  the expression is incomplete, unbalanced or contains a bad character.
+  NameError:    a variable or a function is not defined.
+  TypeError:    the number of arguments of a function is not correct.
+  ValueError:   a root or a value is not valid.
+  ZeroDivisionError: the divisor is zero.
+  Errors are printed as 'ErrorType: message' and never close the module.
+
+If you required more methods to calculate, please turn to advanced or function mode.
 
 Email bug reports, questions, discussions to <linjiangxv101@qq.com>
-

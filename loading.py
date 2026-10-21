@@ -1,10 +1,11 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import gc
 import sys
 import time
 import importlib
 from loguru import logger
+from tools.__built_in__ import style
 
 
 def load_user_database(databasefile):
@@ -50,8 +51,8 @@ def start(tool):
         else:
             gc.collect()
     except ModuleNotFoundError as e:
-        print(f"ModuleNotFoundError:{e}.")
-        print(f"ImportError:cannot import '{tool}' from the tools folder!\n")
+        style.error(f"ModuleNotFoundError:{e}.")
+        style.error(f"ImportError:cannot import '{tool}' from the tools folder!\n")
     except SystemExit:
-        print(f"Stopping {tool} service.\n")
+        style.info(f"Stopping {tool} service.\n")
         time.sleep(1)

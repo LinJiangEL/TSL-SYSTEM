@@ -1,4 +1,5 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
+from tools.__built_in__ import style
 
 import os
 import sys
@@ -33,7 +34,7 @@ def run():
 
     database_file = xlrd.open_workbook(f'{Main_DIR}/Datas.xls')
     print('\nAvailable Database as follows:', database_file.sheet_names())
-    database_sheet = input('\nPlease choose one from the Available list: ')
+    database_sheet = input(style.prompt('\nPlease choose one from the Available list: '))
     if database_sheet in database_file.sheet_names():
         database_temp = database_file.sheet_by_name(database_sheet)
     else:
@@ -76,7 +77,7 @@ def run():
     print('done.\n')
 
     while True:
-        key_word = input('Please input some keywords about the result [exit]：')
+        key_word = input(style.prompt('Please input some keywords about the result [exit]：'))
         if key_word == 'exit':
             if __name__ == '__main__':
                 print('Stopping database ... ', end='')
@@ -172,6 +173,6 @@ def run():
 
 if __name__ == '__main__':
     run()
-    input('\nPress Enter to exit.')
+    input(style.prompt('\nPress Enter to exit.'))
 
 print('')

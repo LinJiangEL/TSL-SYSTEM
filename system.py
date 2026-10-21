@@ -1,4 +1,4 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 from config import *
 from selfcheck import selfcheck_system, selfcheck_module
@@ -15,8 +15,10 @@ from setuptools.errors import PlatformError
 from loading import load_user_database
 from services import startService_linux, startService_win32
 from terminal import terminal
+from guard import get_guard
 from tools.Passwd.process import encrypt
 from tools.__built_in__.TSLlogger import Logger
+from tools.__built_in__ import style
 from tools.__built_in__.GetInfo import GetResourcePath
 Logger()
 
@@ -42,6 +44,13 @@ system_logger = logger.add(os.path.join(SYSTEM_LOGPATH, "log_{time:YYYY-MM}.log"
 logger.info("System start running.")
 logger.info("GetSystemPlatform() returned: {SysVersion}.", SysVersion=platform.platform())
 
+# 安装断点保护，保证系统在异常中断时留下详细日志
+breakpoint_guard = get_guard()
+breakpoint_guard.install()
+logger.info(f"System process started. [PROCESSINFO:({os.getpid()}, "
+            f"'{platform.python_version()}', '{platform.platform()}')]"
+            )
+
 # 执行系统依赖项自检
 logger.info("System selfcheck start running.")
 runrequire_modules = open(requirements_file, 'r')
@@ -56,7 +65,8 @@ for item in runrequire_modules.readlines():
     time.sleep(0.1)
 runrequire_modules.close()
 logger.info("System selfcheck has done.")
-print('System Self Checking has done!\n')
+style.success('System Self Checking has done!')
+print('')
 time.sleep(0.3)
 
 # 启动服务项
@@ -68,7 +78,7 @@ if sys.platform == 'win32':
         startService_win32(runrequire_win32services)
     elif 'Windows' in win32_platform and win32_platform.split('-')[1] == 7:
         logger.warning("PlatformWarning:your system version is too old, it may broken on your computer.")
-        print('\033[33mPlatformWarning:your system version is too old, it may broken on your computer.\033[0m')
+        style.warning('PlatformWarning:your system version is too old, it may broken on your computer.')
         startService_win32(runrequire_win32services)
     else:
         logger.critical("PlatformError:cannot start TSL-SYSTEM on your computer! [VersionNotSupport]")
@@ -82,13 +92,13 @@ else:
     raise PlatformError('TSL-SYSTEM can only run on win32 or linux platform, but yours is %s.' % sys.platform)
 
 # 加载用户数据库
-print('Loading Login Database ... ', end='', flush=True)
+print(style.highlight('Loading Login Database ... ', 'cyan'), end='', flush=True)
 login_datas = load_user_database(os.path.join(SYSTEM_DIR, 'Database/login.db'))
 login_infos = login_datas[0]
 mode_info = login_datas[1]
 admin_users = login_datas[2]
 simple_users = login_datas[3]
-print('done.')
+style.success('done.')
 logger.info("Successfully load Login Database.")
 
 print("")
@@ -99,9 +109,9 @@ while True:
     while True:
         passwd_processor = hashlib.md5()
 
-        username = input("Username: ")
+        username = input(style.label('Username'))
         if username in mode_info['user'] or username in mode_info['root']:
-            passwd = getpass.getpass("Password: ").strip()
+            passwd = getpass.getpass(style.label('Password')).strip()
             passwd = passwd.encode(encoding='utf-8')
             passwd_processor.update(passwd)
             passwd = passwd_processor.hexdigest()
@@ -116,7 +126,7 @@ while True:
                 while True:
                     del passwd, passwd_processor
                     passwd_processor = hashlib.md5()
-                    passwd = getpass.getpass("Password: ").strip()
+                    passwd = getpass.getpass(style.label('Password')).strip()
                     passwd = passwd.encode(encoding='utf-8')
                     passwd_processor.update(passwd)
                     passwd = passwd_processor.hexdigest()
@@ -135,13 +145,14 @@ while True:
                           color="red"
                           ))
 
-    logger.info("System Terminal start running.")
-    syscode = terminal(USERNAME=username, MODE='$' if username in mode_info['user'] else '#', Bin_DIR=Bin_DIR)
+    user_mode = '$' if username in mode_info['user'] else '#'
+    logger.info(f"System Terminal start running. [USERINFO:('{username}', '{user_mode}')]")
+    syscode = terminal(USERNAME=username, MODE=user_mode, Bin_DIR=Bin_DIR)
     if syscode == -1:
         # 用户注销
         logger.info(f"Terminal returned syscode but nothing will happen. [syscode: {syscode}]")
         logger.info(f'The user "{username}" has logged out.')
-        print(f'The user "{username}" has logged out.')
+        style.info(f'The user "{username}" has logged out.')
         time.sleep(1)
         os.system(SYSTEM_CLEARSTDOUT)
         print('')
@@ -155,19 +166,21 @@ while True:
         continue
     elif not syscode:
         # 正常退出
-        print("System shutdown normally.")
-        logger.info("System shutdown normally.")
+        style.success('System shutdown normally.')
+        logger.info(f"System shutdown normally. [syscode: {syscode}]")
         break
     elif not -31 <= syscode <= 32:
         # 异常退出
-        print("System shutdown with invalid syscode.")
+        style.error('System shutdown with invalid syscode.')
         logger.error(f"invalid syscode. [syscode: {syscode}]")
         logger.warning("System shutdown with invalid syscode.")
         break
     else:
         # 未知情况退出
-        print(f"Terminal returned syscode but nothing will happen. [syscode: {syscode}]")
-        print("System shutdown normally.")
+        style.muted(f'Terminal returned syscode but nothing will happen. [syscode: {syscode}]')
+        style.success('System shutdown normally.')
         logger.info(f"Terminal returned syscode but nothing will happen. [syscode: {syscode}]")
         logger.info("System shutdown normally.")
         break
+
+logger.info(f"System process exited. [PROCESSINFO:({os.getpid()}, 'bye')]")

@@ -1,0 +1,46 @@
+<TSL-SYSTEM Terminal> $music, A command which searches and plays music from the internet.
+Usage: music [play|stop|pause] [INDEX/KEYWORD]
+       music search KEYWORD
+       music get INDEX/KEYWORD
+
+Crawl the public music library on the internet, download the selected
+music to the local tools/Music/Musics directory, and play the local music
+in the background. The playback is handled by the mother system, so the
+terminal
+is never blocked and other commands can still be executed while music is
+playing. The playback state is shared by all TSL-SYSTEM processes, so
+another terminal window can also pause or stop the playing music.
+
+Command Options:
+    play,             Start the background playback, or resume it if paused.
+                      If INDEX/KEYWORD is given, the matched local music is
+                      played immediately.
+    stop,             Stop the background playback.
+    pause,            Pause the background playback, or resume it if paused.
+    search,           Crawl the internet and list the matched music. The
+                      result is numbered and kept for 'music get'.
+    get,              Download the selected music to the local
+                      tools/Music/Musics directory. INDEX is the number of
+                      the result of 'music search', and KEYWORD crawls the
+                      internet again.
+
+Examples:
+    music
+    music search 晴天
+    music get 1
+    music get hello adele
+    music play
+    music play 3
+    music pause
+    music stop
+
+The crawler supports the netease and kugou sources. Because of the
+copyright restriction, some music can only be searched as a cover or a
+sample, and downloading it fails with a CrawlerError message; choose
+another result in that case.
+
+Music files are downloaded to and searched in the tools/Music/Musics
+directory of TSL-SYSTEM. Use 'execute Music' to search the internet,
+download music and edit the point-song list.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>

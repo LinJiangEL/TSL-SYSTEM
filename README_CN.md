@@ -39,6 +39,25 @@ user|user|user
 ## 帮助文档
 运行“python3 system.py”，输入用户名和密码登录系统终端。然后，您可以通过输入`help`或`help [command]`来打印帮助页面。
 
+## 更新日志
+版本历史见 [CHANGELOG_CN.md](/CHANGELOG_CN.md)。
+
+## 断点保护
+系统由断点守护（breakpoint guard）保护。系统运行期间，守护会在`Temp/Breakpoint.state`中保存一个断点（当前用户、模式、pid、会话开始时间、命令数、最后一条命令和阶段）：
+- 每条命令执行前都会重写断点，因此意外停止时可以准确知道是哪条命令被中断。
+- 正常退出（`exit`、`logout`、`init`、关机）会解除守护。
+- 如果进程被杀死或崩溃，状态文件仍然显示会话处于运行中，所以下一次运行`system.py`时会打印警告，并把最后的断点、故障时间、操作系统和Python版本以`CRITICAL`级别写入*断点记录文件*（`Temp/logs/log_breakpoint.log`）。
+- 未捕获的异常、致命信号和线程异常都会连同完整的回溯（traceback）写入`Temp/logs/log_breakpoint.log`；`Temp/logs/log_fault.log`保存`faulthandler`产生的致命错误转储。
+- `Ctrl-C`（`KeyboardInterrupt`）会被记录，终端继续运行；`throw`命令会故意以致命错误结束系统，用来测试这套机制。
+
+所有操作日志（`INFO`级别及以上）都会写入`Temp/logs/log_YYYY-MM.log`；断点记录（`DEBUG`级别及以上）以及抛出的回溯都会写入`Temp/logs/log_breakpoint.log`。
+
+## 音乐模块
+本地音乐存放在`tools/Music/Musics`目录（可用环境变量`TSL_MUSIC_DIR`覆盖）。运行`execute Music`进入点歌台：`search KEYWORD`联网搜索，`get INDEX/KEYWORD`把选中的音乐下载到该目录并自动加入播放列表，`local`检索本地音乐，`list`、`queue`、`drop`、`clear`、`play`、`pause`、`stop`管理播放列表与播放。终端内可以使用`music play|stop|pause`、`music search KEYWORD`和`music get INDEX/KEYWORD`；播放由后台线程配合MCI（Windows）或`ffplay`（Linux）完成，不会阻塞终端，多个终端进程通过`Temp/MusicState.json`与`Temp/MusicControl.json`共享播放状态。受版权限制，匿名搜索通常只能获取翻唱或免费曲目。
+
+## 网络模块
+运行`execute Network`可使用网络探测与分析功能：`dns`（A/AAAA/MX/NS/TXT/CNAME，内置DNS客户端）、`ping`、`trace`（路由追踪）、`ports`（TCP端口扫描）、`http`（状态码、响应头、耗时与安全响应头）、`tls`（证书主体、颁发者、有效期、剩余天数与备用名称）、`whois`（RFC 3912）、`local`（网卡、网关、DNS与ARP表）、`public`（出口IP与归属地）、`speed`（下载测速）和`analyze HOST`（综合报告）。全部以标准库实现，`ping`/`tracert`依赖系统自带命令；如果网络屏蔽了ICMP，程序会给出明确的错误提示而不是静默失败。
+
 ## 参考文献
 - [Detailed Annotation on Python Regex](https://zhuanlan.zhihu.com/p/479731754)
 - [Detailed Annotation on Python loguru](https://blog.csdn.net/Kangyucheng/article/details/112794185)

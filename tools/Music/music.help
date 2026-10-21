@@ -1,0 +1,35 @@
+<TSL-SYSTEM Tools> %Music@music, A point-song module of TSL-SYSTEM.
+Usage: COMMAND [ARGUMENT]
+
+Crawl the public music library on the internet, download the selected
+music to the local tools/Music/Musics directory, add it to the point-song
+list, and control the background playback of the terminal.
+
+Commands:
+    search KEYWORD,     Crawl the internet and list the matched music.
+    get INDEX/KEYWORD,  Download the selected music to the local
+                        tools/Music/Musics directory and add it to the
+                        point-song list.
+    info INDEX/KEYWORD, Show the detailed information of a music.
+    list,               List all the local music.
+    local KEYWORD,      Search the local music by title, artist, album or
+                        file name.
+    queue,              Show the current point-song list.
+    drop INDEX,         Remove the music at INDEX from the point-song list.
+    clear,              Clear the point-song list.
+    dir,                Show the music directory (tools/Music/Musics).
+    play [INDEX/KEYWORD], Start or resume the background playback.
+    pause,              Pause the background playback, or resume it if paused.
+    stop,               Stop the background playback.
+
+Identifies:
+    @help,              Print this HelpPage.
+    @exit,              Return to the Terminal.
+    @flush,             Flush the temp of Music Module.
+
+The index of the result of 'search' can be used by 'get' and 'info'; the
+index of 'list' and 'local' can be used by 'play'. The crawler supports the
+netease and kugou sources, and some music may be copyright restricted.
+The playback state is shared, so 'pause' and 'stop' also work on the music
+started by another terminal window.
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>

@@ -1,4 +1,4 @@
-#  Copyright (c) 2024-2025. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import os
 import sys
@@ -23,8 +23,9 @@ APIKEY = getpass.getpass("Please input the permission password: ") if os.getenv(
 SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, APIKEY))
 SYSTEM_DIR = os.path.dirname(os.path.abspath(GetResourcePath(__file__)))
 SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'Temp', 'loading.py',
-                'config.py', 'services.py', 'upgrade.py', 'sysmgr.py', 'motd',
-                'terminal.py', 'runrequirements.txt', 'README.md', 'README_CN.md', 'VERSION',
+                'config.py', 'guard.py', 'services.py', 'upgrade.py', 'sysmgr.py', 'motd',
+                'terminal.py', 'runrequirements.txt', 'README.md', 'README_CN.md',
+                'CHANGELOG.md', 'CHANGELOG_CN.md', 'VERSION',
                 'loading.py', 'motd', 'LICENSE', 'motd.jpg', 'selfcheck.py', 'system.py',
                 'linuxrequirements.txt', 'win32requirements.txt'
                 ]

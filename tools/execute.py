@@ -1,26 +1,28 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 from loading import start
+from tools.__built_in__ import style
 
 _ok = "True"
-Developing_list = ["Chemistry", "Network", "MultiMedia", "Philosophy"]
-available_list = ["Mathematics", "Passwd", "Translate", "StudentsInfoDatabase", "Psychology"]
+Developing_list = ["Chemistry", "MultiMedia", "Philosophy"]
+available_list = ["Mathematics", "Passwd", "Translate", "StudentsInfoDatabase", "Psychology", "Music",
+                      "Network"]
 
 
 def execute(tool=None):
     if tool is None:
         while True:
-            print('Please input the fullname of tool which you want to use. '
-                  '[Input "@available" to get the available list.]'
-                  )
-            tool_choice = input("> ")
+            style.muted('Please input the fullname of tool which you want to use. '
+                        '[Input "@available" to get the available list.]'
+                        )
+            tool_choice = input(style.prompt('> '))
             if tool_choice in Developing_list:
-                print(f"The {tool_choice} tool is still developing! Please wait for some days to use it!\n")
+                style.warning(f"The {tool_choice} tool is still developing! Please wait for some days to use it!\n")
             elif tool_choice == "exit":
                 print('')
                 break
             elif tool_choice == '@available':
-                print(f"Available tools as follows:\n{available_list}\n")
+                style.info(f"Available tools as follows:\n{available_list}\n")
             elif tool_choice == "":
                 print()
                 continue
@@ -31,7 +33,7 @@ def execute(tool=None):
                     continue
     else:
         if tool in Developing_list:
-            print(f"The {tool} tool is still developing! Please wait for some days to use it!\n")
+            style.warning(f"The {tool} tool is still developing! Please wait for some days to use it!\n")
         else:
             try:
                 start(tool)

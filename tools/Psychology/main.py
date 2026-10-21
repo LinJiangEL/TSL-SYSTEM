@@ -1,4 +1,5 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
+from tools.__built_in__ import style
 from termcolor import colored
 # textblob：情感分析
 
@@ -10,10 +11,10 @@ from termcolor import colored
 
 def run():
     print('-'*36)
-    print('|    TSL-SYSTEM Psychology Module    |')
+    style.banner('TSL-SYSTEM Psychology Module', width=37)
     print('-'*36)
 
     while True:
-        cmd = input(colored('[Psychology]', color='light_cyan') + ' >> ').strip()
+        cmd = input(style.prompt('[Psychology]', color='light_cyan')).strip()
         if cmd == 'exit':
             break

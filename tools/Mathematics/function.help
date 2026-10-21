@@ -1,0 +1,57 @@
+<TSL-SYSTEM Tools> %Mathematics@function, The TSL-SYSTEM Mathematics Tool's Function Analysis Module.
+Usage: EXPRESSION / IDENTIFY
+Examples:    y1=x+2      y2=x^2-4      y=sin(x)      f(x)=2x+1
+             f(2)        f(x)+1      y3=f(x)+1      a=3      y4=a*x+1
+             @list       remove y1     range -5,5      save
+
+A separate REPL which can define functions, curves and variables, evaluate
+them and draw their graphs in a window (or in this terminal).
+
+Commands:
+    y[INDEX]=EXPRESSION       Add (or replace) a curve, INDEX defaults to the next number.
+    NAME(x)=EXPRESSION        Define a function and draw its curve at the same time.
+    NAME=EXPRESSION           Define a numeric variable, EXP must not contain 'x'.
+    EXPRESSION                Evaluate an expression, e.g. 'f(2)', 'sin(1)+a'.
+    @list                     List the defined curves, functions and variables.
+    remove NAME               Remove a curve or a function.
+    @clear                    Clear every curve, function and variable.
+    range XMIN XMAX           Set the x-axis display range.
+    range XMIN XMAX YMIN YMAX Set the display range of both axes.
+    ylim YMIN YMAX            Set the y-axis display range only.
+    save [PATH]               Save the current graph as a PNG file.
+    @plot, @draw              Redraw the graph with the current definitions.
+    @help                     Print this HelpPage.
+    @exit                     Return to the terminal directly.
+    @flush                    Flush the module buffer.
+
+  Commands which take no argument must start with '@', for example '@list'.
+
+In the advanced module, input '@window' to open this REPL in a new console window.
+
+<Expression Format Rule>
+  1. Operators: '+', '-', '*', '/', '^' (power) and parentheses '(' ')'.
+  2. Implicit multiplication is accepted, so '2x', '3(x+1)' and '2sin(x)' are valid.
+  3. Functions: sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, sqrt, abs,
+     exp, log, ln, log10, floor, ceil and sign.
+  4. A curve or a function may only contain 'x' and the variables defined before it.
+  5. Variables are replaced when the graph is drawn, so 'a=3' then 'y1=a*x'
+     follows the latest value of 'a'.
+
+<Result Format>
+  An evaluation prints the same block as the basic module:
+    Expression: f(2)
+    Result (2): 5.00
+    Digits (8): 5
+    Fraction: 5
+    Sqrt: None
+  Curves, functions and variables are listed in a PrettyTable instead.
+
+<Errors>
+  SyntaxError:  the expression is incomplete or its parentheses are not paired.
+  NameError:    a function or a variable is not defined, or a command without
+                argument was written without the '@' prefix.
+  ValueError:   a value is not a real number, or 'x' is used where it cannot be.
+  CommandUsageError:  the command needs more arguments.
+  Errors are printed and the module keeps running.
+
+Email bug reports, questions, discussions to <linjiangxv101@qq.com>

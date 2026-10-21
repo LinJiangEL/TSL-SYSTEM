@@ -15,11 +15,18 @@ Functions:
     P[ermutation](n[, m])                 Calculate permutation, 'n' or 'm' must be a positive integer.
     C[ombination](n[, m])                 Calculate combination, 'n' or 'm' must be a positive integer.
 
+Aliases:
+    p(n[, m]), a(n[, m]), Permutation(n[, m])    The same as P(n[, m]).
+    c(n, m), Combination(n, m)                   The same as C(n, m).
+    solve_equation(...), solve_equations(...)    Lower-case forms of the functions above.
+
 Identifies:
     @help,         Print this HelpPage.
-    @exit,         Exit Mathematics tool, and it will return to ExecuteShell if
-                   it got 'True', otherwise it will return to Terminal.
+    @exit,         Return to the terminal directly.
     @flush,        Flush the module buffer.
+    @window,       Open the function-analysis REPL in a new console window.
+
+  Commands which take no argument must start with '@', for example '@window'.
 
 <Expression And Equation Format Rule>
   1. Numerals in the expression or equation cannot contain characters other than Arabic Numerals.
@@ -31,7 +38,31 @@ Identifies:
      There must be at least two equations here.
   4. The expected decimal places should be less than 8.
   5. If there are two or more equations, they should be separated by ','.
-  6. If there are two or more equations, they should be separated by ','.
+  6. Only the outermost commas separate the arguments, so commas inside
+     parentheses are kept as a part of the expression.
+
+<Result Format>
+  A calculation prints the same block as the basic module:
+    Expression: Combination(5, 2)
+    Result (2): 10.00
+    Digits (8): 10
+    Fraction: 10
+    Sqrt: None
+  1. 'Expression' shows the function and the canonical arguments which were used.
+  2. The output of 'Result (2)' has two decimal precision.
+  3. The output of 'Digits (SYSTEM_DIGMAX)' has decimal precision specified by the sysconfig.
+     [SYSTEM_DIGMAX, default: 8]
+  4. The output of "Fraction" is the exact fraction of the result, or "None" when
+     the result is not exact enough to be written as a fraction.
+  5. The output of "Sqrt" is always "None" in this module.
+  Equations are special functions: 'Solve_equation' prints its solutions like
+  'x1 = -2', and 'Solve_equations' prints them like 'Solution 1: x = 2, y = 1'.
+
+<Errors>
+  SyntaxError:  the function call is incomplete or its parentheses are not paired.
+  NameError:    the function is not defined in this module.
+  TypeError:    the number of arguments is not correct.
+  ValueError:   an argument is not an integer or an equation has no '='.
+  Math errors are printed as 'ErrorType: message' and never close the module.
 
 Email bug reports, questions, discussions to <linjiangxv101@qq.com>
-

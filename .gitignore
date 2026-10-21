@@ -13,8 +13,13 @@ Temp/*.sh
 Temp/*.txt
 Temp/test_*.py
 Temp/PwdUser
+Temp/Breakpoint.state
 tools/StudentsInfoDatabase/Datas.xls
 tools/Translate/Speech_EN/
 tools/Translate/Speech_US/
 tools/Translate/dict.txt
 tools/Psychology/tarot/cards/
+tools/Music/Musics/
+Temp/MusicPlaylist.json
+Temp/MusicState.json
+Temp/MusicControl.json

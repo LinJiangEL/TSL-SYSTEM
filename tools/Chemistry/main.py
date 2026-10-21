@@ -1,6 +1,5 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
+from tools.__built_in__ import style
 
 def run():
-    print('-'*37)
-    print('|    TSL-SYSTEM Chemistry Module    |')
-    print('-'*37)
+    style.banner('TSL-SYSTEM Chemistry Module', width=37)

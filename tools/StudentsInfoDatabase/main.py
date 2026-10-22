@@ -1,12 +1,14 @@
 #  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 from tools.__built_in__ import style
+from tools.__built_in__.IOProcessor import read_input
 
 import os
 import sys
 import time
 import xlrd
 from prettytable import PrettyTable
-from config import SYSTEM_PRINTER
+from config import SYSTEM_DIR
+from tools.__built_in__.external import clear_screen, display_file
 
 """
 Help:
@@ -34,7 +36,8 @@ def run():
 
     database_file = xlrd.open_workbook(f'{Main_DIR}/Datas.xls')
     print('\nAvailable Database as follows:', database_file.sheet_names())
-    database_sheet = input(style.prompt('\nPlease choose one from the Available list: '))
+    database_sheet = read_input(style.prompt('\nPlease choose one from the Available list: '),
+                                'terminal', strip=True)
     if database_sheet in database_file.sheet_names():
         database_temp = database_file.sheet_by_name(database_sheet)
     else:
@@ -77,7 +80,8 @@ def run():
     print('done.\n')
 
     while True:
-        key_word = input(style.prompt('Please input some keywords about the result [exit]：'))
+        key_word = read_input(style.prompt('Please input some keywords about the result [exit]：'),
+                              'text')
         if key_word == 'exit':
             if __name__ == '__main__':
                 print('Stopping database ... ', end='')
@@ -87,10 +91,10 @@ def run():
             else:
                 print('Stopping StudentsInfoDatabase Tool ...')
                 time.sleep(1)
-                if sys.platform == 'win32':
-                    os.system(f'cls && echo. && {SYSTEM_PRINTER} motd && echo.')
-                elif sys.platform == 'linux':
-                    os.system(f'clear && echo && {SYSTEM_PRINTER} motd && echo')
+                clear_screen()
+                print('')
+                display_file(os.path.join(SYSTEM_DIR, 'motd'))
+                print('')
                 break
         elif key_word == 'all':
             print(database)
@@ -173,6 +177,6 @@ def run():
 
 if __name__ == '__main__':
     run()
-    input(style.prompt('\nPress Enter to exit.'))
+    read_input(style.prompt('\nPress Enter to exit.'), 'terminal')
 
 print('')

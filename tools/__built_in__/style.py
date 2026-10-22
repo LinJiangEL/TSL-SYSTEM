@@ -7,25 +7,32 @@
 不参与任何业务逻辑，也不改变已有输出中的文字内容。
 """
 
-import os
 import sys
+import colorama
 
 from termcolor import colored
+from typing import Literal, Final, Optional
+
+Color = Literal[
+    "black", "grey", "red", "green", "yellow", "blue", "magenta",
+    "cyan", "light_grey", "dark_grey", "light_red", "light_green",
+    "light_yellow", "light_blue", "light_magenta", "light_cyan", "white",
+]
 
 if sys.platform == 'win32':
     # 打开 Windows 控制台对 ANSI 转义序列的支持，命令本身不会产生输出。
-    os.system('')
+    colorama.just_fix_windows_console()
 
 BANNER_WIDTH = 37
 RULE_WIDTH = 60
 
-_TITLE_COLOR = 'cyan'
-_PROMPT_COLOR = 'magenta'
-_NAME_COLOR = 'cyan'
-_VALUE_COLOR = 'white'
+_TITLE_COLOR: Final[Color] = 'cyan'
+_PROMPT_COLOR: Final[Color] = 'magenta'
+_NAME_COLOR: Final[Color] = 'cyan'
+_VALUE_COLOR: Final[Color] = 'white'
 
 
-def banner(title, width=BANNER_WIDTH, color=_TITLE_COLOR, attrs=('bold',)):
+def banner(title, width=BANNER_WIDTH, color: Optional[Color] = _TITLE_COLOR, attrs=('bold',)):
     """打印一个居中的模块标题栏。"""
     if len(title) + 2 > width:
         width = len(title) + 4
@@ -35,22 +42,22 @@ def banner(title, width=BANNER_WIDTH, color=_TITLE_COLOR, attrs=('bold',)):
     print('')
 
 
-def rule(width=RULE_WIDTH, color='dark_grey'):
+def rule(width=RULE_WIDTH, color: Optional[Color] = 'dark_grey'):
     """打印一条分隔线。"""
     print(colored('-' * width, color=color))
 
 
-def heading(text, color=_TITLE_COLOR):
+def heading(text, color: Optional[Color] = _TITLE_COLOR):
     """打印一个小节标题。"""
     print(colored('== %s ==' % text, color=color, attrs=['bold']))
 
 
-def section(text, color=_TITLE_COLOR):
+def section(text, color: Optional[Color] = _TITLE_COLOR):
     """打印一个带方括号的小标签。"""
     print(colored('[%s]' % text, color=color, attrs=['bold']))
 
 
-def prompt(label, color=_PROMPT_COLOR):
+def prompt(label, color: Optional[Color] = _PROMPT_COLOR):
     """返回彩色的输入提示符。
 
     如果传入的标签本身已经带有 '>>' 提示符，则不再重复追加。
@@ -61,7 +68,7 @@ def prompt(label, color=_PROMPT_COLOR):
     return colored('%s >> ' % stripped, color=color, attrs=['bold'])
 
 
-def label(text, color=_NAME_COLOR):
+def label(text, color: Optional[Color] = _NAME_COLOR):
     """返回彩色的提示标签，用于 Username、Password 一类的输入。"""
     if text.endswith((':', ': ')):
         return colored(text, color=color, attrs=['bold'])
@@ -93,12 +100,12 @@ def muted(text):
     print(colored(text, color='dark_grey'))
 
 
-def highlight(text, color='green', attrs=('bold',)):
+def highlight(text, color: Optional[Color] = 'green', attrs=('bold',)):
     """返回高亮后的字符串，不打印。"""
     return colored(text, color=color, attrs=attrs)
 
 
-def key_value(name, value, name_color=_NAME_COLOR, value_color=_VALUE_COLOR):
+def key_value(name, value, name_color: Optional[Color] = _NAME_COLOR, value_color: Optional[Color] = _VALUE_COLOR):
     """打印一行对齐的“名称: 值”。"""
     print(colored('%-12s' % (name + ':'), color=name_color) + colored(str(value), color=value_color))
 

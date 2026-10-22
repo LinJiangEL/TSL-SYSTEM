@@ -6,6 +6,21 @@ All notable changes to TSL-SYSTEM are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 7.5.1 - 2026-10-22
+
+### Added
+- **Unified input processing** (`tools/__built_in__/IOProcessor.py`): every interactive input in the
+  project now goes through one reader that replaces illegal characters with `*` and records the event at
+  `CRITICAL` level with an `[INPUTINFO]` tag, while passwords and other secret inputs are fully masked in
+  the log. It covers the terminal, the login screen, user management, the API-key prompt and every tool
+  module.
+
+### Changed
+- **External command execution**: every `os.system` / `os.popen` call in the project was replaced with the
+  `subprocess`-based helpers in `tools/__built_in__/external.py` (`run`, `display_file`,
+  `clear_screen`); commands now run from argument lists without a shell, which keeps the old behaviour
+  while removing the shell-injection risk of the raw string commands.
+
 ## 7.5.0 - 2026-10-21
 
 ### Added

@@ -13,6 +13,8 @@ from doc.helppage import HelpPage
 from selfcheck import check_command
 from tools.__built_in__.restore import ImagePath, Images, restore
 from tools.__built_in__.typemod import gettype, isnum
+from tools.__built_in__.IOProcessor import read_input
+from tools.__built_in__.external import run, display_file, clear_screen
 from config import SYSTEM_DIR, SYSTEM_LOGPATH, SYSTEM_LOGFORMAT, SYSTEM_LOGSTDOUT, \
     SuperUser, SYSTEM_FILES, SYSTEM_PRINTER, SYSTEM_CLEARSTDOUT, HelpPages_DIR, PageReader, id_md5
 from sysmgr import TempManager, UserManager, LoggerManager
@@ -90,7 +92,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
     while os.path.exists(Bin_DIR) and id_md5[2] is chr(int(0x66)):
         try:
             Bin_DIR = Bin_DIR.replace('\\', '/')
-            command = input(f'{USERNAME}@TSL-SYSTEM {MODE} ').strip()
+            command = read_input(f'{USERNAME}@TSL-SYSTEM {MODE} ', 'terminal', strip=True)
             cmd_tmp = [cmd_argv.strip() for cmd_argv in command.split() if cmd_argv]
             if not cmd_tmp:
                 cmd_tmp.append('')
@@ -294,7 +296,10 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 if len(cmd_tmp) >= 2:
                     argvs = cmd_tmp[2:]
                     if (cmd_tmp[1] if sys.platform == 'linux' else f'{cmd_tmp[1]}.bat') in os.listdir(Bin_DIR):
-                        internal_code = os.system(f'{os.path.join(Bin_DIR, cmd_tmp[1])} {" ".join(argvs)}')
+                        internal_command = os.path.join(Bin_DIR, cmd_tmp[1])
+                        internal_arguments = ['cmd', '/C', internal_command] if sys.platform == 'win32' \
+                            else [internal_command]
+                        internal_code = run(internal_arguments + argvs)
                         if internal_code == 0:
                             logger.info(f"{USERNAME} succeed in executing 'internal'. [CMDINFO:{cmd_tmp}]")
                         else:
@@ -359,9 +364,9 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 filename = f"TSL-SYSTEM_{time.strftime('%Y-%m-%d_%H-%M-%S', time.localtime())}.tar.gz"
                 tempmgr.PwdUserTmpFile.close()
                 logger.info(f"{USERNAME} started to create a system image. [IMAGEINFO:'{filename}']")
-                backup_code = os.system(f'tar -zcvf "backup/TSL-SYSTEM-BACKUP-FILES/{filename}" ' +
-                                        ' '.join([file for file in SYSTEM_FILES if file != 'backup'])
-                                        )
+                backup_code = run(['tar', '-zcvf', f'backup/TSL-SYSTEM-BACKUP-FILES/{filename}']
+                                  + [file for file in SYSTEM_FILES if file != 'backup'],
+                                  cwd=SYSTEM_DIR)
                 if backup_code == 0:
                     style.success('Successfully create an current system image.')
                     logger.info(f"{USERNAME} create an current system image. [IMAGEINFO:'{filename}']")
@@ -396,7 +401,8 @@ def terminal(USERNAME, MODE, Bin_DIR):
                     imagepath = os.path.join(ImagePath, image)
                     restore(USERNAME, is_root, imagepath, cmd_tmp, tempmgr, usermgr, logger)
                 else:
-                    image = input('Please input image filename to recover this system: ').strip()
+                    image = read_input('Please input image filename to recover this system: ',
+                                       'path', strip=True)
                     if image == '':
                         print()
                         continue
@@ -588,7 +594,7 @@ def terminal(USERNAME, MODE, Bin_DIR):
                 if check_command('git'):
                     if os.getcwd() == SYSTEM_DIR:
                         logger.info(f"{USERNAME} started to upgrade the system. [CMDINFO:('upgrade')]")
-                        upgrade_code = os.system('git pull')
+                        upgrade_code = run(['git', 'pull'], cwd=SYSTEM_DIR)
                         if upgrade_code == 0:
                             logger.info(f"{USERNAME} upgraded the system successfully. [CMDINFO:('upgrade')]")
                         else:
@@ -644,9 +650,9 @@ def terminal(USERNAME, MODE, Bin_DIR):
             elif cmd_tmp[0] == 'throw':
                 raise BreakpointFatal("terminated system.")
             elif cmd_tmp[0] == 'clear' and len(cmd_tmp) == 1:
-                os.system(SYSTEM_CLEARSTDOUT)
+                clear_screen()
                 print('')
-                os.system(f'{SYSTEM_PRINTER} motd')
+                display_file(os.path.join(SYSTEM_DIR, 'motd'))
                 print('')
                 logger.debug(f"{USERNAME} cleared the screen. [CMDINFO:('clear')]")
             elif (cmd_tmp[0] in ['user', 'logger'] and len(cmd_tmp) == 1) \

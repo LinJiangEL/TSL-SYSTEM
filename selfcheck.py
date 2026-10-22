@@ -1,10 +1,11 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import os
 import io
 import sys
 import time
 import wget
+import shutil
 import contextlib
 import platform
 import subprocess
@@ -56,23 +57,24 @@ def selfcheck_system(systemfilelist):
             print('Prefer to installing Python-3.9.7')
             if sys.platform == 'linux':
                 wget.download('https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz', out={workdir})
-                os.system(f'tar -xzvf {workdir}/Python-3.9.7.tgz')
+                shutil.unpack_archive(f'{workdir}/Python-3.9.7.tgz', workdir)
                 install_to_path = input('Please input the path to install Python-3.9.7 [default: /usr/local]: ')
-                os.system('cd Python-3.9.7 && ./configure --prefix='
-                          f'{install_to_path if install_to_path != "" else "/usr/local"} && make && make install'
-                          )
+                install_prefix = install_to_path if install_to_path != "" else "/usr/local"
+                subprocess.run(['./configure', f'--prefix={install_prefix}'], cwd='Python-3.9.7')
+                subprocess.run(['make'], cwd='Python-3.9.7')
+                subprocess.run(['make', 'install'], cwd='Python-3.9.7')
                 os.chdir(SYSTEM_DIR) if python_version[0] >= 3 and python_version[1] >= 7 else \
                     exec("raise RuntimeError('failed to install python or cannot set it into the path.')")
             elif sys.platform == 'win32':
                 bit = int(platform.architecture()[0][:2])
                 if bit == 64:
                     wget.download('https://www.python.org/ftp/python/3.9.7/python-3.9.7-amd64.exe', out=workdir)
-                    os.system(f'start {workdir}/python-3.9.7-amd64.exe')
+                    os.startfile(os.path.join(workdir, 'python-3.9.7-amd64.exe'))
                     os.chdir(SYSTEM_DIR) if python_version[0] >= 3 and python_version[1] >= 7 else \
                         exec("raise RuntimeError('failed to install python or system cannot set it into the path.')")
                 elif bit == 32:
                     wget.download('https://www.python.org/ftp/python/3.9.7/python-3.9.7.exe', out=workdir)
-                    os.system(f'start {workdir}/python-3.9.7.exe')
+                    os.startfile(os.path.join(workdir, 'python-3.9.7.exe'))
                     os.chdir(SYSTEM_DIR) if python_version[0] >= 3 and python_version[1] >= 7 else \
                         exec("raise RuntimeError('failed to install python or cannot set it into the path.')")
                 else:

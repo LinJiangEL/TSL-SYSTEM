@@ -13,6 +13,7 @@ from termcolor import colored
 from config import Tools_DIR, PageReader
 from sysmgr import TempManager
 from tools.__built_in__.helptool import HelpTool
+from tools.__built_in__.IOProcessor import read_input
 from tools.Music.library import get_library, duration_text, size_text
 from tools.Music.crawler import get_crawler, CrawlerError
 from tools.Music.player import get_player, PlaybackError
@@ -115,7 +116,7 @@ def run():
 
     while True:
         try:
-            command = input(style.prompt('(music)')).strip()
+            command = read_input(style.prompt('(music)'), 'terminal', strip=True)
         except (EOFError, KeyboardInterrupt):
             print()
             break

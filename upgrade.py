@@ -1,9 +1,9 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
-import os
 from selfcheck import check_command
+from tools.__built_in__.external import run
 
 if check_command('git'):
-    os.system('git pull')
+    run(['git', 'pull'])
 else:
     raise RuntimeError("'git' is not in the path, please install it and try again.")

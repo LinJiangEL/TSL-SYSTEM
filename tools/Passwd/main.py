@@ -1,5 +1,6 @@
 #  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 from tools.__built_in__ import style
+from tools.__built_in__.IOProcessor import read_input
 
 import random
 import base64
@@ -39,9 +40,11 @@ def run():
     style.banner('TSL-SYSTEM Passwd Module', width=37)
     print('-' * 36)
 
-    mode = input(style.prompt('\nPlease input the tool mode [encrypt/decrypt]: '))
+    mode = read_input(style.prompt('\nPlease input the tool mode [encrypt/decrypt]: '),
+                      'terminal', strip=True)
     if mode == 'encrypt':
-        text = input(style.prompt('Please input the text which you want to encrypt: '))
+        text = read_input(style.prompt('Please input the text which you want to encrypt: '),
+                          'text')
         n = 3
         x = 9 % (n * 2)
         salt = generate_salt(6)
@@ -51,7 +54,8 @@ def run():
         passwd = passwd1[:-x] + f't{n}' + passwd1[-x:] + str(x) + salt
         print(f'Passwd text: {passwd}\nSalt: {salt}\nOffset: {x}')
     elif mode == 'decrypt':
-        passwd = input(style.prompt('Please input the passwd which you want to decrypt: '))
+        passwd = read_input(style.prompt('Please input the passwd which you want to decrypt: '),
+                            'secret', secret=True)
         x = int(passwd[-7])
         if len(passwd) >= 9 and 0 <= x <= 3:
             xn = -x - 8

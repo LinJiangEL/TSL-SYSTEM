@@ -3,6 +3,7 @@
 import os
 import playsound
 from config import null, istermux
+from tools.__built_in__.external import run
 
 
 class AudioPlayer:
@@ -11,7 +12,7 @@ class AudioPlayer:
 
     def play(self, filename):
         if istermux:
-            os.system(f"termux-media-player play {filename} > {self.null}")
+            run(['termux-media-player', 'play', filename], silent=True)
         else:
             playsound.playsound(filename)
 

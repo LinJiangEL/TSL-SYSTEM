@@ -15,6 +15,7 @@ from prettytable import PrettyTable
 from config import Tools_DIR, PageReader
 from tools.__built_in__ import style
 from tools.__built_in__.helptool import HelpTool
+from tools.__built_in__.IOProcessor import read_input
 from tools.Network.modules import analyze as analyze_module
 from tools.Network.modules import common
 from tools.Network.modules import dns
@@ -228,7 +229,7 @@ def run():
     style.muted("Input 'help' to list the available commands, '@exit' to leave.")
     while True:
         try:
-            command = input(style.prompt('(network) >> ')).strip()
+            command = read_input(style.prompt('(network) >> '), 'terminal', strip=True)
             if not command:
                 continue
             tokens = command.split()

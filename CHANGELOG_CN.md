@@ -6,6 +6,19 @@ CHANGELOG Document  [English](/CHANGELOG.md) | [Chinese](/CHANGELOG_CN.md)
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/spec/v2.0.0.html)。
 
+## 7.5.1 - 2026-10-22
+
+### 新增
+- **统一输入处理**（`tools/__built_in__/IOProcessor.py`）：项目中所有交互式输入统一经过该模块读取，
+  非法字符会被替换为 `*`，并以 `CRITICAL` 级别记录 `[INPUTINFO]` 事件；密码等敏感输入在日志中整体遮蔽。
+  该机制已接入终端、登录界面、用户管理、API 密钥输入以及各个工具模块。
+
+### 变更
+- **外部命令执行**：项目中所有 `os.system` / `os.popen` 调用都改为使用
+  `tools/__built_in__/external.py` 中基于 `subprocess` 的封装（`run`、`display_file`、
+  `clear_screen`）；命令以参数列表方式执行、不经过 shell，在保持原有行为的同时消除了字符串命令
+  带来的 shell 注入风险。
+
 ## 7.5.0 - 2026-10-21
 
 ### 新增

@@ -1,4 +1,4 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import os
 import os.path
@@ -12,8 +12,6 @@ from urllib.request import urlopen
 from termcolor import colored
 from rich.progress import BarColumn, DownloadColumn, Progress, TaskID, TextColumn, TimeRemainingColumn, TransferSpeedColumn
 
-
-os.system("")
 
 progress = Progress(
     TextColumn("[bold blue]{task.fields[filename]}", justify="right"),

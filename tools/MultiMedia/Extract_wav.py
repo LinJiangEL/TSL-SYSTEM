@@ -1,9 +1,9 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
-import os
-from config import null, ffmpeg_path
+from config import ffmpeg_path
+from tools.__built_in__.external import run
 
 
 def Extract_wav(video, output):
-    os.system(f'"{ffmpeg_path}" -i {video} -vn {output} -nostdin > {null}')
+    run([ffmpeg_path, '-i', video, '-vn', output, '-nostdin'], silent=True)
     return

@@ -7,7 +7,6 @@ selfcheck_system(SYSTEM_FILES)
 
 import time
 import hashlib
-import getpass
 import platform
 from termcolor import colored
 from loguru import logger
@@ -19,6 +18,8 @@ from guard import get_guard
 from tools.Passwd.process import encrypt
 from tools.__built_in__.TSLlogger import Logger
 from tools.__built_in__ import style
+from tools.__built_in__.IOProcessor import read_input
+from tools.__built_in__.external import display_file, clear_screen
 from tools.__built_in__.GetInfo import GetResourcePath
 Logger()
 
@@ -102,16 +103,16 @@ style.success('done.')
 logger.info("Successfully load Login Database.")
 
 print("")
-os.system(f'{SYSTEM_PRINTER} {GetResourcePath("motd")}')  # 打印Logo标识
+display_file(GetResourcePath("motd"))  # 打印Logo标识
 print("")
 
 while True:
     while True:
         passwd_processor = hashlib.md5()
 
-        username = input(style.label('Username'))
+        username = read_input(style.label('Username'), 'username')
         if username in mode_info['user'] or username in mode_info['root']:
-            passwd = getpass.getpass(style.label('Password')).strip()
+            passwd = read_input(style.label('Password'), 'password', secret=True).strip()
             passwd = passwd.encode(encoding='utf-8')
             passwd_processor.update(passwd)
             passwd = passwd_processor.hexdigest()
@@ -126,7 +127,8 @@ while True:
                 while True:
                     del passwd, passwd_processor
                     passwd_processor = hashlib.md5()
-                    passwd = getpass.getpass(style.label('Password')).strip()
+                    passwd = read_input(style.label('Password'), 'password',
+                                        secret=True).strip()
                     passwd = passwd.encode(encoding='utf-8')
                     passwd_processor.update(passwd)
                     passwd = passwd_processor.hexdigest()
@@ -154,14 +156,14 @@ while True:
         logger.info(f'The user "{username}" has logged out.')
         style.info(f'The user "{username}" has logged out.')
         time.sleep(1)
-        os.system(SYSTEM_CLEARSTDOUT)
+        clear_screen()
         print('')
         login_datas = load_user_database(os.path.join(SYSTEM_DIR, 'Database/login.db'))
         login_infos = login_datas[0]
         mode_info = login_datas[1]
         admin_users = login_datas[2]
         simple_users = login_datas[3]
-        os.system(f'{SYSTEM_PRINTER} {GetResourcePath("motd")}')
+        display_file(GetResourcePath("motd"))
         print('')
         continue
     elif not syscode:

@@ -1,5 +1,7 @@
 #  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 from tools.__built_in__ import style
+from tools.__built_in__.IOProcessor import read_input
+from tools.__built_in__.external import clear_screen
 
 import os
 import sys
@@ -19,9 +21,6 @@ from tools.Translate.getdictword import getword
 from tools.MultiMedia.Extract_wav import Extract_wav
 from tools.MultiMedia.Audio import AudioPlayer
 from tools.__built_in__.GetInfo import GetResourcePath
-
-if sys.platform == 'win32':
-    os.system("rem TSL-SYSTEM-Translate-Module")
 
 Main_DIR = os.path.dirname(os.path.abspath(GetResourcePath(__file__)))
 AudioPlayer = AudioPlayer()
@@ -184,19 +183,21 @@ def fanyi(keyword):
 
 def main():
     try:
-        tran_choice = input(style.prompt("Choice one to continue：[ common/senior/reader ] "))
+        tran_choice = read_input(
+            style.prompt("Choice one to continue：[ common/senior/reader ] "),
+            'terminal', strip=True)
         print("")
         if tran_choice == "common":
             while True:
-                word = input(style.prompt(f'({tran_choice}) Word'))
+                word = read_input(style.prompt(f'({tran_choice}) Word'), 'text')
                 if word == "@exit":
                     gc.collect()
                     raise StopIteration
                 elif word == "@back":
                     if sys.platform == 'win32':
-                        os.system('cls')
+                        clear_screen()
                     elif sys.platform == 'linux':
-                        os.system('clear')
+                        clear_screen()
                     else:
                         raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
                     gc.collect()
@@ -220,15 +221,15 @@ def main():
             main()
         elif tran_choice == "senior":
             while True:
-                word = input(style.prompt(f'({tran_choice}) Word'))
+                word = read_input(style.prompt(f'({tran_choice}) Word'), 'text')
                 if word == '@exit':
                     gc.collect()
                     raise StopIteration
                 elif word == "@back":
                     if sys.platform == 'win32':
-                        os.system('cls')
+                        clear_screen()
                     elif sys.platform == 'linux':
-                        os.system('clear')
+                        clear_screen()
                     else:
                         raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
                     gc.collect()
@@ -257,15 +258,15 @@ def main():
             main()
         elif tran_choice == "reader":
             while True:
-                word = input(style.prompt(f'({tran_choice}) Word'))
+                word = read_input(style.prompt(f'({tran_choice}) Word'), 'text')
                 if word == '@exit':
                     gc.collect()
                     raise StopIteration
                 elif word == "@back":
                     if sys.platform == 'win32':
-                        os.system('cls')
+                        clear_screen()
                     elif sys.platform == 'linux':
-                        os.system('clear')
+                        clear_screen()
                     else:
                         raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
                     gc.collect()
@@ -279,7 +280,9 @@ def main():
                     print('done.\n')
                 else:
                     sp = Youdao()
-                    en_us = input(style.prompt("Please input audio standard [ English[en]/American[us]/All[en_us] ]："))
+                    en_us = read_input(
+                        style.prompt("Please input audio standard [ English[en]/American[us]/All[en_us] ]："),
+                        'terminal', strip=True)
                     if en_us == "us":
                         sp.setAccent(0)
                         audiotype = 'US'

@@ -1,6 +1,12 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import itertools, random
+
+try:
+    from tools.__built_in__.IOProcessor import read_input
+except ModuleNotFoundError:
+    def read_input(prompt='', pattern='terminal', secret=False, strip=False):
+        return input(prompt)
 
 # it creates a list of tuples
 deck = list(itertools.product(

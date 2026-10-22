@@ -5,7 +5,6 @@ import sys
 import uuid
 import warnings
 warnings.filterwarnings('ignore')  # 忽视警告信息
-import getpass
 from cachetools import LRUCache
 from termcolor import colored
 from setuptools.errors import PlatformError
@@ -13,13 +12,14 @@ from loguru import logger
 from tools.__built_in__.TSLlogger import Logger
 from tools.__built_in__.GetInfo import GetResourcePath, get_packagemgr
 from tools.__built_in__.set_environ import set_env_variable
+from tools.__built_in__.IOProcessor import read_input
 
 Logger()
 
 # 初始化系统设置
 APIKEY_IDENTIFY = "TSL-SYSTEM-APIKEY" if sys.platform == 'win32' else "TSL_SYSTEM_APIKEY"
-APIKEY = getpass.getpass("Please input the permission password: ") if os.getenv(APIKEY_IDENTIFY) is None else \
-         os.getenv(APIKEY_IDENTIFY)
+APIKEY = read_input("Please input the permission password: ", 'secret', secret=True) \
+    if os.getenv(APIKEY_IDENTIFY) is None else os.getenv(APIKEY_IDENTIFY)
 SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, APIKEY))
 SYSTEM_DIR = os.path.dirname(os.path.abspath(GetResourcePath(__file__)))
 SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'Temp', 'loading.py',

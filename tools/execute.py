@@ -2,6 +2,7 @@
 
 from loading import start
 from tools.__built_in__ import style
+from tools.__built_in__.IOProcessor import read_input
 
 _ok = "True"
 Developing_list = ["Chemistry", "MultiMedia", "Philosophy"]
@@ -15,7 +16,7 @@ def execute(tool=None):
             style.muted('Please input the fullname of tool which you want to use. '
                         '[Input "@available" to get the available list.]'
                         )
-            tool_choice = input(style.prompt('> '))
+            tool_choice = read_input(style.prompt('> '), 'terminal', strip=True)
             if tool_choice in Developing_list:
                 style.warning(f"The {tool_choice} tool is still developing! Please wait for some days to use it!\n")
             elif tool_choice == "exit":

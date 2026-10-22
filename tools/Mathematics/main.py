@@ -6,6 +6,7 @@ import re
 from config import Tools_DIR, PageReader
 from sysmgr import TempManager
 from tools.__built_in__.helptool import HelpTool
+from tools.__built_in__.IOProcessor import read_input
 from tools.Mathematics.cal_basic import format_error, is_number, expression_text
 
 mathdir = os.path.join(Tools_DIR, "Mathematics")
@@ -20,7 +21,7 @@ METHODS = ('basic', 'advanced', 'compound', 'function')
 def _read_input(prompt):
     """读取一行输入，遇到中断时返回 None。"""
     try:
-        return input(prompt).strip()
+        return read_input(prompt, 'terminal', strip=True)
     except (EOFError, KeyboardInterrupt):
         print()
         return None

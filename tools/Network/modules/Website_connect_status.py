@@ -1,8 +1,14 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import requests
 
-url = input("Please input website-url which is you want to check: ")
+try:
+    from tools.__built_in__.IOProcessor import read_input
+except ModuleNotFoundError:
+    def read_input(prompt='', pattern='terminal', secret=False, strip=False):
+        return input(prompt)
+
+url = read_input("Please input website-url which is you want to check: ", 'url', strip=True)
 n = 0
 print('')
 for i in range(10):

@@ -1,8 +1,9 @@
-#  Copyright (c) 2024. L.J.Afres, All rights reserved.
+#  Copyright (c) 2024-2026. L.J.Afres, All rights reserved.
 
 import os
 import sys
 import time
+import subprocess
 if sys.platform == 'win32':
     import win32api
     import win32serviceutil
@@ -11,8 +12,9 @@ if sys.platform == 'win32':
 def startService_linux(servicelist):
     for service in servicelist:
         print(f'Starting {service} service ... ', end='')
-        os.popen(f'service {service} start')
-        r = os.popen(f'service {service} status').read()
+        subprocess.run(['service', service, 'start'])
+        r = subprocess.run(['service', service, 'status'],
+                           capture_output=True, text=True).stdout
         if 'active (running)' in r:
             print("ok")
             time.sleep(0.01)

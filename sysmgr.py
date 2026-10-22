@@ -2,7 +2,6 @@
 
 import os
 import gc
-import getpass
 import hashlib
 from datetime import datetime
 from ast import literal_eval
@@ -12,6 +11,7 @@ from prettytable import PrettyTable
 from config import SYSTEM_ID, SYSTEM_DIR, SYSTEM_LOGSTDOUT, SYSTEM_LOGPATH, SYSTEM_LOGFORMAT, SuperUser
 from tools.Passwd.process import encrypt
 from tools.__built_in__.IOProcessor import InputProcessor
+from tools.__built_in__.external import display_file
 from tools.__built_in__.TSLlogger import Logger
 Logger()
 
@@ -79,7 +79,16 @@ class UserManager:
                 if username.isidentifier() and 4 <= len(username) <= 12:
                     if not password:
                         password_processor = hashlib.md5()
-                        password = getpass.getpass(f"Please set a password to user '{username}': ")
+                        password = self.InputProcessor.read(
+                            f"Please set a password to user '{username}': ", 'password', secret=True)
+                        if self.InputProcessor.last_illegal:
+                            print("ValueError:more than one illegal characters were found in the password.\n")
+                            logger.warning(f"'{self.PwdUser}' tried to add a new user to Login Database "
+                                           "but this operation was blocked because "
+                                           "the password has invalid characters. "
+                                           f"[USERINFO:('{username}', '{mode}')]"
+                                           )
+                            return -1
                         if self.InputProcessor.input_illegal_check(password, "password"):
                             if len(password) >= 6:
                                 password = password.encode(encoding='utf-8')
@@ -264,7 +273,8 @@ class UserManager:
             elif key == 'password':
                 if value is None or len(value) >= 6:
                     passwd_processor = hashlib.md5()
-                    original_password = getpass.getpass('Original Password:')
+                    original_password = self.InputProcessor.read(
+                        'Original Password:', 'password', secret=True)
                     original_password = original_password.encode(encoding='utf-8')
                     passwd_processor.update(original_password)
                     original_password = passwd_processor.hexdigest()
@@ -273,7 +283,11 @@ class UserManager:
                     if oldpasswd.strip() == infotmp[1].strip():
                         passwd_processor = hashlib.md5()
                         if value is None:
-                            value = getpass.getpass('New Password: ')
+                            value = self.InputProcessor.read(
+                                'New Password: ', 'password', secret=True)
+                            if self.InputProcessor.last_illegal:
+                                print("ValueError:more than one illegal characters were found in the password.\n")
+                                return -1
                             if self.InputProcessor.input_illegal_check(value, key):
                                 if len(value) < 6:
                                     print("ValueError:invalid password format, length must be more than or equal to 6.\n")
@@ -291,7 +305,8 @@ class UserManager:
 
                         del passwd_processor
                         passwd_processor = hashlib.md5()
-                        confirmpasswd = getpass.getpass('Confirm Password:')
+                        confirmpasswd = self.InputProcessor.read(
+                            'Confirm Password:', 'password', secret=True)
                         confirmpasswd = confirmpasswd.encode(encoding='utf-8')
                         passwd_processor.update(confirmpasswd)
                         confirmpasswd = passwd_processor.hexdigest()
@@ -383,7 +398,7 @@ class LoggerManager:
         logfile = os.path.join(self.LOGPATH, logname)
         print("{0:-^37}".format(logtime))
         if logtime in self.logfilesindex and os.path.exists(logfile):
-            os.system(f'{self.printer} "{logfile}"')
+            display_file(logfile)
             logger.debug(f"LoggerManager read the log file. [LOGFILES:('{logname}')]")
         else:
             print("An error was found when open the logfile, maybe it is missing.")

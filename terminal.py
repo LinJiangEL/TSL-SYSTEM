@@ -16,7 +16,7 @@ from tools.__built_in__.typemod import gettype, isnum
 from tools.__built_in__.IOProcessor import read_input
 from tools.__built_in__.external import run, display_file, clear_screen
 from config import SYSTEM_DIR, SYSTEM_LOGPATH, SYSTEM_LOGFORMAT, SYSTEM_LOGSTDOUT, \
-    SuperUser, SYSTEM_FILES, SYSTEM_PRINTER, SYSTEM_CLEARSTDOUT, HelpPages_DIR, PageReader, id_md5
+    SuperUser, SYSTEM_FILES, SYSTEM_PRINTER, HelpPages_DIR, PageReader, id_md5
 from sysmgr import TempManager, UserManager, LoggerManager
 from guard import get_guard, BreakpointFatal
 from tools.__built_in__.TSLlogger import Logger
@@ -699,3 +699,4 @@ def terminal(USERNAME, MODE, Bin_DIR):
                         "The breakpoint protection has recorded this error, the terminal will keep running.\n"
                         )
             continue
+    return None

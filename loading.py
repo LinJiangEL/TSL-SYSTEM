@@ -47,9 +47,7 @@ def start(tool):
         if module.__name__ in sys.modules:
             del sys.modules[module.__name__]
             del module
-            gc.collect()
-        else:
-            gc.collect()
+        gc.collect()
     except ModuleNotFoundError as e:
         style.error(f"ModuleNotFoundError:{e}.")
         style.error(f"ImportError:cannot import '{tool}' from the tools folder!\n")

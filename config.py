@@ -19,7 +19,7 @@ Logger()
 # 初始化系统设置
 APIKEY_IDENTIFY = "TSL-SYSTEM-APIKEY" if sys.platform == 'win32' else "TSL_SYSTEM_APIKEY"
 APIKEY = read_input("Please input the permission password: ", 'secret', secret=True) \
-    if os.getenv(APIKEY_IDENTIFY) is None else os.getenv(APIKEY_IDENTIFY)
+    if os.getenv(APIKEY_IDENTIFY) is None else str(os.getenv(APIKEY_IDENTIFY))
 SYSTEM_ID = str(uuid.uuid3(uuid.NAMESPACE_X500, APIKEY))
 SYSTEM_DIR = os.path.dirname(os.path.abspath(GetResourcePath(__file__)))
 SYSTEM_FILES = ['bin', 'backup', 'Database', 'tools', 'Temp', 'loading.py',
@@ -96,13 +96,11 @@ else:
     raise PlatformError('TSL-SYSTEM can only run on the win32 or linux platform!')
 
 # 创建空目录，防止执行过程中抛出找不到文件的异常
-emptyfiles = ['Temp/logs', 'backup/TSL-SYSTEM-BACKUP-FILES']
+emptyfiles = ['Temp/logs', 'backup/TSL-SYSTEM-BACKUP-FILES', "tools/Music/Musics"]
 for emptyfile in emptyfiles:
     path = os.path.join(SYSTEM_DIR, emptyfile)
     if not os.path.exists(path):
         os.makedirs(path)
-    else:
-        continue
 
 # 正版验证 =m=
 id_processor = __import__("hashlib").md5()
